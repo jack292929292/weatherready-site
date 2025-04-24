@@ -39,7 +39,8 @@ def success():
         max_temp = forecast_row["MaxPredict2"]
         rain_prob = forecast_row["RainfallProbability"]
         rain_amt = forecast_row["RainfallProbable(mm)"]
-        forecast_text = f"Max Temp: {max_temp:.1f}°C\n{rain_prob:.0f}% chance of {rain_amt:.1f} mm"
+        forecast_text = f"Max Temp: {max_temp:.1f}°C\\n{rain_prob * 100:.0f}% chance of {rain_amt:.1f} mm"
+
     except:
         forecast_text = "Forecast not available for the selected date."
     return render_template("result.html", forecast=forecast_text, date=selected_date)
