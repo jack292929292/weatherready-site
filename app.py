@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import datetime
 import os
 import stripe
+import traceback
 
 app = Flask(__name__)
 
@@ -12,10 +13,9 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "WeatherReady2025_POWERQUERY
 data = pd.read_excel(DATA_PATH, sheet_name="Sheet2")
 data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-# Debug Stripe secret key loading
+# Stripe setup
 stripe_key = os.getenv("STRIPE_SECRET_KEY")
-print("Stripe Secret Key Loaded:", "Yes" if stripe_key else "No")
-
+print("🟦 Stripe Secret Key Loaded:", "YES" if stripe_key else "NO")
 stripe.api_key = stripe_key
 
 @app.route("/")
@@ -49,12 +49,14 @@ def get_forecast():
 
 @app.route("/create-checkout-session", methods=["POST"])
 def create_checkout_session():
-    data = request.get_json()
-    date = data.get("date")
-
-    print("Received date for session:", date)
-
     try:
+        print("🟨 Incoming checkout request")
+        data = request.get_json()
+        print("📦 Received JSON:", data)
+
+        date = data.get("date", "NO_DATE_PROVIDED")
+        print("📅 Date requested:", date)
+
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
@@ -72,10 +74,11 @@ def create_checkout_session():
             cancel_url="https://weatherready-site.onrender.com/cancel",
             metadata={"date": date}
         )
-        print("Session ID created:", session.id)
+        print("✅ Stripe session created:", session.id)
         return jsonify({"id": session.id})
     except Exception as e:
-        print("Stripe Error:", str(e))
+        print("❌ Stripe Error:", str(e))
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
