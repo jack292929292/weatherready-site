@@ -1,71 +1,48 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template, redirect, url_for
 import pandas as pd
-import smtplib
-from email.message import EmailMessage
+import stripe
 import os
+from datetime import datetime
 
 app = Flask(__name__)
-
-# Load your Excel sheet
-def load_forecast(date_str):
-    df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-    row = df[df["DateTime"].astype(str).str.startswith(date_str)]
-    if row.empty:
-        return None
-    temp = row["MaxPredict2"].values[0]
-    prob = row["RainfallProbability"].values[0] * 100  # Convert probability to %
-    mm = row["RainfallProbable(mm)"].values[0]
-    return {
-        "temperature": round(temp, 1),
-        "probability": round(prob),
-        "rainfall_mm": round(mm, 1)
-    }
+stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        date_input = request.form.get("date")
-        email = request.form.get("email")
+        selected_date = request.form["forecast_date"]
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": "aud",
+                    "product_data": {
+                        "name": f"Forecast for {selected_date}",
+                    },
+                    "unit_amount": 99,
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=url_for("success", _external=True) + "?date=" + selected_date,
+            cancel_url=url_for("index", _external=True),
+        )
+        return redirect(session.url, code=303)
+    return render_template("index.html")
 
-        forecast = load_forecast(date_input)
-        if not forecast:
-            return "Forecast not available for the selected date."
-
-        max_temp = forecast["temperature"]
-        rain_prob = forecast["probability"]
-        rain_mm = forecast["rainfall_mm"]
-
-        # Format result text
-        result_text = f"Max Temp: {max_temp}°C\n{rain_prob}% chance of {rain_mm} mm"
-
-        # Send email
-        msg = EmailMessage()
-        msg["Subject"] = f"Weather Ready Forecast for {date_input}"
-        msg["From"] = os.environ["EMAIL_USER"]
-        msg["To"] = email
-        msg.set_content(result_text)
-
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-            smtp.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
-            smtp.send_message(msg)
-
-        # Render result on screen
-        return f"""
-            <h2>Forecast for {date_input}</h2>
-            <p><strong>Max Temp:</strong> {max_temp}°C</p>
-            <p><strong>Rainfall:</strong> {rain_prob}% chance of {rain_mm} mm</p>
-            <a href="/">← Forecast another day</a>
-        """
-
-    return '''
-        <form method="post">
-            <label for="date">Enter a date (YYYY-MM-DD):</label><br>
-            <input type="date" name="date" required><br><br>
-            <label for="email">Enter your email address:</label><br>
-            <input type="email" name="email" required><br><br>
-            <button type="submit">Get Forecast</button>
-        </form>
-    '''
+@app.route("/success")
+def success():
+    selected_date = request.args.get("date")
+    try:
+        df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
+        forecast_row = df[df["Date"] == selected_date].iloc[0]
+        max_temp = forecast_row["MaxPredict2"]
+        rain_prob = forecast_row["RainfallProbability"] * 100  # ✅ FIXED: now shows correct %
+        rain_amt = forecast_row["RainfallProbable(mm)"]
+        forecast_text = f"Max Temp: {max_temp:.1f}°C<br>{rain_prob:.0f}% chance of {rain_amt:.1f} mm"
+    except:
+        forecast_text = "Forecast not available for the selected date."
+    return render_template("result.html", forecast=forecast_text, date=selected_date)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=10000)
