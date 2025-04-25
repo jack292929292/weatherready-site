@@ -12,8 +12,11 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "WeatherReady2025_POWERQUERY
 data = pd.read_excel(DATA_PATH, sheet_name="Sheet2")
 data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-# Stripe secret key from environment variable
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+# Debug Stripe secret key loading
+stripe_key = os.getenv("STRIPE_SECRET_KEY")
+print("Stripe Secret Key Loaded:", "Yes" if stripe_key else "No")
+
+stripe.api_key = stripe_key
 
 @app.route("/")
 def index():
@@ -49,6 +52,8 @@ def create_checkout_session():
     data = request.get_json()
     date = data.get("date")
 
+    print("Received date for session:", date)
+
     try:
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
@@ -67,8 +72,10 @@ def create_checkout_session():
             cancel_url="https://weatherready-site.onrender.com/cancel",
             metadata={"date": date}
         )
+        print("Session ID created:", session.id)
         return jsonify({"id": session.id})
     except Exception as e:
+        print("Stripe Error:", str(e))
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
