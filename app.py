@@ -7,13 +7,13 @@ import stripe
 
 app = Flask(__name__)
 
-# Load the Excel data
+# Load Excel data
 DATA_PATH = os.path.join(os.path.dirname(__file__), "WeatherReady2025_POWERQUERY_READY.xlsx")
 data = pd.read_excel(DATA_PATH, sheet_name="Sheet2")
 data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-# Stripe test secret key
-stripe.api_key = "sk_test_51RHYTsRYz5aaa3On4OGZ54mon7LClQv6nl1rCiwZmtKZ2EIySDSnTfE5r4ZRVRIbTRpeVkrz325tQfbqYr2EdgyX00wKvKjdjB"
+# Stripe secret key from environment variable
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 @app.route("/")
 def index():
@@ -58,7 +58,7 @@ def create_checkout_session():
                     "product_data": {
                         "name": f"Forecast for {date}",
                     },
-                    "unit_amount": 199,
+                    "unit_amount": 99,
                 },
                 "quantity": 1,
             }],
