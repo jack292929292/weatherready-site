@@ -1,12 +1,57 @@
 <!DOCTYPE html>
-<html>
-<head><title>Weather Ready Forecast</title></head>
-<body>
-  <h1>Weather Ready</h1>
-  <form method="POST">
-    <label>Select a date:</label>
-    <input type="date" name="forecast_date" required>
-    <button type="submit">Get Forecast ($0.99)</button>
-  </form>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Ready</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black font-sans">
+  <header class="text-center py-8 border-b border-gray-200">
+    <h1 class="text-3xl font-bold text-[#0047C6]">WEATHER READY – Long Range Weather Forecasting</h1>
+    <p class="text-md italic mt-2 text-gray-700">
+      Accurate weather forecast information for every day no matter how far it is away
+    </p>
+  </header>
+  <main class="flex flex-col items-center justify-center px-4 py-12">
+    <form id="forecast-form" class="w-full max-w-md space-y-6">
+      <div>
+        <label for="forecast-date" class="block text-sm font-medium text-gray-700">Select a date</label>
+        <input type="date" id="forecast-date" name="forecast-date" required
+               class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2 focus:ring-[#0047C6] focus:border-[#0047C6]" />
+      </div>
+      <button type="submit"
+              class="w-full bg-[#0047C6] text-white font-semibold py-2 px-4 rounded-lg hover:bg-white hover:text-[#0047C6] hover:border hover:border-[#0047C6] transition">
+        Get Forecast
+      </button>
+    </form>
+    <div id="forecast-result" class="mt-12 w-full max-w-md bg-white border border-gray-300 shadow-md rounded-2xl p-6 text-center hidden">
+      <h2 class="text-2xl font-bold mb-4 text-[#0047C6]">Forecast Result</h2>
+      <p id="max-temp" class="text-lg mb-2"></p>
+      <p id="rainfall-probability" class="text-lg mb-2"></p>
+      <p id="rainfall-amount" class="text-lg"></p>
+    </div>
+  </main>
+  <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-200">
+    © 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
+  <script>
+    document.getElementById('forecast-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const date = document.getElementById('forecast-date').value;
+      if (!date) return;
+      try {
+        const response = await fetch(`/api/forecast?date=${date}`);
+        if (!response.ok) throw new Error('Forecast unavailable');
+        const data = await response.json();
+        document.getElementById('max-temp').textContent = `Max Temp: ${data.max_temp}°C`;
+        document.getElementById('rainfall-probability').textContent = `Rainfall Probability: ${data.rainfall_probability}%`;
+        document.getElementById('rainfall-amount').textContent = `Expected Rainfall: ${data.rainfall_amount} mm`;
+        document.getElementById('forecast-result').classList.remove('hidden');
+      } catch (err) {
+        alert('Error fetching forecast. Try again later.');
+      }
+    });
+  </script>
 </body>
 </html>

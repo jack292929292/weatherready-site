@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forecast Success | Weather Ready</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-black font-sans">
+  <header class="text-center py-8 border-b border-gray-200">
+    <h1 class="text-3xl font-bold text-[#0047C6]">WEATHER READY – Long Range Weather Forecasting</h1>
+    <p class="text-md italic mt-2 text-gray-700">
+      Accurate weather forecast information for every day no matter how far it is away
+    </p>
+  </header>
+  <main class="flex flex-col items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md bg-white border border-gray-300 shadow-md rounded-2xl p-6 text-center">
+      <h2 class="text-2xl font-bold text-green-600 mb-4">✅ Your Forecast is Ready</h2>
+      <p class="text-md mb-6 text-gray-600">Here is the forecast for your selected date.</p>
+      <div id="forecast-result" class="space-y-2">
+        <p id="max-temp" class="text-lg font-medium"></p>
+        <p id="rainfall-probability" class="text-lg font-medium"></p>
+        <p id="rainfall-amount" class="text-lg font-medium"></p>
+      </div>
+    </div>
+  </main>
+  <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-200">
+    © 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const date = params.get('date');
+    if (date) {
+      fetch(`/api/forecast?date=${date}`)
+        .then(response => {
+          if (!response.ok) throw new Error('No forecast data');
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('max-temp').textContent = `Max Temp: ${data.max_temp}°C`;
+          document.getElementById('rainfall-probability').textContent = `Rainfall Probability: ${data.rainfall_probability}%`;
+          document.getElementById('rainfall-amount').textContent = `Expected Rainfall: ${data.rainfall_amount} mm`;
+        })
+        .catch(err => {
+          document.getElementById('forecast-result').innerHTML = '<p class="text-red-600">Error retrieving forecast.</p>';
+        });
+    } else {
+      document.getElementById('forecast-result').innerHTML = '<p class="text-red-600">No date provided.</p>';
+    }
+  </script>
+</body>
+</html>
