@@ -7,12 +7,12 @@ import stripe
 
 app = Flask(__name__)
 
-# Load your Excel spreadsheet once when the app starts
+# Load the Excel data
 DATA_PATH = os.path.join(os.path.dirname(__file__), "WeatherReady2025_POWERQUERY_READY.xlsx")
 data = pd.read_excel(DATA_PATH, sheet_name="Sheet2")
 data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
 
-# Stripe secret key (test mode)
+# Stripe test secret key
 stripe.api_key = "sk_test_51RHYTsRYz5aaa3On4OGZ54mon7LClQv6nl1rCiwZmtKZ2EIySDSnTfE5r4ZRVRIbTRpeVkrz325tQfbqYr2EdgyX00wKvKjdjB"
 
 @app.route("/")
@@ -22,6 +22,10 @@ def index():
 @app.route("/success")
 def success():
     return render_template("success.html")
+
+@app.route("/cancel")
+def cancel():
+    return "<h1>Payment cancelled. You can return and try again.</h1>"
 
 @app.route("/api/forecast")
 def get_forecast():
