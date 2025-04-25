@@ -1,48 +1,46 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, jsonify, render_template
 import pandas as pd
-import stripe
-import os
 from datetime import datetime
+import os
 
 app = Flask(__name__)
-stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-@app.route("/", methods=["GET", "POST"])
+# Load your Excel spreadsheet once when the app starts
+DATA_PATH = os.path.join(os.path.dirname(__file__), "WeatherReady2025_POWERQUERY_READY.xlsx")
+data = pd.read_excel(DATA_PATH, sheet_name="Sheet2")
+
+# Make sure 'Date' column is in datetime.date format
+data['Date'] = pd.to_datetime(data['Date']).dt.date
+
+@app.route("/")
 def index():
-    if request.method == "POST":
-        selected_date = request.form["forecast_date"]
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price_data": {
-                    "currency": "aud",
-                    "product_data": {
-                        "name": f"Forecast for {selected_date}",
-                    },
-                    "unit_amount": 99,
-                },
-                "quantity": 1,
-            }],
-            mode="payment",
-            success_url=url_for("success", _external=True) + "?date=" + selected_date,
-            cancel_url=url_for("index", _external=True),
-        )
-        return redirect(session.url, code=303)
     return render_template("index.html")
 
 @app.route("/success")
 def success():
-    selected_date = request.args.get("date")
+    return render_template("success.html")
+
+@app.route("/api/forecast")
+def get_forecast():
+    date_str = request.args.get("date")
+    if not date_str:
+        return jsonify({"error": "No date provided"}), 400
+
     try:
-        df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-        forecast_row = df[df["Date"] == selected_date].iloc[0]
-        max_temp = forecast_row["MaxPredict2"]
-        rain_prob = forecast_row["RainfallProbability"] * 100  # Scale to percent
-        rain_amt = forecast_row["RainfallProbable(mm)"]
-        forecast_text = f"Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm"
-    except:
-        forecast_text = "Forecast not available for the selected date."
-    return render_template("result.html", forecast=forecast_text, date=selected_date)
+        requested_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    except ValueError:
+        return jsonify({"error": "Invalid date format"}), 400
+
+    row = data[data['Date'] == requested_date]
+    if row.empty:
+        return jsonify({"error": "No forecast available for this date"}), 404
+
+    forecast = {
+        "max_temp": row.iloc[0]["MaxPredict2"],
+        "rainfall_probability": row.iloc[0]["RainfallProbability"],
+        "rainfall_amount": row.iloc[0]["RainfallProbable(mm)"]
+    }
+    return jsonify(forecast)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    app.run(debug=True)
