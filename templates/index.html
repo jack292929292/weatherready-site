@@ -5,14 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather Ready</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="bg-white text-black font-sans">
+
+  <!-- Header Section -->
   <header class="text-center py-8 border-b border-gray-200">
     <h1 class="text-3xl font-bold text-[#0047C6]">WEATHER READY – Long Range Weather Forecasting</h1>
     <p class="text-md italic mt-2 text-gray-700">
       Accurate weather forecast information for every day no matter how far it is away
     </p>
   </header>
+
+  <!-- Main Content Section -->
   <main class="flex flex-col items-center justify-center px-4 py-12">
     <form id="forecast-form" class="w-full max-w-md space-y-6">
       <div>
@@ -22,9 +27,11 @@
       </div>
       <button type="submit"
               class="w-full bg-[#0047C6] text-white font-semibold py-2 px-4 rounded-lg hover:bg-white hover:text-[#0047C6] hover:border hover:border-[#0047C6] transition">
-        Get Forecast
+        Purchase Forecast
       </button>
     </form>
+
+    <!-- Forecast Display Card -->
     <div id="forecast-result" class="mt-12 w-full max-w-md bg-white border border-gray-300 shadow-md rounded-2xl p-6 text-center hidden">
       <h2 class="text-2xl font-bold mb-4 text-[#0047C6]">Forecast Result</h2>
       <p id="max-temp" class="text-lg mb-2"></p>
@@ -32,26 +39,56 @@
       <p id="rainfall-amount" class="text-lg"></p>
     </div>
   </main>
+
   <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-200">
     © 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
+
   <script>
-    document.getElementById('forecast-form').addEventListener('submit', async function(e) {
+    const stripe = Stripe("pk_live_YOUR_PUBLIC_KEY_HERE"); // Replace with your actual Stripe public key
+
+    document.getElementById("forecast-form").addEventListener("submit", async function(e) {
       e.preventDefault();
-      const date = document.getElementById('forecast-date').value;
-      if (!date) return;
+      const date = document.getElementById("forecast-date").value;
+      if (!date) return alert("Please select a date.");
+
       try {
-        const response = await fetch(`/api/forecast?date=${date}`);
-        if (!response.ok) throw new Error('Forecast unavailable');
-        const data = await response.json();
-        document.getElementById('max-temp').textContent = `Max Temp: ${data.max_temp}°C`;
-        document.getElementById('rainfall-probability').textContent = `Rainfall Probability: ${data.rainfall_probability}%`;
-        document.getElementById('rainfall-amount').textContent = `Expected Rainfall: ${data.rainfall_amount} mm`;
-        document.getElementById('forecast-result').classList.remove('hidden');
+        const response = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ date })
+        });
+
+        const session = await response.json();
+        if (!session.id) throw new Error("No session ID returned");
+
+        await stripe.redirectToCheckout({ sessionId: session.id });
       } catch (err) {
-        alert('Error fetching forecast. Try again later.');
+        alert("Error creating checkout session: " + err.message);
       }
     });
+
+    // Fetch and display forecast result if redirected to success page with params
+    const params = new URLSearchParams(window.location.search);
+    const forecastDate = params.get("date");
+    if (forecastDate) {
+      fetch(`/api/forecast?date=${forecastDate}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) throw new Error(data.error);
+          document.getElementById("max-temp").textContent = `Max Temp: ${parseFloat(data.max_temp).toFixed(1)}°C`;
+          document.getElementById("rainfall-probability").textContent = `Rainfall Probability: ${(parseFloat(data.rainfall_probability) * 100).toFixed(0)}%`;
+          document.getElementById("rainfall-amount").textContent = `Expected Rainfall: ${parseFloat(data.rainfall_amount).toFixed(1)} mm`;
+          document.getElementById("forecast-result").classList.remove("hidden");
+        })
+        .catch(err => {
+          document.getElementById("forecast-result").classList.remove("hidden");
+          document.getElementById("forecast-result").innerHTML = `<p class='text-red-600'>${err.message}</p>`;
+        });
+    }
   </script>
+
 </body>
 </html>
