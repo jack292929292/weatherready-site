@@ -45,7 +45,7 @@
   </footer>
 
   <script>
-    const stripe = Stripe("pk_live_YOUR_PUBLIC_KEY_HERE"); // Replace with your actual Stripe public key
+    const stripe = Stripe("pk_test_51RHYTsRYz5aaa3OnBlxRhUThl9WkI48zANz8l8opCBU0dtLQGnDk3HTEZZSn46He5zivxtQgF4D8qUO6rlcEByyb00KLaYGSbw");
 
     document.getElementById("forecast-form").addEventListener("submit", async function(e) {
       e.preventDefault();
@@ -55,9 +55,7 @@
       try {
         const response = await fetch("/create-checkout-session", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ date })
         });
 
