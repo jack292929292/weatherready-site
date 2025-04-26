@@ -1,73 +1,49 @@
-
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template, redirect, url_for
 import pandas as pd
-from datetime import datetime
-import os
 import stripe
+import os
+from datetime import datetime
 
 app = Flask(__name__)
+stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-# Load data from Excel
-DATA_PATH = os.path.join(os.path.dirname(__file__), "WeatherReady2025_POWERQUERY_READY.xlsx")
-data = pd.read_excel(DATA_PATH, sheet_name="Sheet2")
-data['Date'] = pd.to_datetime(data['Date']).dt.strftime('%Y-%m-%d')
-
-# Stripe setup with live key
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
-    return render_template("index.html")
-
-@app.route("/success")
-def success():
-    return render_template("success.html")
-
-@app.route("/cancel")
-def cancel():
-    return "<h1>Payment cancelled. You can return and try again.</h1>"
-
-@app.route("/api/forecast")
-def get_forecast():
-    date_str = request.args.get("date")
-    row = data[data['Date'] == date_str]
-
-    if row.empty:
-        return jsonify({"error": "No forecast available for this date"}), 404
-
-    result = {
-        "max_temp": round(row.iloc[0]["MaxPredict2"], 1),
-        "rainfall_probability": int(round(row.iloc[0]["RainfallProbability"] * 100)),
-        "rainfall_amount": round(row.iloc[0]["RainfallProbable(mm)"], 1)
-    }
-    return jsonify(result)
-
-@app.route("/create-checkout-session", methods=["POST"])
-def create_checkout_session():
-    data = request.get_json()
-    date = data.get("date")
-
-    try:
+    if request.method == "POST":
+        selected_date = request.form["forecast_date"]
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
                 "price_data": {
                     "currency": "aud",
                     "product_data": {
-                        "name": f"Forecast for {date}",
+                        "name": f"Forecast for {selected_date}",
                     },
                     "unit_amount": 99,
                 },
                 "quantity": 1,
             }],
             mode="payment",
-            success_url=f"https://weatherready-site.onrender.com/success?date={date}",
-            cancel_url="https://weatherready-site.onrender.com/cancel",
-            metadata={"date": date}
+            success_url=url_for("success", _external=True) + "?date=" + selected_date,
+            cancel_url=url_for("index", _external=True),
         )
-        return jsonify({"id": session.id})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return redirect(session.url, code=303)
+    return render_template("index.html")
+
+@app.route("/success")
+def success():
+    selected_date = request.args.get("date")
+    try:
+        df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
+        forecast_row = df[df["Date"] == selected_date].iloc[0]
+        max_temp = forecast_row["MaxPredict2"]
+        rain_prob = forecast_row["RainfallProbability"] * 100  # Scale to percent
+        rain_amt = forecast_row["RainfallProbable(mm)"]
+        forecast_text = f"Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm"
+    except:
+        forecast_text = "Forecast not available for the selected date."
+    return render_template("result.html", forecast=forecast_text, date=selected_date)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
