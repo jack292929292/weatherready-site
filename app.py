@@ -9,16 +9,22 @@ from datetime import datetime
 app = Flask(__name__)
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-# Email sending function
+# Enhanced email sending with logging
 def send_email(recipient, subject, body):
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = os.environ["EMAIL_SENDER"]
-    msg["To"] = recipient
+    try:
+        print("Sending email to:", recipient)
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"] = os.environ["EMAIL_SENDER"]
+        msg["To"] = recipient
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(os.environ["EMAIL_SENDER"], os.environ["EMAIL_PASSWORD"])
-        server.send_message(msg)
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(os.environ["EMAIL_SENDER"], os.environ["EMAIL_PASSWORD"])
+            server.send_message(msg)
+
+        print("Email sent successfully.")
+    except Exception as e:
+        print("EMAIL ERROR:", e)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -52,11 +58,9 @@ def success():
     customer_email = request.args.get("email")
 
     try:
-        # Try to read the Excel file
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
         print(f"Looking for forecast for: {selected_date}")
 
-        # Find matching row
         forecast_row = df[df["Date"] == selected_date]
         if forecast_row.empty:
             raise ValueError("Date not found in spreadsheet")
@@ -71,14 +75,11 @@ def success():
         forecast_text = "Forecast not available for the selected date."
 
     if customer_email:
-        try:
-            send_email(
-                customer_email,
-                f"Your Weather Ready Forecast for {selected_date}",
-                f"Forecast for {selected_date}:\n\n{forecast_text}"
-            )
-        except Exception as e:
-            print(f"Email send failed: {e}")
+        send_email(
+            customer_email,
+            f"Your Weather Ready Forecast for {selected_date}",
+            f"Forecast for {selected_date}:\n\n{forecast_text}"
+        )
 
     return render_template("result.html", forecast=forecast_text, date=selected_date)
 
