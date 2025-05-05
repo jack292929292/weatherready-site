@@ -52,21 +52,33 @@ def success():
     customer_email = request.args.get("email")
 
     try:
+        # Try to read the Excel file
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-        forecast_row = df[df["Date"] == selected_date].iloc[0]
-        max_temp = forecast_row["MaxPredict2"]
-        rain_prob = forecast_row["RainfallProbability"] * 100
-        rain_amt = forecast_row["RainfallProbable(mm)"]
+        print(f"Looking for forecast for: {selected_date}")
+
+        # Find matching row
+        forecast_row = df[df["Date"] == selected_date]
+        if forecast_row.empty:
+            raise ValueError("Date not found in spreadsheet")
+
+        row = forecast_row.iloc[0]
+        max_temp = row["MaxPredict2"]
+        rain_prob = row["RainfallProbability"] * 100
+        rain_amt = row["RainfallProbable(mm)"]
         forecast_text = f"Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm"
-    except:
+    except Exception as e:
+        print(f"ERROR: {e}")
         forecast_text = "Forecast not available for the selected date."
 
     if customer_email:
-        send_email(
-            customer_email,
-            f"Your Weather Ready Forecast for {selected_date}",
-            f"Forecast for {selected_date}:\n\n{forecast_text}"
-        )
+        try:
+            send_email(
+                customer_email,
+                f"Your Weather Ready Forecast for {selected_date}",
+                f"Forecast for {selected_date}:\n\n{forecast_text}"
+            )
+        except Exception as e:
+            print(f"Email send failed: {e}")
 
     return render_template("result.html", forecast=forecast_text, date=selected_date)
 
