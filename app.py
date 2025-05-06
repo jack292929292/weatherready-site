@@ -9,29 +9,21 @@ from datetime import datetime
 app = Flask(__name__)
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-# Enhanced email sending with logging
-def send_email(recipient, subject, body):
-    try:
-        print("Sending email to:", recipient)
-        msg = MIMEText(body)
-        msg["Subject"] = subject
-        msg["From"] = os.environ["EMAIL_SENDER"]
-        msg["To"] = recipient
+def send_email(to_email, subject, body):
+    msg = MIMEText(body)
+    msg["Subject"] = subject
+    msg["From"] = os.environ["EMAIL_SENDER"]
+    msg["To"] = to_email
 
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(os.environ["EMAIL_SENDER"], os.environ["EMAIL_PASSWORD"])
-            server.send_message(msg)
-
-        print("Email sent successfully.")
-    except Exception as e:
-        print("EMAIL ERROR:", e)
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
+        server.send_message(msg)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         selected_date = request.form["forecast_date"]
-        customer_email = request.form["email"]
-
+        email = request.form["email"]
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
@@ -45,41 +37,36 @@ def index():
                 "quantity": 1,
             }],
             mode="payment",
-            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={customer_email}",
+            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={email}",
             cancel_url=url_for("index", _external=True),
         )
         return redirect(session.url, code=303)
-
     return render_template("index.html")
 
 @app.route("/success")
 def success():
     selected_date = request.args.get("date")
-    customer_email = request.args.get("email")
-
+    email = request.args.get("email")
     try:
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-        print(f"Looking for forecast for: {selected_date}")
-
-        forecast_row = df[df["Date"] == selected_date]
-        if forecast_row.empty:
-            raise ValueError("Date not found in spreadsheet")
-
-        row = forecast_row.iloc[0]
-        max_temp = row["MaxPredict2"]
-        rain_prob = row["RainfallProbability"] * 100
-        rain_amt = row["RainfallProbable(mm)"]
+        forecast_row = df[df["Date"] == selected_date].iloc[0]
+        max_temp = forecast_row["MaxPredict2"]
+        rain_prob = forecast_row["RainfallProbability"] * 100
+        rain_amt = forecast_row["RainfallProbable(mm)"]
         forecast_text = f"Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm"
     except Exception as e:
-        print(f"ERROR: {e}")
-        forecast_text = "Forecast not available for the selected date."
+        forecast_text = f"Forecast not available for the selected date.\n\nDATA ERROR: {e}"
 
-    if customer_email:
+    try:
         send_email(
-            customer_email,
-            f"Your Weather Ready Forecast for {selected_date}",
-            f"Forecast for {selected_date}:\n\n{forecast_text}"
+            to_email=email,
+            subject=f"Forecast for {selected_date}",
+            body=forecast_text
         )
+    except Exception as e:
+        error_msg = f"EMAIL ERROR: {e}"
+        print(error_msg)
+        forecast_text += f"\n\n{error_msg}"
 
     return render_template("result.html", forecast=forecast_text, date=selected_date)
 
