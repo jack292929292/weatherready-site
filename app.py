@@ -1,74 +1,49 @@
-from flask import Flask, request, render_template, redirect, url_for
-import pandas as pd
-import stripe
 import os
 import smtplib
+from flask import Flask, request, redirect, render_template
 from email.mime.text import MIMEText
-from datetime import datetime
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
-stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-def send_email(to_email, subject, body):
-    msg = MIMEText(body)
-    msg["Subject"] = subject
-    msg["From"] = os.environ["EMAIL_SENDER"]
-    msg["To"] = to_email
+def send_email(recipient, subject, body):
+    try:
+        sender = os.environ["EMAIL_SENDER"]
+        user = os.environ["EMAIL_USER"]
+        password = os.environ["EMAIL_PASS"]
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
-        server.send_message(msg)
+        msg = MIMEMultipart()
+        msg["From"] = sender
+        msg["To"] = recipient
+        msg["Subject"] = subject
+        msg.attach(MIMEText(body, "plain"))
+
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(user, password)
+            server.send_message(msg)
+
+    except Exception as e:
+        print(f"EMAIL ERROR: {e}")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        selected_date = request.form["forecast_date"]
+        date = request.form["date"]
         email = request.form["email"]
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price_data": {
-                    "currency": "aud",
-                    "product_data": {
-                        "name": f"Forecast for {selected_date}",
-                    },
-                    "unit_amount": 99,
-                },
-                "quantity": 1,
-            }],
-            mode="payment",
-            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={email}",
-            cancel_url=url_for("index", _external=True),
-        )
-        return redirect(session.url, code=303)
+        return redirect(f"/success?date={date}&email={email}")
     return render_template("index.html")
 
 @app.route("/success")
 def success():
-    selected_date = request.args.get("date")
+    date = request.args.get("date")
     email = request.args.get("email")
-    try:
-        df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-        forecast_row = df[df["Date"] == selected_date].iloc[0]
-        max_temp = forecast_row["MaxPredict2"]
-        rain_prob = forecast_row["RainfallProbability"] * 100
-        rain_amt = forecast_row["RainfallProbable(mm)"]
-        forecast_text = f"Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm"
-    except Exception as e:
-        forecast_text = f"Forecast not available for the selected date.\n\nDATA ERROR: {e}"
 
-    try:
-        send_email(
-            to_email=email,
-            subject=f"Forecast for {selected_date}",
-            body=forecast_text
-        )
-    except Exception as e:
-        error_msg = f"EMAIL ERROR: {e}"
-        print(error_msg)
-        forecast_text += f"\n\n{error_msg}"
+    # Dummy forecast data
+    forecast = f"Forecast for {date}\nMax Temp: 17.6°C\nRainfall: 55% chance of 13.9 mm"
 
-    return render_template("result.html", forecast=forecast_text, date=selected_date)
+    send_email(email, f"Forecast for {date}", forecast)
+
+    return render_template("success.html", forecast=forecast)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+    app.run(host="0.0.0.0", port=10000)
