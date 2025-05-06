@@ -7,12 +7,13 @@ from email.mime.text import MIMEText
 from datetime import datetime
 
 app = Flask(__name__)
+
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
 def send_email(to_email, subject, body):
     msg = MIMEText(body)
     msg["Subject"] = subject
-    msg["From"] = os.environ["EMAIL_SENDER"]
+    msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
     msg["To"] = to_email
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
@@ -24,6 +25,7 @@ def index():
     if request.method == "POST":
         selected_date = request.form["forecast_date"]
         email = request.form["email"]
+
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[{
@@ -72,3 +74,4 @@ def success():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
+
