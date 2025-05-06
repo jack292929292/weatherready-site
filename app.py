@@ -4,17 +4,59 @@ import stripe
 import os
 import smtplib
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 from datetime import datetime
 
 app = Flask(__name__)
-
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-def send_email(to_email, subject, body):
-    msg = MIMEText(body)
+def send_email(to_email, subject, forecast_text):
+    msg = MIMEMultipart("related")
     msg["Subject"] = subject
     msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
     msg["To"] = to_email
+
+    explanation = """
+    <p style="font-size: 14px; color: #333;">
+      You’re receiving this forecast from <strong>Weather Ready</strong> because you requested a long-range weather prediction for a specific date.
+      Our forecasts combine recent temperature observations with long-term climate data to provide high-confidence predictions.
+      Over 50% of our forecasts fall within ±3°C of the actual temperature. Each forecast includes a transparent, data-driven accuracy curve
+      so you know how much confidence to place in it.
+    </p>
+    """
+
+    html_content = f"""
+    <html>
+      <body style="font-family: Arial, sans-serif; color: #333;">
+        <h2 style="color: #0047C6;">Your Long-Range Weather Forecast</h2>
+        <p><strong>{subject}</strong></p>
+        <p style="white-space: pre-line;">{forecast_text}</p>
+        {explanation}
+        <hr style="margin-top: 30px; border: none; border-top: 1px solid #ccc;">
+        <p style="text-align: center; font-size: 12px; color: #999; margin-top: 10px;">
+          © 2025 Weather Ready – Long-Range Weather Forecasting
+        </p>
+        <p style="text-align: center;">
+          <img src="cid:weather_logo" alt="Weather Ready Logo" style="height: 60px; margin-top: 5px;" />
+        </p>
+      </body>
+    </html>
+    """
+
+    # Create alternative part for plain and HTML content
+    msg_alt = MIMEMultipart("alternative")
+    msg.attach(msg_alt)
+
+    msg_alt.attach(MIMEText(forecast_text, "plain"))
+    msg_alt.attach(MIMEText(html_content, "html"))
+
+    # Embed image
+    with open("weather_ready_logo.png", "rb") as img:
+        mime_img = MIMEImage(img.read(), _subtype="png")
+        mime_img.add_header("Content-ID", "<weather_logo>")
+        mime_img.add_header("Content-Disposition", "inline", filename="weather_ready_logo.png")
+        msg.attach(mime_img)
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
@@ -63,7 +105,7 @@ def success():
         send_email(
             to_email=email,
             subject=f"Forecast for {selected_date}",
-            body=forecast_text
+            forecast_text=forecast_text
         )
     except Exception as e:
         error_msg = f"EMAIL ERROR: {e}"
@@ -74,4 +116,3 @@ def success():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
-
