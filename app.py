@@ -35,7 +35,7 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         <strong>Rainfall:</strong> {rain_info}</p>
 
         <h3 style="margin-top: 25px;">Payment Details</h3>
-        <p><strong>Amount Paid:</strong> AUD $4.99<br>
+        <p><strong>Amount Paid:</strong> AUD $0.99<br>
         <strong>Payment Method:</strong> Stripe<br>
         <strong>Transaction ID:</strong> {transaction_id}</p>
 
@@ -84,7 +84,7 @@ def index():
                     "product_data": {
                         "name": f"Forecast for {selected_date}",
                     },
-                    "unit_amount": 499,
+                    "unit_amount": 099,
                 },
                 "quantity": 1,
             }],
