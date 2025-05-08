@@ -11,30 +11,40 @@ from datetime import datetime
 app = Flask(__name__)
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-def send_email(to_email, subject, forecast_text):
+def send_email(to_email, subject, forecast_text, transaction_id):
     msg = MIMEMultipart("related")
     msg["Subject"] = subject
     msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
     msg["To"] = to_email
 
-    explanation = """
-    <p style="font-size: 14px; color: #333;">
-      You’re receiving this forecast from <strong>Weather Ready</strong> because you requested a long-range weather prediction for a specific date.
-      Our forecasts combine recent temperature observations with long-term climate data to provide high-confidence predictions.
-      Over 50% of our forecasts fall within ±3°C of the actual temperature. Each forecast includes a transparent, data-driven accuracy curve
-      so you know how much confidence to place in it.
-    </p>
-    """
+    # Parse forecast details
+    lines = forecast_text.strip().split("\n")
+    max_temp = lines[0].split(":")[1].strip()
+    rain_info = lines[1].split(":")[1].strip()
+    forecast_date = subject.replace("Your Long-Range Weather Forecast – ", "")
 
     html_content = f"""
     <html>
-      <body style="font-family: Arial, sans-serif; color: #333;">
-        <h2 style="color: #0047C6;">Your Long-Range Weather Forecast</h2>
-        <p><strong>{subject}</strong></p>
-        <p style="white-space: pre-line;">{forecast_text}</p>
-        {explanation}
-        <hr style="margin-top: 30px; border: none; border-top: 1px solid #ccc;">
-        <p style="text-align: center; font-size: 12px; color: #999; margin-top: 10px;">
+      <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+        <p>Thank you for your purchase from <strong>Weather Ready</strong>.</p>
+
+        <p>Below is your custom forecast for the selected date:</p>
+
+        <p><strong>Forecast Date:</strong> {forecast_date}<br>
+        <strong>Maximum Temperature:</strong> {max_temp}<br>
+        <strong>Rainfall:</strong> {rain_info}</p>
+
+        <h3 style="margin-top: 25px;">Payment Details</h3>
+        <p><strong>Amount Paid:</strong> AUD $4.99<br>
+        <strong>Payment Method:</strong> Stripe<br>
+        <strong>Transaction ID:</strong> {transaction_id}</p>
+
+        <p>This email confirms the successful delivery of your long-range weather forecast and serves as your proof of purchase.
+        Please retain this message for your records.</p>
+
+        <p>If you have any questions, contact us at <a href="mailto:weatherreadyinfo@gmail.com">weatherreadyinfo@gmail.com</a>.</p>
+
+        <p style="text-align: center; font-size: 12px; color: #999; margin-top: 30px;">
           © 2025 Weather Ready – Long-Range Weather Forecasting
         </p>
         <p style="text-align: center;">
@@ -44,14 +54,12 @@ def send_email(to_email, subject, forecast_text):
     </html>
     """
 
-    # Create alternative part for plain and HTML content
     msg_alt = MIMEMultipart("alternative")
     msg.attach(msg_alt)
 
     msg_alt.attach(MIMEText(forecast_text, "plain"))
     msg_alt.attach(MIMEText(html_content, "html"))
 
-    # Embed image
     with open("weather_ready_logo.png", "rb") as img:
         mime_img = MIMEImage(img.read(), _subtype="png")
         mime_img.add_header("Content-ID", "<weather_logo>")
@@ -76,7 +84,7 @@ def index():
                     "product_data": {
                         "name": f"Forecast for {selected_date}",
                     },
-                    "unit_amount": 99,
+                    "unit_amount": 499,
                 },
                 "quantity": 1,
             }],
@@ -91,6 +99,7 @@ def index():
 def success():
     selected_date = request.args.get("date")
     email = request.args.get("email")
+
     try:
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
         forecast_row = df[df["Date"] == selected_date].iloc[0]
@@ -102,10 +111,12 @@ def success():
         forecast_text = f"Forecast not available for the selected date.\n\nDATA ERROR: {e}"
 
     try:
+        transaction_id = "pi_test_transaction_000000"
         send_email(
             to_email=email,
-            subject=f"Forecast for {selected_date}",
-            forecast_text=forecast_text
+            subject=f"Your Long-Range Weather Forecast – {selected_date}",
+            forecast_text=forecast_text,
+            transaction_id=transaction_id
         )
     except Exception as e:
         error_msg = f"EMAIL ERROR: {e}"
