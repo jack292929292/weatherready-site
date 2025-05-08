@@ -84,7 +84,7 @@ def index():
                     "product_data": {
                         "name": f"Forecast for {selected_date}",
                     },
-                    "unit_amount": 099,
+                    "unit_amount": 99,
                 },
                 "quantity": 1,
             }],
