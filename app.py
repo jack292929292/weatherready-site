@@ -70,6 +70,10 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
         server.send_message(msg)
 
+@app.route("/ping")
+def ping():
+    return "pong"  # This is the response Uptime Robot will receive
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
