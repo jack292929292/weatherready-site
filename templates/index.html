@@ -1,151 +1,40 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Weather Ready - Get Forecast</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRLC4KEZEZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-QRLC4KEZEZ');
-    </script>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        h1, h2, h3 {
-            color: #0047C6;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            overflow-x: auto;
-            display: block;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f0f0f0;
-        }
-        .form-section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        img.responsive {
-            max-width: 100%;
-            height: auto;
-            margin-top: 15px;
-            border: 1px solid #ccc;
-        }
-        @media (max-width: 600px) {
-            body {
-                margin: 15px;
-            }
-        }
-    </style>
 </head>
 <body>
+    <!-- Navigation Menu -->
+    <nav>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/important_delivery_information">Important Delivery Information</a></li>
+            <li><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></li>
+            <li><a href="/forecast_accuracy">Forecast Accuracy Table</a></li>
+        </ul>
+    </nav>
 
-<div class="form-section">
-    <h2>Get Forecast</h2>
-    <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label><br>
-        <input type="date" id="forecast_date" name="forecast_date" required><br><br>
+    <!-- Main Content -->
+    <h1>Welcome to Weather Ready</h1>
+    <p>Your source for accurate long-range weather forecasting.</p>
 
-        <label for="email">Your email address:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <h2>Key Features of Weather Ready</h2>
+    <ol>
+        <li><strong>Date-Specific Forecasting:</strong> Forecasts for any specific future date — whether days, months, or even years ahead.</li>
+        <li><strong>Quantified Accuracy:</strong> More than 50% of forecasts fall within ±3°C of the actual maximum temperature for the selected date, regardless of how far away that date is.</li>
+        <li><strong>Transparency and Accuracy Metrics:</strong> See how accurate your forecast is likely to be before making your purchase (see forecast accuracy table below).</li>
+        <li><strong>Better Accuracy When It Counts:</strong> More reliable forecasts on hot and cold days than just relying on the average.</li>
+        <li><strong>Rainfall Estimates:</strong> % chance of rain and likely total if it does — based on historical data from matching condition sets.</li>
+        <li><strong>Statistically Grounded Method:</strong> Uses precision-weighted data blending and random sampling to create more reliable long-range forecasts.</li>
+    </ol>
 
-        <button type="submit">Proceed to Payment</button>
+    <h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
 
-        <p style="font-size: 12px; color: #777; margin-top: 10px;">
-            🔒 Payments are securely processed by
-            <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-            Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p>
-            <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #0047C6;">
-                Learn more about Stripe security
-            </a>
-        </p>
-    </form>
-</div>
+    <h2><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></h2>
 
-
-<h2>Welcome to Weather Ready – Long-Range Forecast Insights</h2>
-<p><strong>Weather Ready</strong> provides long-range, date-specific weather forecasts for the Perth metro area, including expected maximum temperature and chance of rain.</p>
-
-<h3>Key Features of Weather Ready</h3>
-<ol>
-    <li><strong>Date-Specific Forecasting:</strong> Forecasts for any specific future date — whether days, months, or even years ahead.</li>
-    <li><strong>Quantified Accuracy:</strong> More than 50% of forecasts fall within ±3°C of the actual maximum temperature for the selected date, regardless of how far away that date is.</li>
-    <li><strong>Transparency and Accuracy Metrics:</strong> See how accurate your forecast is likely to be before making your purchase (see forecast accuracy table below).</li>
-    <li><strong>Better Accuracy When It Counts:</strong> More reliable forecasts on hot and cold days than just relying on the average.</li>
-    <li><strong>Rainfall Estimates:</strong> % chance of rain and likely total if it does — based on historical data from matching condition sets.</li>
-    <li><strong>Statistically Grounded Method:</strong> Uses precision-weighted data blending and random sampling to create more reliable long-range forecasts.</li>
-</ol>
-
-<h3>Important Delivery Information</h3>
-<p>After completing your purchase, your forecast will be automatically emailed to the address you provide. If you do not see the forecast email within a few minutes, please check your junk or spam folder. You may also wish to add <code>weatherreadyinfo@gmail.com</code> to your contacts to help with delivery.</p>
-
-<h3>Legal & Consumer Disclaimers</h3>
-<ul>
-    <li>Weather Ready forecasts are generated using long-range statistical models that draw from historical climate data and recent temperature trends.</li>
-    <li>These forecasts are informational only and should not be used as a basis for planning events, financial decisions, or safety-critical outcomes.</li>
-    <li>Forecast results reflect statistical estimates with known uncertainty.</li>
-    <li>Actual conditions may differ significantly from forecasted values.</li>
-    <li>Forecasts are not guarantees.</li>
-    <li>Users must evaluate forecast information independently.</li>
-</ul>
-<p>This service complies with:</p>
-<ul>
-    <li>Competition and Consumer Act 2010 (Cth)</li>
-    <li>Australian Consumer Law (ACL)</li>
-    <li>Privacy Act 1988 (Cth) and the Australian Privacy Principles</li>
-</ul>
-<p>No personal data is stored or sold by Weather Ready. Each forecast is a single-use snapshot generated using the best available data at the time of purchase.</p>
-
-<p>Forecast accuracy is assessed by comparing the predicted maximum temperature to the actual maximum temperature recorded at the Perth Metro weather station (Station ID: 009225, Lat: -31.92, Lon: 115.87, Elevation: 24.9 m), as published by the Bureau of Meteorology (BOM). The ±3°C accuracy statement refers specifically to alignment with this official BOM observation point.</p>
-
-<p>All forecasts are based on observations from the Perth Metro weather station (Station ID: 009225, Lat: -31.92, Lon: 115.87, Elevation: 24.9 m), located in Kings Park. This station is considered representative of the central Perth metropolitan area, including suburbs such as Perth CBD, West Perth, East Perth, Northbridge, Subiaco, Leederville, Mount Lawley, South Perth, Victoria Park, and Burswood. Forecasts may not fully reflect conditions in outer suburbs, coastal zones, or hill districts.</p>
-
-<h3>Forecast Accuracy Table</h3>
-
-<table>
-    <thead>
-        <tr>
-            <th>Confidence Level</th>
-            <th>Error Range</th>
-            <th>What this means (Forecasted Max Temp°C relative to Actual Max Temp°C)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr><td>10%</td><td>±0.72°C</td><td>Your forecast has a 10% chance of being within ±0.72°C</td></tr>
-        <tr><td>20%</td><td>±0.80°C</td><td>Your forecast has a 20% chance of being within ±0.80°C</td></tr>
-        <tr><td>30%</td><td>±1.70°C</td><td>Your forecast has a 30% chance of being within ±1.70°C</td></tr>
-        <tr><td>40%</td><td>±2.06°C</td><td>Your forecast has a 40% chance of being within ±2.06°C</td></tr>
-        <tr><td>50%</td><td>±2.57°C</td><td>Your forecast has a 50% chance of being within ±2.57°C</td></tr>
-        <tr><td>60%</td><td>±3.72°C</td><td>Your forecast has a 60% chance of being within ±3.72°C</td></tr>
-        <tr><td>70%</td><td>±4.20°C</td><td>Your forecast has a 70% chance of being within ±4.20°C</td></tr>
-        <tr><td>80%</td><td>±5.64°C</td><td>Your forecast has an 80% chance of being within ±5.64°C</td></tr>
-        <tr><td>90%</td><td>±7.55°C</td><td>Your forecast has a 90% chance of being within ±7.55°C</td></tr>
-        <tr><td>99.9%</td><td>±21.99°C</td><td>Your forecast has a 99.9% chance of being within ±21.99°C</td></tr>
-    </tbody>
-</table>
-
+    <h2><a href="/forecast_accuracy">Forecast Accuracy Table</a></h2>
 </body>
 </html>
