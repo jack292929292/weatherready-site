@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Weather Ready - Get Forecast</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRLC4KEZEZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-QRLC4KEZEZ');
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,47 +60,49 @@
     </style>
 </head>
 <body>
-    <!-- Navigation Menu -->
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/important_delivery_information">Important Delivery Information</a></li>
-            <li><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></li>
-            <li><a href="/forecast_accuracy">Forecast Accuracy Table</a></li>
-        </ul>
-    </nav>
 
-    <!-- Main Content -->
-    <h1>Welcome to Weather Ready</h1>
-    <p>Your source for accurate long-range weather forecasting.</p>
-
-    <h2>Key Features of Weather Ready</h2>
-    <ol>
-        <li><strong>Date-Specific Forecasting:</strong> Forecasts for any specific future date — whether days, months, or even years ahead.</li>
-        <li><strong>Quantified Accuracy:</strong> More than 50% of forecasts fall within ±3°C of the actual maximum temperature for the selected date, regardless of how far away that date is.</li>
-        <li><strong>Transparency and Accuracy Metrics:</strong> See how accurate your forecast is likely to be before making your purchase (see forecast accuracy table below).</li>
-        <li><strong>Better Accuracy When It Counts:</strong> More reliable forecasts on hot and cold days than just relying on the average.</li>
-        <li><strong>Rainfall Estimates:</strong> % chance of rain and likely total if it does — based on historical data from matching condition sets.</li>
-        <li><strong>Statistically Grounded Method:</strong> Uses precision-weighted data blending and random sampling to create more reliable long-range forecasts.</li>
-    </ol>
-
+<div class="form-section">
     <h2>Get Forecast</h2>
-    <div class="form-section">
-        <form action="/" method="post">
-            <label for="forecast_date">Select a date:</label><br>
-            <input type="date" id="forecast_date" name="forecast_date" required><br><br>
+    <form action="/" method="post">
+        <label for="forecast_date">Select a date:</label><br>
+        <input type="date" id="forecast_date" name="forecast_date" required><br><br>
 
-            <label for="email">Your email address:</label><br>
-            <input type="email" id="email" name="email" required><br><br>
+        <label for="email">Your email address:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
 
-            <button type="submit">Proceed to Payment</button>
-        </form>
-    </div>
+        <button type="submit">Proceed to Payment</button>
 
-    <h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
+        <p style="font-size: 12px; color: #777; margin-top: 10px;">
+            🔒 Payments are securely processed by
+            <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+            Your payment details are encrypted and never stored by Weather Ready.
+        </p>
+        <p>
+            <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #0047C6;">
+                Learn more about Stripe security
+            </a>
+        </p>
+    </form>
+</div>
 
-    <h2><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></h2>
+<h2>Welcome to Weather Ready – Long-Range Forecast Insights</h2>
+<p><strong>Weather Ready</strong> provides long-range, date-specific weather forecasts for the Perth metro area, including expected maximum temperature and chance of rain.</p>
 
-    <h2><a href="/forecast_accuracy">Forecast Accuracy Table</a></h2>
+<h3>Key Features of Weather Ready</h3>
+<ol>
+    <li><strong>Date-Specific Forecasting:</strong> Forecasts for any specific future date — whether days, months, or even years ahead.</li>
+    <li><strong>Quantified Accuracy:</strong> More than 50% of forecasts fall within ±3°C of the actual maximum temperature for the selected date, regardless of how far away that date is.</li>
+    <li><strong>Transparency and Accuracy Metrics:</strong> See how accurate your forecast is likely to be before making your purchase (see forecast accuracy table below).</li>
+    <li><strong>Better Accuracy When It Counts:</strong> More reliable forecasts on hot and cold days than just relying on the average.</li>
+    <li><strong>Rainfall Estimates:</strong> % chance of rain and likely total if it does — based on historical data from matching condition sets.</li>
+    <li><strong>Statistically Grounded Method:</strong> Uses precision-weighted data blending and random sampling to create more reliable long-range forecasts.</li>
+</ol>
+
+<h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
+
+<h2><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></h2>
+
+<h2><a href="/forecast_accuracy">Forecast Accuracy Table</a></h2>
+
 </body>
 </html>
