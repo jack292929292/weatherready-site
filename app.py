@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 import pandas as pd
 import stripe
 import os
@@ -9,8 +9,11 @@ from email.mime.image import MIMEImage
 from datetime import datetime
 
 app = Flask(__name__)
+
+# Set up Stripe API key
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
+# Function to send email
 def send_email(to_email, subject, forecast_text, transaction_id):
     msg = MIMEMultipart("related")
     msg["Subject"] = subject
@@ -70,10 +73,7 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
         server.send_message(msg)
 
-@app.route("/ping")
-def ping():
-    return "pong"  # This is the response Uptime Robot will receive
-
+# Route for the main page (index.html)
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -99,12 +99,29 @@ def index():
         return redirect(session.url, code=303)
     return render_template("index.html")
 
+# Route for important delivery information
+@app.route("/important_delivery_information")
+def important_delivery_information():
+    return render_template("important_delivery_information.html")
+
+# Route for legal disclaimers page
+@app.route("/legal_disclaimers")
+def legal_disclaimers():
+    return render_template("legal_disclaimers.html")
+
+# Route for forecast accuracy table page
+@app.route("/forecast_accuracy")
+def forecast_accuracy():
+    return render_template("forecast_accuracy.html")
+
+# Route for the success page after Stripe payment
 @app.route("/success")
 def success():
     selected_date = request.args.get("date")
     email = request.args.get("email")
 
     try:
+        # Read forecast data from the Excel file
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
         forecast_row = df[df["Date"] == selected_date].iloc[0]
         max_temp = forecast_row["MaxPredict2"]
