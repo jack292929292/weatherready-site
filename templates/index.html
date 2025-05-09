@@ -1,10 +1,53 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Weather Ready - Get Forecast</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #0047C6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            overflow-x: auto;
+            display: block;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        .form-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+        img.responsive {
+            max-width: 100%;
+            height: auto;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+        }
+        @media (max-width: 600px) {
+            body {
+                margin: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation Menu -->
@@ -30,6 +73,19 @@
         <li><strong>Rainfall Estimates:</strong> % chance of rain and likely total if it does — based on historical data from matching condition sets.</li>
         <li><strong>Statistically Grounded Method:</strong> Uses precision-weighted data blending and random sampling to create more reliable long-range forecasts.</li>
     </ol>
+
+    <h2>Get Forecast</h2>
+    <div class="form-section">
+        <form action="/" method="post">
+            <label for="forecast_date">Select a date:</label><br>
+            <input type="date" id="forecast_date" name="forecast_date" required><br><br>
+
+            <label for="email">Your email address:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <button type="submit">Proceed to Payment</button>
+        </form>
+    </div>
 
     <h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
 
