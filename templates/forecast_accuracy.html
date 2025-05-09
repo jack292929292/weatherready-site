@@ -1,9 +1,37 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Forecast Accuracy Table | Weather Ready</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        h1 {
+            color: #0047C6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            overflow-x: auto;
+            display: block;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        a {
+            color: #0047C6;
+        }
+    </style>
 </head>
 <body>
     <h1>Forecast Accuracy Table</h1>
@@ -32,3 +60,27 @@
     <a href="/">Back to Home</a>
 </body>
 </html>
+"""
+
+# Save the updated files
+file_paths_corrected = {
+    "index.html": "/mnt/data/index.html",
+    "important_delivery_information.html": "/mnt/data/important_delivery_information.html",
+    "legal_disclaimers.html": "/mnt/data/legal_disclaimers.html",
+    "forecast_accuracy.html": "/mnt/data/forecast_accuracy.html"
+}
+
+with open(file_paths_corrected["index.html"], "w") as file:
+    file.write(index_html_corrected)
+
+with open(file_paths_corrected["important_delivery_information.html"], "w") as file:
+    file.write(important_delivery_information_html_corrected)
+
+with open(file_paths_corrected["legal_disclaimers.html"], "w") as file:
+    file.write(legal_disclaimers_html_corrected)
+
+with open(file_paths_corrected["forecast_accuracy.html"], "w") as file:
+    file.write(forecast_accuracy_html_corrected)
+
+# Return the file paths for download
+file_paths_corrected
