@@ -20,7 +20,7 @@ if response.status_code != 200:
 
 # Step 3: Load the CSV into a DataFrame
 from io import StringIO
-data = pd.read_csv(StringIO(response.text))
+data = pd.read_csv(StringIO(response.text), encoding='utf-8', sep=",", skiprows=6)
 
 # Step 4: Find most recent valid date with a max temp
 data["Date"] = pd.to_datetime(data["Date"], errors='coerce')
