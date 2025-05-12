@@ -7,11 +7,10 @@ from openpyxl import load_workbook
 # Step 1: Get yesterday's date
 yesterday_date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
-# Step 2: Fetch max temp from Open-Meteo
-lat, lon = -31.95, 115.86
+# Step 2: Fetch max temperature from Open-Meteo for Perth
 url = (
     f"https://archive-api.open-meteo.com/v1/archive"
-    f"?latitude={lat}&longitude={lon}"
+    f"?latitude=-31.95&longitude=115.86"
     f"&start_date={yesterday_date}&end_date={yesterday_date}"
     f"&daily=temperature_2m_max"
     f"&timezone=Australia/Perth"
@@ -22,21 +21,20 @@ if response.status_code != 200:
     print(f"❌ Failed to fetch Open-Meteo data. Status code: {response.status_code}")
     exit()
 
-data = response.json()
 try:
-    max_temp = data["daily"]["temperature_2m_max"][0]
+    max_temp = response.json()["daily"]["temperature_2m_max"][0]
 except Exception:
     print(f"❌ Could not find max temperature for {yesterday_date}")
     exit()
 
-# Step 3: Load and update Excel
+# Step 3: Load Excel and update A2/B2
 file_path = "WeatherReady2025_POWERQUERY_READY.xlsx"
 book = load_workbook(file_path)
 ws = book["WeatherImport"]
 ws["A2"] = yesterday_date
 ws["B2"] = max_temp
 
-# Step 4: Recalculate MaxPredict2
+# Step 4: Recalculate MaxPredict2 in Sheet2
 sheet2_df = pd.read_excel(file_path, sheet_name="Sheet2")
 sheet2_df["YearDay"] = pd.to_datetime(sheet2_df["Date"]).dt.dayofyear
 
@@ -47,7 +45,7 @@ ndmd_avg = grouped["NDMDAverage"].mean()
 ndmd_std = grouped["NDMDAverage"].std()
 
 maxpredict2 = []
-for idx, row in sheet2_df.iterrows():
+for _, row in sheet2_df.iterrows():
     yd = row["YearDay"]
     if pd.notna(yd) and yd in weighted_avg and yd in ndmd_avg:
         try:
@@ -64,7 +62,7 @@ for idx, row in sheet2_df.iterrows():
 
 sheet2_df["MaxPredict2"] = maxpredict2
 
-# Step 5: Save Excel
+# Step 5: Save back to Excel
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
     writer.book = book
     sheet2_df.to_excel(writer, sheet_name="Sheet2", index=False)
