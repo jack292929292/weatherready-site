@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from openpyxl import load_workbook
 
 # Step 1: Get yesterday's date
-yesterday = (datetime.now() - timedelta(days=1)).date()
+yesterday = (datetime.now() - timedelta(days=2)).date()
 
 # Step 2: Fetch BOM data for Perth Metro (station 009225)
 url = "https://www.bom.gov.au/climate/dwo/IDCJDW6111.latest.txt"
