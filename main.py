@@ -4,8 +4,10 @@ import numpy as np
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 
-# Step 1: Get yesterday's date
-yesterday = (datetime.now() - timedelta(days=2)).date()
+# Force Render to pull latest commit
+
+# Step 1: Get the date two days ago
+target_date = (datetime.now() - timedelta(days=2)).date()
 
 # Step 2: Fetch BOM data for Perth Metro (station 009225)
 url = "https://www.bom.gov.au/climate/dwo/IDCJDW6111.latest.txt"
@@ -18,14 +20,14 @@ for line in lines:
     if len(parts) >= 3:
         try:
             date = datetime.strptime(parts[0], "%d/%m/%Y").date()
-            if date == yesterday:
+            if date == target_date:
                 max_temp = float(parts[2])
                 break
         except:
             continue
 
 if max_temp is None:
-    print(f"❌ Could not find max temperature for {yesterday}")
+    print(f"❌ Could not find max temperature for {target_date}")
     exit()
 
 # Step 3: Load and update the Excel file
@@ -34,7 +36,7 @@ book = load_workbook(file_path)
 
 # Write to WeatherImport!A2 and B2
 ws = book["WeatherImport"]
-ws["A2"] = yesterday.strftime("%Y-%m-%d")
+ws["A2"] = target_date.strftime("%Y-%m-%d")
 ws["B2"] = max_temp
 
 # Recalculate MaxPredict2 in Sheet2
@@ -72,4 +74,4 @@ with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="rep
 
 book.save(file_path)
 
-print(f"✅ Refreshed for {yesterday} — Max Temp: {max_temp}°C")
+print(f"✅ Refreshed for {target_date} — Max Temp: {max_temp}°C")
