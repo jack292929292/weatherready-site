@@ -5,3 +5,9 @@ services:
     buildCommand: ""
     startCommand: "python app.py"
     plan: free
+
+cron:
+  jobs:
+    - name: update-forecast
+      schedule: "@daily"
+      command: "python main.py"
