@@ -6,8 +6,9 @@ services:
     startCommand: "python app.py"
     plan: free
 
-cron:
-  jobs:
-    - name: update-forecast
-      schedule: "@daily"
-      command: "python main.py"
+  - type: cron
+    name: update-forecast
+    env: python
+    schedule: "@daily"
+    command: "python main.py"
+    plan: free
