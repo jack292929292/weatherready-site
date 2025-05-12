@@ -10,5 +10,5 @@ services:
     name: update-forecast
     env: python
     schedule: "@daily"
-    plan: free
     command: python main.py
+    plan: free
