@@ -1,45 +1,44 @@
-import requests
 import pandas as pd
 import numpy as np
+import requests
 from datetime import datetime, timedelta
 from openpyxl import load_workbook
 
-# Force Render to pull latest commit
+# Step 1: Build BOM URL for current month's Perth Metro CSV
+now = datetime.now()
+year_month = now.strftime("%Y%m")
+url = f"https://www.bom.gov.au/climate/dwo/{year_month}/text/IDCJDW6111.{year_month}.csv"
 
-# Step 1: Get the date two days ago
-target_date = (datetime.now() - timedelta(days=2)).date()
-
-# Step 2: Fetch BOM data for Perth Metro (station 009225)
-url = "https://www.bom.gov.au/climate/dwo/IDCJDW6111.latest.txt"
-response = requests.get(url)
-lines = response.text.splitlines()
-
-max_temp = None
-for line in lines:
-    parts = line.split()
-    if len(parts) >= 3:
-        try:
-            date = datetime.strptime(parts[0], "%d/%m/%Y").date()
-            if date == target_date:
-                max_temp = float(parts[2])
-                break
-        except:
-            continue
-
-if max_temp is None:
-    print(f"❌ Could not find max temperature for {target_date}")
+# Step 2: Fetch the CSV with proper headers to spoof browser
+headers = {
+    "User-Agent": "Mozilla/5.0"
+}
+response = requests.get(url, headers=headers)
+if response.status_code != 200:
+    print(f"❌ Failed to fetch BOM data. Status code: {response.status_code}")
     exit()
 
-# Step 3: Load and update the Excel file
+# Step 3: Load the CSV into a DataFrame
+from io import StringIO
+data = pd.read_csv(StringIO(response.text))
+
+# Step 4: Find most recent valid date with a max temp
+data["Date"] = pd.to_datetime(data["Date"], errors='coerce')
+data = data.dropna(subset=["Date"])
+data["Maximum temperature (°C)"] = pd.to_numeric(data["Maximum temperature (°C)"], errors='coerce')
+recent_row = data.dropna(subset=["Maximum temperature (°C)"]).iloc[-1]
+
+obs_date = recent_row["Date"].date()
+max_temp = recent_row["Maximum temperature (°C)"]
+
+# Step 5: Load Excel and update WeatherImport sheet
 file_path = "WeatherReady2025_POWERQUERY_READY.xlsx"
 book = load_workbook(file_path)
-
-# Write to WeatherImport!A2 and B2
 ws = book["WeatherImport"]
-ws["A2"] = target_date.strftime("%Y-%m-%d")
+ws["A2"] = obs_date.strftime("%Y-%m-%d")
 ws["B2"] = max_temp
 
-# Recalculate MaxPredict2 in Sheet2
+# Step 6: Recalculate MaxPredict2 in Sheet2
 sheet2_df = pd.read_excel(file_path, sheet_name="Sheet2")
 sheet2_df["YearDay"] = pd.to_datetime(sheet2_df["Date"]).dt.dayofyear
 
@@ -67,11 +66,11 @@ for idx, row in sheet2_df.iterrows():
 
 sheet2_df["MaxPredict2"] = maxpredict2
 
-# Save updates
+# Step 7: Save updated Sheet2 and Excel file
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a", if_sheet_exists="replace") as writer:
     writer.book = book
     sheet2_df.to_excel(writer, sheet_name="Sheet2", index=False)
 
 book.save(file_path)
 
-print(f"✅ Refreshed for {target_date} — Max Temp: {max_temp}°C")
+print(f"✅ Refreshed for {obs_date} — Max Temp: {max_temp}°C")
