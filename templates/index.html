@@ -14,6 +14,16 @@
       gtag('config', 'G-QRLC4KEZEZ');
     </script>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const dateInput = document.getElementById("forecast_date");
+          const today = new Date();
+          today.setDate(today.getDate() + 28);
+          const minDate = today.toISOString().split('T')[0];
+          dateInput.min = minDate;
+      });
+    </script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
