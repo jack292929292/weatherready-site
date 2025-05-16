@@ -3,24 +3,54 @@ import pandas as pd
 import stripe
 import os
 import smtplib
+import uuid
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
 from datetime import datetime
+from google.oauth2.service_account import Credentials
+from googleapiclient.discovery import build
 
 app = Flask(__name__)
 
-# Set up Stripe API key
+# Stripe secret key from environment
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-# Function to send email
+# ✅ Your Google Sheet ID (inserted correctly)
+SPREADSHEET_ID = "15cUN4SWEzUYqOOJjN2G2PeGB2WA5LHH7kVNamXS9oIM"
+
+# Google Sheets logging function
+def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SERVICE_ACCOUNT_FILE = 'credentials.json'
+
+    creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+    service = build('sheets', 'v4', credentials=creds)
+    sheet = service.spreadsheets()
+
+    values = [[
+        datetime.now().isoformat(),
+        order_id,
+        stripe_id,
+        email if email else "N/A",
+        date,
+        forecast_text.replace('\n', ' | ')
+    ]]
+    body = {'values': values}
+    sheet.values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range="A1",
+        valueInputOption="USER_ENTERED",
+        body=body
+    ).execute()
+
+# Email forecast to user
 def send_email(to_email, subject, forecast_text, transaction_id):
     msg = MIMEMultipart("related")
     msg["Subject"] = subject
     msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
     msg["To"] = to_email
 
-    # Parse forecast details
     lines = forecast_text.strip().split("\n")
     max_temp = lines[0].split(":")[1].strip()
     rain_info = lines[1].split(":")[1].strip()
@@ -30,28 +60,20 @@ def send_email(to_email, subject, forecast_text, transaction_id):
     <html>
       <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
         <p>Thank you for your purchase from <strong>Weather Ready</strong>.</p>
-
-        <p>Below is your custom forecast for the selected date:</p>
-
         <p><strong>Forecast Date:</strong> {forecast_date}<br>
         <strong>Maximum Temperature:</strong> {max_temp}<br>
         <strong>Rainfall:</strong> {rain_info}</p>
-
-        <h3 style="margin-top: 25px;">Payment Details</h3>
-        <p><strong>Amount Paid:</strong> AUD $0.99<br>
-        <strong>Payment Method:</strong> Stripe<br>
-        <strong>Transaction ID:</strong> {transaction_id}</p>
-
-        <p>This email confirms the successful delivery of your long-range weather forecast and serves as your proof of purchase.
-        Please retain this message for your records.</p>
-
-        <p>If you have any questions, contact us at <a href="mailto:weatherreadyinfo@gmail.com">weatherreadyinfo@gmail.com</a>.</p>
-
+        <h3 style="margin-top: 25px;">Order Details</h3>
+        <p><strong>Order ID:</strong> {transaction_id}<br>
+        <strong>Amount Paid:</strong> AUD $0.99<br>
+        <strong>Payment Method:</strong> Stripe</p>
+        <p>This email confirms the successful delivery of your long-range weather forecast and serves as your proof of purchase.</p>
+        <p>Contact us: <a href="mailto:weatherreadyinfo@gmail.com">weatherreadyinfo@gmail.com</a></p>
         <p style="text-align: center; font-size: 12px; color: #999; margin-top: 30px;">
           © 2025 Weather Ready – Long-Range Weather Forecasting
         </p>
         <p style="text-align: center;">
-          <img src="cid:weather_logo" alt="Weather Ready Logo" style="height: 60px; margin-top: 5px;" />
+          <img src="cid:weather_logo" alt="Weather Ready Logo" style="height: 60px;" />
         </p>
       </body>
     </html>
@@ -59,7 +81,6 @@ def send_email(to_email, subject, forecast_text, transaction_id):
 
     msg_alt = MIMEMultipart("alternative")
     msg.attach(msg_alt)
-
     msg_alt.attach(MIMEText(forecast_text, "plain"))
     msg_alt.attach(MIMEText(html_content, "html"))
 
@@ -73,7 +94,7 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
         server.send_message(msg)
 
-# Route for the main page (index.html)
+# Homepage route
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
@@ -93,35 +114,21 @@ def index():
                 "quantity": 1,
             }],
             mode="payment",
-            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={email}",
+            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
             cancel_url=url_for("index", _external=True),
         )
         return redirect(session.url, code=303)
     return render_template("index.html")
 
-# Route for important delivery information
-@app.route("/important_delivery_information")
-def important_delivery_information():
-    return render_template("important_delivery_information.html")
-
-# Route for legal disclaimers page
-@app.route("/legal_disclaimers")
-def legal_disclaimers():
-    return render_template("legal_disclaimers.html")
-
-# Route for forecast accuracy table page
-@app.route("/forecast_accuracy")
-def forecast_accuracy():
-    return render_template("forecast_accuracy.html")
-
-# Route for the success page after Stripe payment
+# Forecast delivery and logging route
 @app.route("/success")
 def success():
     selected_date = request.args.get("date")
     email = request.args.get("email")
+    session_id = request.args.get("session_id")
+    order_id = f"WR-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
 
     try:
-        # Read forecast data from the Excel file
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
         forecast_row = df[df["Date"] == selected_date].iloc[0]
         max_temp = forecast_row["MaxPredict2"]
@@ -132,19 +139,35 @@ def success():
         forecast_text = f"Forecast not available for the selected date.\n\nDATA ERROR: {e}"
 
     try:
-        transaction_id = "pi_test_transaction_000000"
+        stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
+        stripe_id = stripe_session.payment_intent.id
+        full_order_id = f"{order_id}-{stripe_id[-6:].upper()}"
+
         send_email(
             to_email=email,
             subject=f"Your Long-Range Weather Forecast – {selected_date}",
             forecast_text=forecast_text,
-            transaction_id=transaction_id
+            transaction_id=full_order_id
         )
+        log_order_to_sheets(order_id, stripe_id, email, selected_date, forecast_text)
     except Exception as e:
-        error_msg = f"EMAIL ERROR: {e}"
-        print(error_msg)
-        forecast_text += f"\n\n{error_msg}"
+        forecast_text += f"\n\nEMAIL ERROR: {e}"
 
     return render_template("result.html", forecast=forecast_text, date=selected_date)
 
+# Other routes
+@app.route("/important_delivery_information")
+def important_delivery_information():
+    return render_template("important_delivery_information.html")
+
+@app.route("/legal_disclaimers")
+def legal_disclaimers():
+    return render_template("legal_disclaimers.html")
+
+@app.route("/forecast_accuracy")
+def forecast_accuracy():
+    return render_template("forecast_accuracy.html")
+
+# Launch
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
