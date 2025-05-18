@@ -31,23 +31,11 @@
             background-color: #f8f9fa;
             color: #333;
         }
-        h1, h2, h3 {
+        h1, h2 {
             color: #0047C6;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            overflow-x: auto;
-            display: block;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f0f0f0;
+        a {
+            color: #0047C6;
         }
         .form-section {
             background-color: white;
@@ -55,12 +43,6 @@
             border-radius: 12px;
             margin-bottom: 40px;
             box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        img.responsive {
-            max-width: 100%;
-            height: auto;
-            margin-top: 15px;
-            border: 1px solid #ccc;
         }
         @media (max-width: 600px) {
             body {
@@ -71,40 +53,42 @@
 </head>
 <body>
 
-<div class="form-section">
-    <h2>Get Forecast</h2>
-    <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label><br>
-        <input type="date" id="forecast_date" name="forecast_date" required><br><br>
+    <h1>Get Your Weather Ready Forecast</h1>
 
-        <label for="email">Your email address:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <div class="form-section">
+        <h2>Request Forecast</h2>
+        <form action="/" method="post">
+            <label for="forecast_date">Select a date:</label><br>
+            <input type="date" id="forecast_date" name="forecast_date" required><br><br>
 
-        <button type="submit">Proceed to Payment</button>
+            <label for="email">Your email address:</label><br>
+            <input type="email" id="email" name="email" required><br><br>
 
-        <p style="font-size: 12px; color: #777; margin-top: 10px;">
-            🔒 Payments are securely processed by
-            <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-            Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p>
-            <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #0047C6;">
-                Learn more about Stripe security
-            </a>
-        </p>
-    </form>
-</div>
+            <button type="submit">Proceed to Payment</button>
 
-<h2>🌤️ Welcome to Weather Ready</h2>
-<p>Weather Ready is weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
-<p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
-<p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
-<p>Payments are securely processed by Stripe, a trusted global platform used by Amazon, Shopify, and Google.</p>
-<p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+            <p style="font-size: 12px; color: #777; margin-top: 10px;">
+                🔒 Payments are securely processed by
+                <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+                Your payment details are encrypted and never stored by Weather Ready.
+            </p>
+            <p>
+                <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #0047C6;">
+                    Learn more about Stripe security
+                </a>
+            </p>
+        </form>
+    </div>
 
-<h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
-<h2><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></h2>
-<h2><a href="/forecast_accuracy">Forecast Accuracy Table</a></h2>
+    <h2>🌤️ Welcome to Weather Ready</h2>
+    <p>Weather Ready is weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
+    <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
+    <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
+    <p>Payments are securely processed by Stripe, a trusted global platform used by Amazon, Shopify, and Google.</p>
+    <p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+
+    <h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
+    <h2><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></h2>
+    <h2><a href="/forecast_accuracy">Forecast Accuracy Table</a></h2>
 
 </body>
 </html>
