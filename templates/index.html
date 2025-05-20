@@ -24,18 +24,18 @@
     header {
       background: var(--blue);
       color: white;
-      padding: 60px 20px 30px;
+      padding: 40px 20px 20px;
       text-align: center;
     }
 
     .brand h1 {
-      font-size: 5em; /* ✅ Increased */
+      font-size: clamp(2.5em, 6vw, 5em);
       margin: 0;
       font-weight: bold;
     }
 
     .brand span {
-      font-size: 1.5em;
+      font-size: clamp(1em, 3vw, 1.5em);
       opacity: 0.95;
       display: block;
       margin-top: 10px;
@@ -43,15 +43,18 @@
 
     .subnav {
       background: #003ca5;
-      padding: 18px 20px;
+      padding: 14px 10px;
       text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
     }
 
     .subnav a {
       color: white;
-      margin: 0 30px;
       text-decoration: none;
-      font-size: 1.2em;
+      font-size: 1em;
       font-weight: bold;
     }
 
@@ -61,65 +64,66 @@
 
     main {
       display: flex;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      align-items: flex-start;
+      flex-wrap: wrap;
+      justify-content: center;
       max-width: 1400px;
-      margin: 60px auto;
-      padding: 0 60px;
-      gap: 60px;
+      margin: 40px auto;
+      padding: 0 20px;
+      gap: 40px;
     }
 
     .welcome {
-      flex: 1 1 58%;
-      font-size: 1.1em;
-      line-height: 1.55;
+      flex: 1 1 100%;
+      max-width: 700px;
+      font-size: 1.05em;
+      line-height: 1.6;
     }
 
     .welcome h2 {
       color: var(--blue);
-      font-size: 2em;
+      font-size: 1.8em;
       margin-bottom: 20px;
     }
 
     .form-box {
-      flex: 1 1 38%;
+      flex: 1 1 100%;
+      max-width: 500px;
       background: var(--gray);
-      padding: 36px;
+      padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
     }
 
     .form-box h2 {
       color: var(--blue);
-      font-size: 1.8em;
-      margin-bottom: 24px;
+      font-size: 1.6em;
+      margin-bottom: 20px;
     }
 
     label {
       font-weight: bold;
-      font-size: 1.05em;
+      font-size: 1em;
       display: block;
-      margin-top: 24px;
+      margin-top: 20px;
       margin-bottom: 6px;
     }
 
     input[type="date"],
     input[type="email"] {
       width: 100%;
-      padding: 14px;
-      font-size: 1.1em;
+      padding: 12px;
+      font-size: 1em;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
 
     button {
-      margin-top: 30px;
+      margin-top: 24px;
       padding: 14px;
       width: 100%;
       background: var(--blue);
       color: white;
-      font-size: 1.1em;
+      font-size: 1em;
       font-weight: bold;
       border: none;
       border-radius: 6px;
@@ -131,42 +135,33 @@
     }
 
     p.note {
-      font-size: 0.95em;
+      font-size: 0.9em;
       color: #555;
       margin-top: 14px;
     }
 
     footer {
       text-align: center;
-      padding: 60px 20px;
+      padding: 40px 20px;
       background: #eee;
       font-size: 1em;
       color: #666;
       margin-top: 60px;
     }
 
-    @media (max-width: 1100px) {
+    @media (min-width: 800px) {
       main {
-        flex-direction: column;
-        gap: 40px;
+        flex-wrap: nowrap;
+        padding: 0 60px;
+        gap: 60px;
       }
 
-      .welcome, .form-box {
-        flex: 1 1 100%;
+      .welcome {
+        flex: 1 1 58%;
       }
 
-      .brand h1 {
-        font-size: 3.2em;
-      }
-
-      .brand span {
-        font-size: 1.1em;
-      }
-
-      .subnav a {
-        display: inline-block;
-        margin: 10px;
-        font-size: 1em;
+      .form-box {
+        flex: 1 1 38%;
       }
     }
   </style>
@@ -253,8 +248,3 @@
 
 </body>
 </html>
-
-
-
-
-
