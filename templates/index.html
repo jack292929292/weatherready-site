@@ -1,94 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Weather Ready - Get Forecast</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Weather Ready - Get Forecast</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --blue: #0047C6;
+      --gray: #f8f9fa;
+    }
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRLC4KEZEZ"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-QRLC4KEZEZ');
-    </script>
+    * {
+      box-sizing: border-box;
+    }
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function() {
-          const dateInput = document.getElementById("forecast_date");
-          const today = new Date();
-          today.setDate(today.getDate() + 28);
-          const minDate = today.toISOString().split('T')[0];
-          dateInput.min = minDate;
-      });
-    </script>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #222;
+    }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        h1, h2 {
-            color: #0047C6;
-        }
-        a {
-            color: #0047C6;
-        }
-        .form-section {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.1);
-        }
-        @media (max-width: 600px) {
-            body {
-                margin: 15px;
-            }
-        }
-    </style>
+    header {
+      background: var(--blue);
+      color: white;
+      padding: 60px 20px 30px;
+      text-align: center;
+    }
+
+    .brand h1 {
+      font-size: 5em; /* ✅ Increased */
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .brand span {
+      font-size: 1.5em;
+      opacity: 0.95;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .subnav {
+      background: #003ca5;
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    .subnav a {
+      color: white;
+      margin: 0 30px;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .subnav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: flex-start;
+      max-width: 1400px;
+      margin: 60px auto;
+      padding: 0 60px;
+      gap: 60px;
+    }
+
+    .welcome {
+      flex: 1 1 58%;
+      font-size: 1.1em;
+      line-height: 1.55;
+    }
+
+    .welcome h2 {
+      color: var(--blue);
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .form-box {
+      flex: 1 1 38%;
+      background: var(--gray);
+      padding: 36px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box h2 {
+      color: var(--blue);
+      font-size: 1.8em;
+      margin-bottom: 24px;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 1.05em;
+      display: block;
+      margin-top: 24px;
+      margin-bottom: 6px;
+    }
+
+    input[type="date"],
+    input[type="email"] {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 14px;
+      width: 100%;
+      background: var(--blue);
+      color: white;
+      font-size: 1.1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00339a;
+    }
+
+    p.note {
+      font-size: 0.95em;
+      color: #555;
+      margin-top: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      background: #eee;
+      font-size: 1em;
+      color: #666;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 1100px) {
+      main {
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .welcome, .form-box {
+        flex: 1 1 100%;
+      }
+
+      .brand h1 {
+        font-size: 3.2em;
+      }
+
+      .brand span {
+        font-size: 1.1em;
+      }
+
+      .subnav a {
+        display: inline-block;
+        margin: 10px;
+        font-size: 1em;
+      }
+    }
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dateInput = document.getElementById("forecast_date");
+      const today = new Date();
+      today.setDate(today.getDate() + 28);
+      const minDate = today.toISOString().split('T')[0];
+      dateInput.min = minDate;
+    });
+  </script>
 </head>
+
 <body>
 
-    <h1>Get Your Weather Ready Forecast</h1>
+  <header>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG RANGE WEATHER FORECASTING</span>
+    </div>
+  </header>
 
-    <div class="form-section">
-        <h2>Request Forecast</h2>
-        <form action="/" method="post">
-            <label for="forecast_date">Select a date:</label><br>
-            <input type="date" id="forecast_date" name="forecast_date" required><br><br>
+  <div class="subnav">
+    <a href="/forecast_accuracy">Forecast Accuracy</a>
+    <a href="/important_delivery_information">Delivery Info</a>
+    <a href="/legal_disclaimers">Legal</a>
+  </div>
 
-            <label for="email">Your email address:</label><br>
-            <input type="email" id="email" name="email" required><br><br>
+  <main>
 
-            <button type="submit">Proceed to Payment</button>
-
-            <p style="font-size: 12px; color: #777; margin-top: 10px;">
-                🔒 Payments are securely processed by
-                <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-                Your payment details are encrypted and never stored by Weather Ready.
-            </p>
-            <p>
-                <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #0047C6;">
-                    Learn more about Stripe security
-                </a>
-            </p>
-        </form>
+    <div class="welcome">
+      <h2>🌤️ Welcome to Weather Ready</h2>
+      <p>
+        Weather Ready is weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
+      </p>
+      <p>
+        Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
+      </p>
+      <p>
+        To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
+      </p>
+      <p>
+        Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
+      </p>
     </div>
 
-    <h2>🌤️ Welcome to Weather Ready</h2>
-    <p>Weather Ready is weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
-    <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
-    <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
-    <p>Payments are securely processed by Stripe, a trusted global platform used by Amazon, Shopify, and Google.</p>
-    <p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+    <div class="form-box">
+      <h2>Request Forecast</h2>
+      <form action="/" method="post">
+        <label for="forecast_date">Select a date:</label>
+        <input type="date" id="forecast_date" name="forecast_date" required>
 
-    <h2><a href="/important_delivery_information">Important Delivery Information</a></h2>
-    <h2><a href="/legal_disclaimers">Legal & Consumer Disclaimers</a></h2>
-    <h2><a href="/forecast_accuracy">Forecast Accuracy Table</a></h2>
+        <label for="email">Your email address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <button type="submit">Proceed to Payment</button>
+
+        <p class="note">
+          🔒 Payments are securely processed by
+          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+          Your payment details are encrypted and never stored by Weather Ready.
+        </p>
+        <p class="note">
+          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+            Learn more about Stripe security
+          </a>
+        </p>
+      </form>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
 
 </body>
 </html>
+
+
+
+
+
