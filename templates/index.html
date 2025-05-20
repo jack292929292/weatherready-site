@@ -41,21 +41,27 @@
       margin-top: 10px;
     }
 
-    .subnav {
+    .subnav-wrapper {
+      overflow-x: auto;
       background: #003ca5;
-      padding: 14px 10px;
-      text-align: center;
+    }
+
+    .subnav {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       justify-content: center;
-      gap: 16px;
+      padding: 14px 10px;
+      gap: 32px;
+      min-width: max-content;
     }
 
     .subnav a {
       color: white;
       text-decoration: none;
-      font-size: 1em;
+      font-size: 1.1em;
       font-weight: bold;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .subnav a:hover {
@@ -186,10 +192,13 @@
     </div>
   </header>
 
-  <div class="subnav">
-    <a href="/forecast_accuracy">Forecast Methodology</a>
-    <a href="/important_delivery_information">Delivery Info</a>
-    <a href="/legal_disclaimers">Legal</a>
+  <div class="subnav-wrapper">
+    <nav class="subnav">
+      <a href="/">Home</a>
+      <a href="/forecast_accuracy">Forecast Methodology</a>
+      <a href="/important_delivery_information">Delivery Info</a>
+      <a href="/legal_disclaimers">Legal</a>
+    </nav>
   </div>
 
   <main>
