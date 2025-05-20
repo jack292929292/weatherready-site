@@ -1,28 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Terms and Conditions | Weather Ready</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-        h1 {
-            color: #0047C6;
-        }
-        h2 {
-            margin-top: 30px;
-            color: #0047C6;
-        }
-        a {
-            color: #0047C6;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Legal Disclaimers | Weather Ready</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --blue: #0047C6;
+      --gray: #f8f9fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #222;
+    }
+
+    header {
+      background: var(--blue);
+      color: white;
+      padding: 60px 20px 30px;
+      text-align: center;
+    }
+
+    .brand h1 {
+      font-size: 5em; /* ✅ Matches index.html */
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .brand span {
+      font-size: 1.5em;
+      opacity: 0.95;
+      display: block;
+      margin-top: 10px;
+    }
+
+    .subnav {
+      background: #003ca5;
+      padding: 18px 20px;
+      text-align: center;
+    }
+
+    .subnav a {
+      color: white;
+      margin: 0 30px;
+      text-decoration: none;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .subnav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 60px;
+      font-size: 1.1em;
+      line-height: 1.65;
+    }
+
+    h1 {
+      color: var(--blue);
+      font-size: 2.2em;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: var(--blue);
+      font-size: 1.5em;
+    }
+
+    ul {
+      margin-left: 20px;
+    }
+
+    a {
+      color: var(--blue);
+    }
+
+    footer {
+      text-align: center;
+      padding: 60px 20px;
+      background: #eee;
+      font-size: 1em;
+      color: #666;
+      margin-top: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .brand h1 {
+        font-size: 3.2em;
+      }
+
+      .brand span {
+        font-size: 1.1em;
+      }
+
+      .subnav a {
+        display: inline-block;
+        margin: 10px;
+        font-size: 1em;
+      }
+
+      main {
+        padding: 0 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
+  <header>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG RANGE WEATHER FORECASTING</span>
+    </div>
+  </header>
+
+  <div class="subnav">
+    <a href="/forecast_accuracy">Forecast Accuracy</a>
+    <a href="/important_delivery_information">Delivery Info</a>
+    <a href="/legal_disclaimers">Legal</a>
+  </div>
+
+  <main>
     <h1>Terms and Conditions</h1>
 
     <h2>1. Service Description</h2>
@@ -59,8 +169,11 @@
 
     <h2>6. Privacy</h2>
     <p>No personal data is stored, tracked, or shared. Forecasts are delivered via email at the time of purchase. We comply with the <em>Privacy Act 1988 (Cth)</em> and the Australian Privacy Principles.</p>
+  </main>
 
-    <a href="/">Back to Home</a>
+  <footer>
+    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
+
 </body>
 </html>
-
