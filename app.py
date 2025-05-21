@@ -7,7 +7,7 @@ import uuid
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
-from datetime import datetime
+from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 
@@ -16,10 +16,10 @@ app = Flask(__name__)
 # Stripe secret key from environment
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 
-# ✅ Your Google Sheet ID (inserted correctly)
+# Google Sheets ID
 SPREADSHEET_ID = "15cUN4SWEzUYqOOJjN2G2PeGB2WA5LHH7kVNamXS9oIM"
 
-# Google Sheets logging function
+# Log order to Google Sheets
 def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SERVICE_ACCOUNT_FILE = 'credentials.json'
@@ -44,7 +44,7 @@ def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
         body=body
     ).execute()
 
-# Email forecast to user
+# Send forecast email
 def send_email(to_email, subject, forecast_text, transaction_id):
     msg = MIMEMultipart("related")
     msg["Subject"] = subject
@@ -118,9 +118,11 @@ def index():
             cancel_url=url_for("index", _external=True),
         )
         return redirect(session.url, code=303)
-    return render_template("index.html")
 
-# Forecast delivery and logging route
+    min_date = (datetime.today() + timedelta(days=28)).strftime("%Y-%m-%d")
+    return render_template("index.html", min_date=min_date)
+
+# Forecast success route
 @app.route("/success")
 def success():
     selected_date = request.args.get("date")
