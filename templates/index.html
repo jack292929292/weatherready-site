@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Weather Ready - Get Forecast</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
@@ -175,10 +178,25 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const dateInput = document.getElementById("forecast_date");
+      const form = document.querySelector("form");
+
       const today = new Date();
       today.setDate(today.getDate() + 28);
       const minDate = today.toISOString().split('T')[0];
-      dateInput.min = minDate;
+
+      if (dateInput) {
+        dateInput.min = minDate;
+      }
+
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          if (dateInput.value < minDate) {
+            e.preventDefault();
+            alert("Please select a date at least 28 days from today.");
+            dateInput.focus();
+          }
+        });
+      }
     });
   </script>
 </head>
