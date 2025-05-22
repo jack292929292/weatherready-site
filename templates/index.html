@@ -126,6 +126,19 @@
       border-radius: 6px;
     }
 
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+      vertical-align: middle;
+    }
+
+    .checkbox-label {
+      font-weight: normal;
+      font-size: 0.95em;
+      margin-top: 16px;
+      display: block;
+    }
+
     button {
       margin-top: 24px;
       padding: 14px;
@@ -215,14 +228,14 @@
       <a href="/">Home</a>
       <a href="/forecast_accuracy">Forecast Methodology</a>
       <a href="/important_delivery_information">Delivery Info</a>
-      <a href="/legal_disclaimers">Disclaimer</a>
+      <a href="/legal_disclaimers">Legal</a>
     </nav>
   </div>
 
   <main>
 
     <div class="welcome">
-      <h2>Welcome to Weather Ready</h2>
+      <h2>🌤️ Welcome to Weather Ready</h2>
       <p>
         Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
       </p>
@@ -251,6 +264,12 @@
 
         <label for="email">Your email address:</label>
         <input type="email" id="email" name="email" required>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="agree_disclaimer" required>
+          I have read and agree to the
+          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+        </label>
 
         <button type="submit">Proceed to Payment</button>
 
