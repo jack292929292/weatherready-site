@@ -234,59 +234,60 @@
 
   <main>
 
-    <div class="welcome">
-      <h2>🌤️ Welcome to Weather Ready</h2>
-      <p>
-        Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
-      </p>
-      <p>
-        Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
-      </p>
-      <p>
-        To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
-      </p>
-      <p>
-        Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
-      </p>
-      <p>
-        Forecasts are currently available only for the Perth metropolitan area.
-      </p>
-      <p>
-        You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong>
-      </p>
-    </div>
+  <div class="form-box">
+    <h2>Request Forecast</h2>
+    <form action="/" method="post">
+      <label for="forecast_date">Select a date:</label>
+      <input type="date" id="forecast_date" name="forecast_date" min="{{ min_date }}" required>
 
-    <div class="form-box">
-      <h2>Request Forecast</h2>
-      <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label>
-        <input type="date" id="forecast_date" name="forecast_date" min="{{ min_date }}" required>
+      <label for="email">Your email address:</label>
+      <input type="email" id="email" name="email" required>
 
-        <label for="email">Your email address:</label>
-        <input type="email" id="email" name="email" required>
+      <label class="checkbox-label">
+        <input type="checkbox" id="agree_disclaimer" required>
+        I have read and agree to the
+        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+      </label>
 
-        <label class="checkbox-label">
-          <input type="checkbox" id="agree_disclaimer" required>
-          I have read and agree to the
-          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-        </label>
+      <button type="submit">Proceed to Payment</button>
 
-        <button type="submit">Proceed to Payment</button>
+      <p class="note">
+        🔒 Payments are securely processed by
+        <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+        Your payment details are encrypted and never stored by Weather Ready.
+      </p>
+      <p class="note">
+        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+          Learn more about Stripe security
+        </a>
+      </p>
+    </form>
+  </div>
 
-        <p class="note">
-          🔒 Payments are securely processed by
-          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-          Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p class="note">
-          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-            Learn more about Stripe security
-          </a>
-        </p>
-      </form>
-    </div>
+  <div class="welcome">
+    <h2>🌤️ Welcome to Weather Ready</h2>
+    <p>
+      Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
+    </p>
+    <p>
+      Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
+    </p>
+    <p>
+      To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
+    </p>
+    <p>
+      Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
+    </p>
+    <p>
+      Forecasts are currently available only for the Perth metropolitan area.
+    </p>
+    <p>
+      You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong>
+    </p>
+  </div>
 
-  </main>
+</main>
+
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
