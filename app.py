@@ -10,6 +10,7 @@ from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
+import auto_reply_bot  # ✅ ADDED
 
 app = Flask(__name__)
 
@@ -169,6 +170,15 @@ def legal_disclaimers():
 @app.route("/forecast_accuracy")
 def forecast_accuracy():
     return render_template("forecast_accuracy.html")
+
+# ✅ Added route to trigger auto-reply bot
+@app.route("/run-bot")
+def run_bot():
+    try:
+        auto_reply_bot.main()
+        return {"status": "success"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
 
 # Launch
 if __name__ == "__main__":
