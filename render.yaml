@@ -1,14 +1,32 @@
 services:
   - type: web
-    name: weatherready-live
+    name: weather-ready-web
     env: python
-    buildCommand: ""
-    startCommand: "python app.py"
-    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: credentials.json
 
+jobs:
   - type: cron
-    name: update-forecast
-    env: python
-    schedule: "@daily"
-    command: python main.py
-    plan: free
+    name: auto-reply-bot
+    schedule: "*/5 * * * *"
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: EMAIL_ADDRESS
+        value: weatherreadyinfo@gmail.com
+      - key: SHEET_ID
+        value: your_google_sheet_id_here
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: credentials.json
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python auto_reply_bot.py
