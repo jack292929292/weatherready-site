@@ -6,6 +6,8 @@ from datetime import datetime
 from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 EMAIL_ADDRESS = os.environ["EMAIL_ADDRESS"]
@@ -15,7 +17,17 @@ ALLOWED_SENDERS = ["@gmail.com", "@mycompany.com"]  # 🔒 Only reply to these d
 
 def load_gmail_service():
     scopes = ["https://www.googleapis.com/auth/gmail.modify"]
-    creds = Credentials.from_authorized_user_file("token.json", scopes)
+    creds = None
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", scopes)
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file("credentials.json", scopes)
+            creds = flow.run_local_server(port=0)
+        with open("token.json", "w") as token:
+            token.write(creds.to_json())
     return build("gmail", "v1", credentials=creds)
 
 def get_unread_emails(service):
@@ -109,3 +121,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
