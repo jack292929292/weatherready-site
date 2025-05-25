@@ -29,20 +29,22 @@
     header {
       background: var(--blue);
       color: white;
-      padding: 20px;
+      padding: 40px 20px 20px;
       text-align: center;
       position: relative;
     }
 
     header h1 {
-      font-size: 2.5rem;
+      font-size: clamp(2.5em, 6vw, 5em);
+      font-weight: bold;
+      margin: 0;
     }
 
     header span {
-      font-size: 1.1rem;
-      display: block;
-      margin-top: 8px;
+      font-size: clamp(1em, 3vw, 1.5em);
       opacity: 0.95;
+      display: block;
+      margin-top: 10px;
     }
 
     .menu-toggle {
@@ -62,21 +64,27 @@
       border-radius: 2px;
     }
 
+    .subnav-wrapper {
+      overflow-x: auto;
+      background: #003ca5;
+    }
+
     nav.subnav {
       display: flex;
+      flex-wrap: nowrap;
       justify-content: center;
-      background: var(--dark-blue);
       padding: 14px 10px;
       gap: 32px;
-      flex-wrap: wrap;
+      min-width: max-content;
     }
 
     nav.subnav a {
       color: white;
       text-decoration: none;
+      font-size: 1.1em;
       font-weight: bold;
-      font-size: 1em;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     nav.subnav a:hover {
@@ -84,31 +92,35 @@
     }
 
     main {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 40px auto;
       padding: 0 20px;
-      gap: 40px;
-      justify-content: center;
+      font-size: 1.05em;
+      line-height: 1.65;
     }
 
-    .form-box, .welcome {
-      flex: 1 1 100%;
-      max-width: 500px;
+    .main-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
     }
 
     .form-box {
+      flex: 1 1 400px;
       background: var(--gray);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
     }
 
-    .form-box h2, .welcome h2 {
+    .info-box {
+      flex: 1 1 400px;
+    }
+
+    h2 {
       color: var(--blue);
+      font-size: clamp(1.6em, 4vw, 2em);
       margin-bottom: 20px;
-      font-size: 1.6em;
     }
 
     label {
@@ -166,21 +178,9 @@
       text-align: center;
       padding: 40px 20px;
       background: #eee;
+      font-size: 1em;
       color: #666;
       margin-top: 60px;
-      font-size: 1em;
-    }
-
-    @media (min-width: 800px) {
-      .form-box {
-        max-width: 500px;
-        flex: 1 1 40%;
-      }
-
-      .welcome {
-        max-width: 700px;
-        flex: 1 1 55%;
-      }
     }
 
     @media (max-width: 768px) {
@@ -192,7 +192,6 @@
         display: none;
         flex-direction: column;
         align-items: center;
-        background-color: var(--dark-blue);
         gap: 0;
       }
 
@@ -206,6 +205,16 @@
         text-align: center;
         border-top: 1px solid rgba(255, 255, 255, 0.15);
         font-size: 1.2em;
+      }
+
+      .main-section {
+        flex-direction: column;
+      }
+    }
+
+    @media (min-width: 800px) {
+      main {
+        padding: 0 60px;
       }
     }
   </style>
@@ -245,50 +254,55 @@
     </div>
   </header>
 
-  <nav class="subnav">
-    <a href="/">Home</a>
-    <a href="/forecast_accuracy">Forecast Methodology</a>
-    <a href="/important_delivery_information">Delivery Info</a>
-    <a href="/legal_disclaimers">Disclaimer</a>
-  </nav>
+  <div class="subnav-wrapper">
+    <nav class="subnav">
+      <a href="/">Home</a>
+      <a href="/forecast_accuracy">Forecast Methodology</a>
+      <a href="/important_delivery_information">Delivery Info</a>
+      <a href="/legal_disclaimers">Disclaimer</a>
+    </nav>
+  </div>
 
   <main>
-    <div class="form-box">
-      <h2>Request Forecast</h2>
-      <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label>
-        <input type="date" id="forecast_date" name="forecast_date" required>
+    <h2>🌤️ Welcome to Weather Ready</h2>
 
-        <label for="email">Your email address:</label>
-        <input type="email" id="email" name="email" required>
+    <div class="main-section">
+      <div class="form-box">
+        <h2>Request Forecast</h2>
+        <form action="/" method="post">
+          <label for="forecast_date">Select a date:</label>
+          <input type="date" id="forecast_date" name="forecast_date" required>
 
-        <label class="checkbox-label">
-          <input type="checkbox" id="agree_disclaimer" required>
-          I have read and agree to the
-          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-        </label>
+          <label for="email">Your email address:</label>
+          <input type="email" id="email" name="email" required>
 
-        <button type="submit">Proceed to Payment</button>
+          <label class="checkbox-label">
+            <input type="checkbox" id="agree_disclaimer" required>
+            I have read and agree to the
+            <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+          </label>
 
-        <p class="note">
-          🔒 Payments are securely processed by <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google. Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p class="note">
-          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-            Learn more about Stripe security
-          </a>
-        </p>
-      </form>
-    </div>
+          <button type="submit">Proceed to Payment</button>
 
-    <div class="welcome">
-      <h2>🌤️ Welcome to Weather Ready</h2>
-      <p>Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
-      <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
-      <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
-      <p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
-      <p>Forecasts are currently available only for the Perth metropolitan area.</p>
-      <p>Contact us at <strong>weatherreadyinfo@gmail.com</strong></p>
+          <p class="note">
+            🔒 Payments are securely processed by <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google. Your payment details are encrypted and never stored by Weather Ready.
+          </p>
+          <p class="note">
+            <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+              Learn more about Stripe security
+            </a>
+          </p>
+        </form>
+      </div>
+
+      <div class="info-box">
+        <p>Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
+        <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
+        <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
+        <p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+        <p>Forecasts are currently available only for the Perth metropolitan area.</p>
+        <p>Contact us at <strong>weatherreadyinfo@gmail.com</strong></p>
+      </div>
     </div>
   </main>
 
