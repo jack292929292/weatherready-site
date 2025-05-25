@@ -29,7 +29,6 @@
       color: white;
       padding: 40px 20px 20px;
       text-align: center;
-      position: relative;
     }
 
     .brand h1 {
@@ -45,53 +44,27 @@
       margin-top: 10px;
     }
 
-    .hamburger {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: none;
-      z-index: 1000;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      margin: 5px;
-      background-color: white;
-      transition: 0.3s;
-    }
-
     .subnav-wrapper {
+      overflow-x: auto;
       background: #003ca5;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.4s ease;
-    }
-
-    .subnav-wrapper.active {
-      max-height: 500px;
     }
 
     .subnav {
       display: flex;
       flex-wrap: nowrap;
       justify-content: center;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      padding: 20px;
+      padding: 14px 10px;
+      gap: 32px;
+      min-width: max-content;
     }
 
     .subnav a {
       color: white;
       text-decoration: none;
-      font-size: 1.2em;
+      font-size: 1.1em;
       font-weight: bold;
       white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .subnav a:hover {
@@ -100,16 +73,29 @@
 
     main {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
       max-width: 1400px;
       margin: 40px auto;
       padding: 0 20px;
       gap: 40px;
     }
 
+    .welcome {
+      flex: 1 1 100%;
+      max-width: 700px;
+      font-size: 1.05em;
+      line-height: 1.6;
+    }
+
+    .welcome h2 {
+      color: var(--blue);
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
     .form-box {
-      width: 100%;
+      flex: 1 1 100%;
       max-width: 500px;
       background: var(--gray);
       padding: 30px;
@@ -176,18 +162,6 @@
       margin-top: 14px;
     }
 
-    .welcome {
-      max-width: 700px;
-      font-size: 1.05em;
-      line-height: 1.6;
-    }
-
-    .welcome h2 {
-      color: var(--blue);
-      font-size: 1.8em;
-      margin-bottom: 20px;
-    }
-
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -198,41 +172,18 @@
     }
 
     @media (min-width: 800px) {
-      .hamburger {
-        display: none;
-      }
-
-      .subnav-wrapper {
-        max-height: none !important;
-        display: block;
-      }
-
-      .subnav {
-        flex-direction: row;
-        padding: 14px 10px;
-        gap: 32px;
-      }
-
       main {
-        flex-direction: row;
-        align-items: flex-start;
+        flex-wrap: nowrap;
         padding: 0 60px;
-      }
-
-      .form-box {
-        flex: 1 1 38%;
-        order: 2;
+        gap: 60px;
       }
 
       .welcome {
         flex: 1 1 58%;
-        order: 1;
       }
-    }
 
-    @media (max-width: 799px) {
-      .hamburger {
-        display: block;
+      .form-box {
+        flex: 1 1 38%;
       }
     }
   </style>
@@ -245,29 +196,20 @@
       const today = new Date();
       today.setDate(today.getDate() + 28);
       const minDate = today.toISOString().split('T')[0];
-      if (dateInput) dateInput.min = minDate;
 
-      form?.addEventListener("submit", function (e) {
-        if (dateInput.value < minDate) {
-          e.preventDefault();
-          alert("Please select a date at least 28 days from today.");
-          dateInput.focus();
-        }
-      });
+      if (dateInput) {
+        dateInput.min = minDate;
+      }
 
-      const hamburger = document.querySelector('.hamburger');
-      const subnavWrapper = document.querySelector('.subnav-wrapper');
-      const navLinks = document.querySelectorAll('.subnav a');
-
-      hamburger?.addEventListener('click', () => {
-        subnavWrapper.classList.toggle('active');
-      });
-
-      navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          subnavWrapper.classList.remove('active');
+      if (form) {
+        form.addEventListener("submit", function (e) {
+          if (dateInput.value < minDate) {
+            e.preventDefault();
+            alert("Please select a date at least 28 days from today.");
+            dateInput.focus();
+          }
         });
-      });
+      }
     });
   </script>
 </head>
@@ -279,11 +221,6 @@
       <h1>WEATHER READY</h1>
       <span>LONG RANGE WEATHER FORECASTING</span>
     </div>
-    <button class="hamburger" aria-label="Menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </header>
 
   <div class="subnav-wrapper">
@@ -296,58 +233,61 @@
   </div>
 
   <main>
-    <div class="form-box">
-      <h2>Request Forecast</h2>
-      <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label>
-        <input type="date" id="forecast_date" name="forecast_date" required>
 
-        <label for="email">Your email address:</label>
-        <input type="email" id="email" name="email" required>
+  <div class="form-box">
+    <h2>Request Forecast</h2>
+    <form action="/" method="post">
+      <label for="forecast_date">Select a date:</label>
+      <input type="date" id="forecast_date" name="forecast_date" min="{{ min_date }}" required>
 
-        <label class="checkbox-label">
-          <input type="checkbox" id="agree_disclaimer" required>
-          I have read and agree to the
-          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-        </label>
+      <label for="email">Your email address:</label>
+      <input type="email" id="email" name="email" required>
 
-        <button type="submit">Proceed to Payment</button>
+      <label class="checkbox-label">
+        <input type="checkbox" id="agree_disclaimer" required>
+        I have read and agree to the
+        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+      </label>
 
-        <p class="note">
-          🔒 Payments are securely processed by
-          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-          Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p class="note">
-          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-            Learn more about Stripe security
-          </a>
-        </p>
-      </form>
-    </div>
+      <button type="submit">Proceed to Payment</button>
 
-    <div class="welcome">
-      <h2>🌤️ Welcome to Weather Ready</h2>
-      <p>
-        Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
+      <p class="note">
+        🔒 Payments are securely processed by
+        <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+        Your payment details are encrypted and never stored by Weather Ready.
       </p>
-      <p>
-        Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
+      <p class="note">
+        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+          Learn more about Stripe security
+        </a>
       </p>
-      <p>
-        To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
-      </p>
-      <p>
-        Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
-      </p>
-      <p>
-        Forecasts are currently available only for the Perth metropolitan area.
-      </p>
-      <p>
-        You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong>
-      </p>
-    </div>
-  </main>
+    </form>
+  </div>
+
+  <div class="welcome">
+    <h2>🌤️ Welcome to Weather Ready</h2>
+    <p>
+      Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
+    </p>
+    <p>
+      Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
+    </p>
+    <p>
+      To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
+    </p>
+    <p>
+      Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
+    </p>
+    <p>
+      Forecasts are currently available only for the Perth metropolitan area.
+    </p>
+    <p>
+      You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong>
+    </p>
+  </div>
+
+</main>
+
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
