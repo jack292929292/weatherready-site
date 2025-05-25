@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Weather Ready - Get Forecast</title>
+  <title>Disclaimer | Weather Ready</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -35,6 +32,7 @@
       font-size: clamp(2.5em, 6vw, 5em);
       margin: 0;
       font-weight: bold;
+      color: white;
     }
 
     .brand span {
@@ -72,94 +70,31 @@
     }
 
     main {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 1400px;
+      max-width: 1000px;
       margin: 40px auto;
       padding: 0 20px;
-      gap: 40px;
-    }
-
-    .welcome {
-      flex: 1 1 100%;
-      max-width: 700px;
       font-size: 1.05em;
-      line-height: 1.6;
+      line-height: 1.65;
     }
 
-    .welcome h2 {
+    h1 {
       color: var(--blue);
-      font-size: 1.8em;
+      font-size: clamp(1.8em, 4vw, 2.2em);
       margin-bottom: 20px;
     }
 
-    .form-box {
-      flex: 1 1 100%;
-      max-width: 500px;
-      background: var(--gray);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-box h2 {
+    h2 {
+      margin-top: 40px;
       color: var(--blue);
-      font-size: 1.6em;
-      margin-bottom: 20px;
+      font-size: 1.4em;
     }
 
-    label {
-      font-weight: bold;
-      font-size: 1em;
-      display: block;
-      margin-top: 20px;
-      margin-bottom: 6px;
+    ul {
+      margin-left: 20px;
     }
 
-    input[type="date"],
-    input[type="email"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-      vertical-align: middle;
-    }
-
-    .checkbox-label {
-      font-weight: normal;
-      font-size: 0.95em;
-      margin-top: 16px;
-      display: block;
-    }
-
-    button {
-      margin-top: 24px;
-      padding: 14px;
-      width: 100%;
-      background: var(--blue);
-      color: white;
-      font-size: 1em;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #00339a;
-    }
-
-    p.note {
-      font-size: 0.9em;
-      color: #555;
-      margin-top: 14px;
+    a {
+      color: var(--blue);
     }
 
     footer {
@@ -173,45 +108,10 @@
 
     @media (min-width: 800px) {
       main {
-        flex-wrap: nowrap;
         padding: 0 60px;
-        gap: 60px;
-      }
-
-      .welcome {
-        flex: 1 1 58%;
-      }
-
-      .form-box {
-        flex: 1 1 38%;
       }
     }
   </style>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dateInput = document.getElementById("forecast_date");
-      const form = document.querySelector("form");
-
-      const today = new Date();
-      today.setDate(today.getDate() + 28);
-      const minDate = today.toISOString().split('T')[0];
-
-      if (dateInput) {
-        dateInput.min = minDate;
-      }
-
-      if (form) {
-        form.addEventListener("submit", function (e) {
-          if (dateInput.value < minDate) {
-            e.preventDefault();
-            alert("Please select a date at least 28 days from today.");
-            dateInput.focus();
-          }
-        });
-      }
-    });
-  </script>
 </head>
 
 <body>
@@ -233,61 +133,57 @@
   </div>
 
   <main>
+    <h1>Disclaimer</h1>
 
-  <div class="form-box">
-    <h2>Request Forecast</h2>
-    <form action="/" method="post">
-      <label for="forecast_date">Select a date:</label>
-      <input type="date" id="forecast_date" name="forecast_date" min="{{ min_date }}" required>
-
-      <label for="email">Your email address:</label>
-      <input type="email" id="email" name="email" required>
-
-      <label class="checkbox-label">
-        <input type="checkbox" id="agree_disclaimer" required>
-        I have read and agree to the
-        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-      </label>
-
-      <button type="submit">Proceed to Payment</button>
-
-      <p class="note">
-        🔒 Payments are securely processed by
-        <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-        Your payment details are encrypted and never stored by Weather Ready.
-      </p>
-      <p class="note">
-        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-          Learn more about Stripe security
-        </a>
-      </p>
-    </form>
-  </div>
-
-  <div class="welcome">
-    <h2>🌤️ Welcome to Weather Ready</h2>
     <p>
-      Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
+      Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.
     </p>
-    <p>
-      Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
-    </p>
-    <p>
-      To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
-    </p>
-    <p>
-      Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
-    </p>
-    <p>
-      Forecasts are currently available only for the Perth metropolitan area.
-    </p>
-    <p>
-      You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong>
-    </p>
-  </div>
 
-</main>
+     <p>
+      Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.
+    </p>
+   
+    <p>
+      You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site (and any information or material available from it).
+    </p>
 
+    <p>
+      Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site (and any information or material available from it).
+    </p>
+
+    <h2>Liability and Warranties</h2>
+    <p>To the maximum extent permitted by law:</p>
+    <ul>
+      <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site (and any information or material available from it); and</li>
+      <li>Weather Ready does not give any representation or warranty of any kind (whether express, implied, statutory or otherwise) including in relation to the availability, accuracy, currency, completeness, quality, reliability or suitability for any purpose of this site (and any information or material available from it), or that the information or material will not infringe any third party intellectual property rights, or that the site will be free from defects, viruses, third party interception or other security threats or vulnerabilities including those which could cause loss or damage to you.</li>
+    </ul>
+
+    <p>
+      To the extent that Weather Ready's liability for a breach of any statutory condition or warranty cannot be excluded, then to the extent permitted by law, liability is limited to, at Weather Ready’s discretion, the replacement of the information or material available from this site or a remedy of the Weather Ready's choice contained in section 64A of the Australian Consumer Law.
+    </p>
+
+    <h2>Always Check the Information</h2>
+    <p>Information at this site:</p>
+    <ul>
+      <li>is subject to the uncertainties of scientific and technical research</li>
+      <li>may not be accurate, current or complete</li>
+      <li>is subject to change without notice</li>
+      <li>is not a substitute for independent professional advice and you should obtain specific professional advice relevant to your particular circumstances</li>
+    </ul>
+
+    <h2>Links to External Web Sites</h2>
+    <p>
+      Weather Ready has no direct control over the content of any linked sites, or the changes that may occur to the content on those sites.
+      It is your responsibility to make your own decisions about visiting linked external sites, and about the accuracy, currency, completeness, quality, reliability and suitability for any purpose of information contained in such sites.
+    </p>
+
+    <p>
+      Links to external web sites do not constitute an endorsement or a recommendation of those sites, including any information, material or third-party products or services available from or through those sites.
+      You are responsible for being aware of which organisation is hosting any site you visit.
+    </p>
+
+    <p><a href="/">Back to Home</a></p>
+  </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
