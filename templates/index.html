@@ -15,10 +15,10 @@
 
     * {
       box-sizing: border-box;
-      margin: 0;
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
       background: #ffffff;
       color: #222;
@@ -27,38 +27,39 @@
     header {
       background: var(--blue);
       color: white;
+      padding: 40px 20px;
       text-align: center;
-      padding: 20px 0;
     }
 
     .brand h1 {
-      font-size: clamp(3.5em, 8vw, 6.5em);
+      font-size: clamp(2.5em, 6vw, 5em);
       margin: 0;
       font-weight: bold;
     }
 
     .brand span {
-      font-size: clamp(0.85em, 2.5vw, 1.2em);
+      font-size: clamp(1em, 3vw, 1.5em);
       display: block;
+      margin-top: 10px;
       opacity: 0.95;
     }
 
     .subnav-wrapper {
       background: #003ca5;
       overflow-x: auto;
-      padding: 16px;
     }
 
     .subnav {
       display: flex;
       justify-content: center;
-      gap: 48px;
+      gap: 32px;
+      padding: 14px 10px;
       white-space: nowrap;
     }
 
     .subnav a {
       color: white;
-      font-size: clamp(1.4em, 2vw, 2.2em);
+      font-size: 1.1em;
       font-weight: bold;
       text-decoration: none;
     }
@@ -68,89 +69,83 @@
     }
 
     main {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 32px 0;
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 32px;
+      gap: 40px;
     }
 
-    .form-box, .welcome {
-      margin: 0;
+    .form-box {
       background: var(--gray);
-      border: 1px solid #ddd;
-      padding: 32px;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      flex: 1 1 500px;
+      max-width: 500px;
     }
 
-    .form-box h2, .welcome h2 {
+    .form-box h2 {
       color: var(--blue);
       font-size: 1.6em;
-      margin: 0 0 10px 0;
+      margin-bottom: 20px;
     }
 
-    .welcome ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .welcome li {
-      position: relative;
-      margin-bottom: 12px;
-      padding-left: 28px;
-      font-size: 1.2em;
+    .welcome {
+      flex: 1 1 600px;
+      max-width: 700px;
+      font-size: 1.05em;
       line-height: 1.6;
     }
 
-    .welcome li::before {
-      content: "✔";
-      position: absolute;
-      left: 0;
-      top: 0;
+    .welcome h2 {
       color: var(--blue);
-      font-size: 1.2em;
+      font-size: 1.8em;
+      margin-bottom: 20px;
     }
 
     label {
       font-weight: bold;
       font-size: 1em;
       display: block;
-      margin: 12px 0 4px;
+      margin-top: 20px;
+      margin-bottom: 6px;
     }
 
     input[type="date"],
     input[type="email"] {
       width: 100%;
+      padding: 12px;
       font-size: 1em;
       border: 1px solid #ccc;
-      border-radius: 0;
-      padding: 10px;
+      border-radius: 6px;
     }
 
     input[type="checkbox"] {
+      margin-right: 10px;
       transform: scale(1.2);
     }
 
     .checkbox-label {
       font-weight: normal;
       font-size: 0.95em;
+      margin-top: 16px;
       display: block;
-      margin-top: 10px;
     }
 
     button {
+      margin-top: 24px;
+      padding: 14px;
       width: 100%;
       background: var(--blue);
       color: white;
       font-size: 1em;
       font-weight: bold;
       border: none;
-      border-radius: 0;
+      border-radius: 6px;
       cursor: pointer;
-      margin-top: 16px;
-      padding: 12px;
     }
 
     button:hover {
@@ -160,28 +155,31 @@
     .note {
       font-size: 0.9em;
       color: #555;
-      margin-top: 10px;
+      margin-top: 14px;
     }
 
     footer {
       text-align: center;
+      padding: 40px 20px;
       background: #eee;
       font-size: 1em;
       color: #666;
-      padding: 20px;
+      margin-top: 60px;
     }
 
     @media (min-width: 800px) {
       main {
         flex-wrap: nowrap;
+        padding: 0 60px;
+        gap: 60px;
       }
 
       .welcome {
-        flex: 1 1 50%;
+        flex: 1 1 58%;
       }
 
       .form-box {
-        flex: 1 1 50%;
+        flex: 1 1 38%;
       }
     }
   </style>
@@ -195,7 +193,9 @@
     });
   </script>
 </head>
+
 <body>
+
   <header>
     <div class="brand">
       <h1>WEATHER READY</h1>
@@ -213,19 +213,19 @@
   </div>
 
   <main>
+
+    <!-- Welcome Section FIRST -->
     <div class="welcome">
       <h2>🌤️ Welcome to Weather Ready</h2>
-      <ul>
-        <li>Provides long-range, date-specific weather forecasts.</li>
-        <li>Includes temperature, rain chance, and rainfall estimate.</li>
-        <li>Forecasts are for dates 28+ days from today.</li>
-        <li>Forecast delivered onscreen and via email.</li>
-        <li>Currently for the Perth metropolitan area only.</li>
-        <li>Fast, simple, and secure checkout process.</li>
-        <li>Backed by a proprietary statistical model.</li>
-      </ul>
+      <p>Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
+      <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
+      <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
+      <p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+      <p>Forecasts are currently available only for the Perth metropolitan area.</p>
+      <p>You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong></p>
     </div>
 
+    <!-- Forecast Form Box SECOND -->
     <div class="form-box">
       <h2>Request Forecast</h2>
       <form action="/" method="post">
@@ -244,7 +244,7 @@
         <button type="submit">Proceed to Payment</button>
 
         <p class="note">
-          🔐 Payments are securely processed by
+          🔒 Payments are securely processed by
           <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
           Your payment details are encrypted and never stored by Weather Ready.
         </p>
@@ -255,10 +255,12 @@
         </p>
       </form>
     </div>
+
   </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
+
 </body>
 </html>
