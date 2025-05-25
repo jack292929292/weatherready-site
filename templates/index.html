@@ -5,21 +5,23 @@
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Weather Ready - Get Forecast</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Ready - Get Forecast</title>
   <style>
     :root {
       --blue: #0047C6;
+      --dark-blue: #00339a;
       --gray: #f8f9fa;
     }
 
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #ffffff;
       color: #222;
     }
@@ -27,94 +29,92 @@
     header {
       background: var(--blue);
       color: white;
-      padding: 40px 20px 20px;
+      padding: 20px;
       text-align: center;
+      position: relative;
     }
 
-    .brand h1 {
-      font-size: clamp(2.5em, 6vw, 5em);
-      margin: 0;
-      font-weight: bold;
+    header h1 {
+      font-size: 2.5rem;
     }
 
-    .brand span {
-      font-size: clamp(1em, 3vw, 1.5em);
-      opacity: 0.95;
+    header span {
+      font-size: 1.1rem;
       display: block;
-      margin-top: 10px;
+      margin-top: 8px;
+      opacity: 0.95;
     }
 
-    .subnav-wrapper {
-      overflow-x: auto;
-      background: #003ca5;
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      position: absolute;
+      top: 20px;
+      right: 20px;
     }
 
-    .subnav {
+    .menu-toggle span {
+      height: 3px;
+      width: 25px;
+      background: white;
+      margin-bottom: 5px;
+      border-radius: 2px;
+    }
+
+    nav.subnav {
       display: flex;
-      flex-wrap: nowrap;
       justify-content: center;
+      background: var(--dark-blue);
       padding: 14px 10px;
       gap: 32px;
-      min-width: max-content;
+      flex-wrap: wrap;
     }
 
-    .subnav a {
+    nav.subnav a {
       color: white;
       text-decoration: none;
-      font-size: 1.1em;
       font-weight: bold;
+      font-size: 1em;
       white-space: nowrap;
-      flex-shrink: 0;
     }
 
-    .subnav a:hover {
+    nav.subnav a:hover {
       text-decoration: underline;
     }
 
     main {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
       max-width: 1400px;
       margin: 40px auto;
       padding: 0 20px;
       gap: 40px;
+      justify-content: center;
     }
 
-    .welcome {
+    .form-box, .welcome {
       flex: 1 1 100%;
-      max-width: 700px;
-      font-size: 1.05em;
-      line-height: 1.6;
-    }
-
-    .welcome h2 {
-      color: var(--blue);
-      font-size: 1.8em;
-      margin-bottom: 20px;
+      max-width: 500px;
     }
 
     .form-box {
-      flex: 1 1 100%;
-      max-width: 500px;
       background: var(--gray);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
     }
 
-    .form-box h2 {
+    .form-box h2, .welcome h2 {
       color: var(--blue);
-      font-size: 1.6em;
       margin-bottom: 20px;
+      font-size: 1.6em;
     }
 
     label {
-      font-weight: bold;
-      font-size: 1em;
       display: block;
-      margin-top: 20px;
-      margin-bottom: 6px;
+      font-weight: bold;
+      margin: 20px 0 6px;
     }
 
     input[type="date"],
@@ -126,17 +126,17 @@
       border-radius: 6px;
     }
 
-    input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-      vertical-align: middle;
-    }
-
     .checkbox-label {
       font-weight: normal;
       font-size: 0.95em;
       margin-top: 16px;
       display: block;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+      vertical-align: middle;
     }
 
     button {
@@ -145,18 +145,18 @@
       width: 100%;
       background: var(--blue);
       color: white;
-      font-size: 1em;
       font-weight: bold;
+      font-size: 1em;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #00339a;
+      background: var(--dark-blue);
     }
 
-    p.note {
+    .note {
       font-size: 0.9em;
       color: #555;
       margin-top: 14px;
@@ -166,24 +166,46 @@
       text-align: center;
       padding: 40px 20px;
       background: #eee;
-      font-size: 1em;
       color: #666;
       margin-top: 60px;
+      font-size: 1em;
     }
 
     @media (min-width: 800px) {
-      main {
-        flex-wrap: nowrap;
-        padding: 0 60px;
-        gap: 60px;
+      .form-box {
+        max-width: 500px;
+        flex: 1 1 40%;
       }
 
       .welcome {
-        flex: 1 1 58%;
+        max-width: 700px;
+        flex: 1 1 55%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
       }
 
-      .form-box {
-        flex: 1 1 38%;
+      nav.subnav {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        background-color: var(--dark-blue);
+        gap: 0;
+      }
+
+      nav.subnav.show {
+        display: flex;
+      }
+
+      nav.subnav a {
+        width: 100%;
+        padding: 14px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: 1.2em;
       }
     }
   </style>
@@ -191,107 +213,87 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const dateInput = document.getElementById("forecast_date");
-      const form = document.querySelector("form");
-
       const today = new Date();
       today.setDate(today.getDate() + 28);
       const minDate = today.toISOString().split('T')[0];
 
-      if (dateInput) {
-        dateInput.min = minDate;
-      }
+      if (dateInput) dateInput.min = minDate;
 
-      if (form) {
-        form.addEventListener("submit", function (e) {
-          if (dateInput.value < minDate) {
-            e.preventDefault();
-            alert("Please select a date at least 28 days from today.");
-            dateInput.focus();
-          }
-        });
-      }
+      document.querySelector("form").addEventListener("submit", function (e) {
+        if (dateInput.value < minDate) {
+          e.preventDefault();
+          alert("Please select a date at least 28 days from today.");
+          dateInput.focus();
+        }
+      });
+
+      const menuToggle = document.querySelector('.menu-toggle');
+      const subnav = document.querySelector('.subnav');
+      menuToggle.addEventListener('click', () => {
+        subnav.classList.toggle('show');
+      });
     });
   </script>
 </head>
-
 <body>
 
   <header>
-    <div class="brand">
-      <h1>WEATHER READY</h1>
-      <span>LONG RANGE WEATHER FORECASTING</span>
+    <h1>WEATHER READY</h1>
+    <span>LONG RANGE WEATHER FORECASTING</span>
+    <div class="menu-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
     </div>
   </header>
 
-  <div class="subnav-wrapper">
-    <nav class="subnav">
-      <a href="/">Home</a>
-      <a href="/forecast_accuracy">Forecast Methodology</a>
-      <a href="/important_delivery_information">Delivery Info</a>
-      <a href="/legal_disclaimers">Disclaimer</a>
-    </nav>
-  </div>
+  <nav class="subnav">
+    <a href="/">Home</a>
+    <a href="/forecast_accuracy">Forecast Methodology</a>
+    <a href="/important_delivery_information">Delivery Info</a>
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
 
   <main>
+    <div class="form-box">
+      <h2>Request Forecast</h2>
+      <form action="/" method="post">
+        <label for="forecast_date">Select a date:</label>
+        <input type="date" id="forecast_date" name="forecast_date" required>
 
-  <div class="form-box">
-    <h2>Request Forecast</h2>
-    <form action="/" method="post">
-      <label for="forecast_date">Select a date:</label>
-      <input type="date" id="forecast_date" name="forecast_date" min="{{ min_date }}" required>
+        <label for="email">Your email address:</label>
+        <input type="email" id="email" name="email" required>
 
-      <label for="email">Your email address:</label>
-      <input type="email" id="email" name="email" required>
+        <label class="checkbox-label">
+          <input type="checkbox" id="agree_disclaimer" required>
+          I have read and agree to the
+          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+        </label>
 
-      <label class="checkbox-label">
-        <input type="checkbox" id="agree_disclaimer" required>
-        I have read and agree to the
-        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-      </label>
+        <button type="submit">Proceed to Payment</button>
 
-      <button type="submit">Proceed to Payment</button>
+        <p class="note">
+          🔒 Payments are securely processed by <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google. Your payment details are encrypted and never stored by Weather Ready.
+        </p>
+        <p class="note">
+          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+            Learn more about Stripe security
+          </a>
+        </p>
+      </form>
+    </div>
 
-      <p class="note">
-        🔒 Payments are securely processed by
-        <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-        Your payment details are encrypted and never stored by Weather Ready.
-      </p>
-      <p class="note">
-        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-          Learn more about Stripe security
-        </a>
-      </p>
-    </form>
-  </div>
-
-  <div class="welcome">
-    <h2>🌤️ Welcome to Weather Ready</h2>
-    <p>
-      Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.
-    </p>
-    <p>
-      Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.
-    </p>
-    <p>
-      To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.
-    </p>
-    <p>
-      Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.
-    </p>
-    <p>
-      Forecasts are currently available only for the Perth metropolitan area.
-    </p>
-    <p>
-      You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong>
-    </p>
-  </div>
-
-</main>
-
+    <div class="welcome">
+      <h2>🌤️ Welcome to Weather Ready</h2>
+      <p>Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
+      <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
+      <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
+      <p>Once confirmed, your forecast information will be displayed onscreen. You will also receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+      <p>Forecasts are currently available only for the Perth metropolitan area.</p>
+      <p>Contact us at <strong>weatherreadyinfo@gmail.com</strong></p>
+    </div>
+  </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
-
 </body>
 </html>
