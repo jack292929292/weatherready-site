@@ -49,19 +49,18 @@
 
     .subnav {
       display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      padding: 14px 10px;
-      gap: 32px;
-      min-width: max-content;
+      justify-content: flex-start;
+      padding: 12px 10px;
+      gap: clamp(10px, 4vw, 32px);
+      white-space: nowrap;
     }
 
     .subnav a {
       color: white;
-      text-decoration: none;
-      font-size: 1.1em;
+      font-size: clamp(0.9em, 3vw, 1.1em);
       font-weight: bold;
-      white-space: nowrap;
+      text-decoration: none;
+      padding: 6px 4px;
       flex-shrink: 0;
     }
 
@@ -86,7 +85,7 @@
     h2 {
       margin-top: 40px;
       color: var(--blue);
-      font-size: 1.4em;
+      font-size: clamp(1.2em, 3vw, 1.6em);
     }
 
     ul {
@@ -139,10 +138,10 @@
       Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.
     </p>
 
-     <p>
+    <p>
       Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.
     </p>
-   
+
     <p>
       You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site (and any information or material available from it).
     </p>
