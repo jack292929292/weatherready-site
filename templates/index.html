@@ -44,29 +44,20 @@
       opacity: 0.95;
     }
 
-    .subnav-wrapper {
-      background: #003ca5;
-    }
-
-    .subnav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 10px 12px;
-      gap: 16px;
-    }
-
-    .subnav a {
-      color: white;
-      font-size: clamp(0.85em, 2.5vw, 1.1em);
-      font-weight: bold;
-      text-decoration: none;
-      flex: 1 1 auto;
+    .condensed-subnav {
       text-align: center;
-      min-width: 80px;
+      padding: 10px;
+      background: #003ca5;
+      font-size: 1.05em;
     }
 
-    .subnav a:hover {
+    .condensed-subnav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .condensed-subnav a:hover {
       text-decoration: underline;
     }
 
@@ -205,18 +196,14 @@
     </div>
   </header>
 
-  <div class="subnav-wrapper">
-    <nav class="subnav">
-      <a href="/">FORECAST HOME</a>
-      <a href="/forecast_accuracy">ABOUT</a>
-      <a href="/important_delivery_information">METHOD</a>
-      <a href="/legal_disclaimers">DISCLAIMER</a>
-    </nav>
-  </div>
+  <nav class="condensed-subnav">
+    <a href="/">Home</a> |
+    <a href="/forecast_accuracy">Method</a> |
+    <a href="/important_delivery_information">Delivery</a> |
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
 
   <main>
-
-    <!-- Welcome Section -->
     <div class="welcome">
       <h2>🌤️ Welcome to Weather Ready</h2>
       <p>Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
@@ -227,7 +214,6 @@
       <p>You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong></p>
     </div>
 
-    <!-- Forecast Form Box -->
     <div class="form-box">
       <h2>Request Forecast</h2>
       <form action="/" method="post">
@@ -257,7 +243,6 @@
         </p>
       </form>
     </div>
-
   </main>
 
   <footer>
