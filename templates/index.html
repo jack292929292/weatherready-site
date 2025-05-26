@@ -44,12 +44,13 @@
       opacity: 0.95;
     }
 
-    .condensed-subnav {
-      text-align: center;
-      padding: 10px;
-      background: #003ca5;
-      font-size: 1.05em;
-    }
+.condensed-subnav {
+  text-align: center;
+  padding: 10px;
+  background: #003ca5;
+  font-size: 1.05em;
+  margin-bottom: 8px; /* ✅ add this line */
+}
 
     .condensed-subnav a {
       color: white;
@@ -94,10 +95,10 @@
     }
 
     .welcome h2 {
-      color: var(--blue);
-      font-size: 1.8em;
-      margin-bottom: 20px;
-    }
+  color: var(--blue);
+  font-size: clamp(1.2em, 4vw, 1.6em); /* ✅ this adjusts for mobile */
+  margin-bottom: 20px;
+}
 
     label {
       font-weight: bold;
