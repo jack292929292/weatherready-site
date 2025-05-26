@@ -49,19 +49,18 @@
 
     .subnav {
       display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      padding: 14px 10px;
-      gap: 32px;
-      min-width: max-content;
+      justify-content: flex-start;
+      padding: 12px 10px;
+      gap: clamp(10px, 4vw, 32px);
+      white-space: nowrap;
     }
 
     .subnav a {
       color: white;
-      text-decoration: none;
-      font-size: 1.1em;
+      font-size: clamp(0.9em, 3vw, 1.1em);
       font-weight: bold;
-      white-space: nowrap;
+      text-decoration: none;
+      padding: 6px 4px;
       flex-shrink: 0;
     }
 
