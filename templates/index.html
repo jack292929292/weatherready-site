@@ -51,17 +51,19 @@
 
     .subnav {
       display: flex;
-      justify-content: center;
-      gap: 32px;
-      padding: 14px 10px;
+      justify-content: flex-start;
+      padding: 12px 10px;
+      gap: clamp(10px, 4vw, 32px);
       white-space: nowrap;
     }
 
     .subnav a {
       color: white;
-      font-size: 1.1em;
+      font-size: clamp(0.9em, 3vw, 1.1em);
       font-weight: bold;
       text-decoration: none;
+      padding: 6px 4px;
+      flex-shrink: 0;
     }
 
     .subnav a:hover {
@@ -214,7 +216,7 @@
 
   <main>
 
-    <!-- Welcome Section FIRST -->
+    <!-- Welcome Section -->
     <div class="welcome">
       <h2>🌤️ Welcome to Weather Ready</h2>
       <p>Weather Ready is a weather forecasting service that provides long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
@@ -225,7 +227,7 @@
       <p>You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong></p>
     </div>
 
-    <!-- Forecast Form Box SECOND -->
+    <!-- Forecast Form Box -->
     <div class="form-box">
       <h2>Request Forecast</h2>
       <form action="/" method="post">
