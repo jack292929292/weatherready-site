@@ -45,30 +45,30 @@
     }
 
     .subnav-wrapper {
-      background: #003ca5;
-      overflow-x: auto;
-    }
+  background: #003ca5;
+}
 
-    .subnav {
-      display: flex;
-      justify-content: flex-start;
-      padding: 12px 10px;
-      gap: clamp(10px, 4vw, 32px);
-      white-space: nowrap;
-    }
+.subnav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 10px 12px;
+  gap: 16px;
+}
 
-    .subnav a {
-      color: white;
-      font-size: clamp(0.9em, 3vw, 1.1em);
-      font-weight: bold;
-      text-decoration: none;
-      padding: 6px 4px;
-      flex-shrink: 0;
-    }
+.subnav a {
+  color: white;
+  font-size: clamp(0.85em, 2.5vw, 1.1em);
+  font-weight: bold;
+  text-decoration: none;
+  flex: 1 1 auto;
+  text-align: center;
+  min-width: 80px;
+}
 
-    .subnav a:hover {
-      text-decoration: underline;
-    }
+.subnav a:hover {
+  text-decoration: underline;
+}
 
     main {
       max-width: 1400px;
