@@ -42,29 +42,20 @@
       margin-top: 10px;
     }
 
-    .subnav-wrapper {
-      background: #003ca5;
-    }
-
-    .subnav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 10px 12px;
-      gap: 16px;
-    }
-
-    .subnav a {
-      color: white;
-      font-size: clamp(0.85em, 2.5vw, 1.1em);
-      font-weight: bold;
-      text-decoration: none;
-      flex: 1 1 auto;
+    .condensed-subnav {
       text-align: center;
-      min-width: 80px;
+      padding: 10px;
+      background: #003ca5;
+      font-size: 1.05em;
     }
 
-    .subnav a:hover {
+    .condensed-subnav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .condensed-subnav a:hover {
       text-decoration: underline;
     }
 
@@ -112,14 +103,12 @@
     </div>
   </header>
 
-  <div class="subnav-wrapper">
-    <nav class="subnav">
-      <a href="/">Home</a>
-      <a href="/forecast_accuracy">Forecast Methodology</a>
-      <a href="/important_delivery_information">Delivery Info</a>
-      <a href="/legal_disclaimers">Disclaimer</a>
-    </nav>
-  </div>
+  <nav class="condensed-subnav">
+    <a href="/">Home</a> |
+    <a href="/forecast_accuracy">Method</a> |
+    <a href="/important_delivery_information">Delivery</a> |
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
 
   <main>
     <h1>Important Delivery Information</h1>
