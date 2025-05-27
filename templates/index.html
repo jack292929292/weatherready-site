@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) for Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRLC4KEZEZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-QRLC4KEZEZ');
+  </script>
+
   <meta charset="UTF-8" />
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
@@ -44,13 +54,13 @@
       opacity: 0.95;
     }
 
-.condensed-subnav {
-  text-align: center;
-  padding: 10px;
-  background: #003ca5;
-  font-size: 1.05em;
-  margin-bottom: 8px; /* ✅ add this line */
-}
+    .condensed-subnav {
+      text-align: center;
+      padding: 10px;
+      background: #003ca5;
+      font-size: 1.05em;
+      margin-bottom: 8px;
+    }
 
     .condensed-subnav a {
       color: white;
@@ -95,10 +105,10 @@
     }
 
     .welcome h2 {
-  color: var(--blue);
-  font-size: clamp(1.2em, 4vw, 1.6em); /* ✅ this adjusts for mobile */
-  margin-bottom: 20px;
-}
+      color: var(--blue);
+      font-size: clamp(1.2em, 4vw, 1.6em);
+      margin-bottom: 20px;
+    }
 
     label {
       font-weight: bold;
