@@ -1,7 +1,8 @@
-import openai
 import os
+from openai import OpenAI
 
-openai.api_key = os.environ["OPENAI_API_KEY"]
+# Create OpenAI client using environment variable
+client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
 def generate_reply(subject, body):
     prompt = f"""
@@ -116,9 +117,10 @@ Question: {body}
 Answer:
     """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.4,
     )
+
     return response.choices[0].message.content.strip()
