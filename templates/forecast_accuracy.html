@@ -73,27 +73,60 @@
       margin-bottom: 20px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      overflow-x: auto;
-      display: block;
-    }
-
-    th, td {
+    .chat-container {
       border: 1px solid #ccc;
-      padding: 8px 10px;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background: #f9f9f9;
+    }
+
+    .chat-box {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: white;
+    }
+
+    .chat-message {
+      margin: 8px 0;
+    }
+
+    .chat-message.user {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .chat-message.bot {
       text-align: left;
-      font-size: 0.95em;
+      color: #0047C6;
     }
 
-    th {
-      background-color: #f0f0f0;
+    input[type="text"] {
+      width: calc(100% - 120px);
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
-    a {
-      color: var(--blue);
+    button {
+      width: 100px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: #0047C6;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #003080;
     }
 
     footer {
@@ -103,12 +136,6 @@
       font-size: 1em;
       color: #666;
       margin-top: 60px;
-    }
-
-    @media (min-width: 800px) {
-      main {
-        padding: 0 60px;
-      }
     }
   </style>
 </head>
@@ -130,34 +157,45 @@
   </nav>
 
   <main>
-    <h1>About</h1>
+    <h1>Ask Us Anything</h1>
+    <p>This chatbot uses the same information engine as our email system to provide real-time answers to your weather forecasting questions.</p>
 
-    <p><strong>Weather Ready</strong> is a public-access, date-specific long-range weather forecasting service, specialising in forecasts for the Perth metropolitan area.</p>
-
-    <p>Forecasts are generated using a proprietary forecasting system that applies precision-weighted distributional fusion and stochastic sampling to estimate likely conditions for any future date beyond the 14-day range of conventional short-term forecasts.</p>
-
-    <p>This system blends two core inputs:</p>
-    <ul>
-      <li>The long-term average weather conditions for the selected calendar date; and</li>
-      <li>The most recent observed weather conditions, including short-term variability in daily temperatures.</li>
-    </ul>
-
-    <p>Unlike traditional weather services that rely on short-term atmospheric modelling, Weather Ready provides a probability-based statistical estimate that can extend days, months, or even years into the future.</p>
-
-    <p>The methodology does not incorporate sunspot activity or planetary alignment. Instead, it is grounded in measurable climate tendencies, historical variability patterns, and the mathematical relationships between past and present observations.</p>
-
-    <p>Each forecast includes the expected maximum temperature, chance of rainfall, and likely rainfall amount for your selected date. These estimates are presented with clarity and transparency, supported by rigorous modelling and a core understanding that <strong>weather is rarely average — but often predictable in its patterns</strong>.</p>
-
-    <p>Forecasts are currently available exclusively for the Perth metropolitan area, with planned expansion to additional regions in 2025.</p>
-
-    <p>By recognising the limits of predictability while making the most of long-term climate insight, Weather Ready delivers a structured, data-informed estimate of future conditions far beyond the reach of typical 14-day forecasts.</p>
-
-    <p><a href="/">Back to Home</a></p>
+    <div class="chat-container">
+      <div class="chat-box" id="chat-box">
+        <!-- Chat messages will appear here -->
+      </div>
+      <div style="display: flex;">
+        <input type="text" id="user-input" placeholder="Type your question here..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
   </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
+
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("user-input");
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chatBox = document.getElementById("chat-box");
+      chatBox.innerHTML += `<div class="chat-message user">${message}</div>`;
+      input.value = "";
+
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ subject: "Web Chat", message })
+      });
+
+      const data = await response.json();
+      chatBox.innerHTML += `<div class="chat-message bot">${data.reply}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 
 </body>
 </html>
