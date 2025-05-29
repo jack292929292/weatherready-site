@@ -1,10 +1,10 @@
 import os
 import openai
 
-# Set OpenAI API key safely
+# Safely set OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
 if not openai.api_key:
-    raise RuntimeError("OPENAI_API_KEY not set in environment variables.")
+    raise RuntimeError("OPENAI_API_KEY is not set. Please add it to Render environment variables.")
 
 def generate_reply(subject, body):
     prompt = f"""
@@ -119,10 +119,17 @@ Question: {body}
 Answer:
     """
 
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.4,
-    )
+    try:
+        print("=== Calling OpenAI ===")
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.4,
+        )
+        print("=== Response received ===")
+        print(response)
+        return response.choices[0].message.content.strip()
 
-    return response.choices[0].message.content.strip()
+    except openai.error.OpenAIError as e:
+        print(f"OpenAI API error: {e}")
+        return "Sorry, I couldn’t generate a response at the moment. Please try again later."
