@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify  # <-- jsonify added
 import pandas as pd
 import stripe
 import os
@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 import auto_reply_bot  # ✅ ADDED
+from reply_utils import generate_reply  # ✅ NEW LINE
 
 app = Flask(__name__)
 
@@ -179,6 +180,15 @@ def run_bot():
         return {"status": "success"}
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
+
+# ✅ NEW: Real-time chatbot endpoint
+@app.route("/api/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    subject = data.get("subject", "")
+    message = data.get("message", "")
+    reply = generate_reply(subject, message)
+    return jsonify({"reply": reply})
 
 # Launch
 if __name__ == "__main__":
