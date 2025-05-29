@@ -3,7 +3,7 @@ services:
     name: weather-ready-web
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python app.py
+    startCommand: gunicorn app:app
     envVars:
       - key: STRIPE_SECRET_KEY
         sync: false
@@ -13,6 +13,8 @@ services:
         sync: false
       - key: GOOGLE_APPLICATION_CREDENTIALS
         value: credentials.json
+      - key: OPENAI_API_KEY
+        sync: false
 
 jobs:
   - type: cron
