@@ -1,8 +1,10 @@
 import os
 import openai
 
-# Set OpenAI API key for the legacy SDK
-openai.api_key = os.environ["OPENAI_API_KEY"]
+# Set OpenAI API key safely
+openai.api_key = os.getenv("OPENAI_API_KEY")
+if not openai.api_key:
+    raise RuntimeError("OPENAI_API_KEY not set in environment variables.")
 
 def generate_reply(subject, body):
     prompt = f"""
