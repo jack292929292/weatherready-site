@@ -181,13 +181,24 @@ def run_bot():
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
 
-# ✅ NEW: Real-time chatbot endpoint
+# ✅ UPDATED: Real-time chatbot endpoint with full logging
 @app.route("/api/chat", methods=["POST"])
 def chat():
     data = request.get_json()
+    print("=== /api/chat received ===")
+    print(data)
+
     subject = data.get("subject", "")
     message = data.get("message", "")
+
+    print(f"Subject: {subject}")
+    print(f"Message: {message}")
+
     reply = generate_reply(subject, message)
+
+    print("=== Final reply to send ===")
+    print(reply)
+
     return jsonify({"reply": reply})
 
 # Launch
