@@ -39,7 +39,6 @@ FORECAST METHOD
 Weather Ready uses a statistical-dynamical hybrid forecast model, which blends historical climate data for the selected date with recent real-world atmospheric conditions. The model is a probabilistic ensemble-style simulation that responds to current variability in the climate system. This model is not a physical weather model like ECMWF or ACCESS-G, and it does not use deterministic physics-based simulations. The model is also does not simply return a long-term average. Instead, it generates a simulated forecast that reflects current trends while maintaining consistency with historical data patterns. Because the model is a probabilistic ensemble-style simulation, Weather Ready can theoretically generate forecasts for any future date but is limited by practical application. 
 
 FORECAST ACCURACY
-Table 1: Forecast Accuracy Targets for Weather Ready Maximum Temperature Predictions
 This table shows the target accuracy levels for Weather Ready’s single-value daily maximum temperature forecasts. It presents the estimated probability that the actual max temperature will fall within a specified error margin (±°C) of the forecast on the target date. These are accuracy aims, not guarantees, based on historical model performance.
 Each row links a confidence level to an error range, helping users assess forecast reliability based on their required precision.
 Confidence Level	Error Range (±°C)	Interpretation
