@@ -86,7 +86,7 @@ Answer:
     model="gpt-3.5-turbo",
     messages=[{"role": "user", "content": prompt}],
     temperature=0.4,
-    organization=os.getenv("OPENAI_ORG_ID")
+    organization="org-HIBnPLDmf8QMQXtSk9cI6gPT"  # <-- YOUR ORG ID
 )
         print("=== Response received ===")
         print(response)
