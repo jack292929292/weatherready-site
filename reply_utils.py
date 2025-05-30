@@ -1,9 +1,10 @@
 import os
 import openai
 
-# Safely set OpenAI credentials
+# Set credentials from environment
 openai.api_key = os.getenv("OPENAI_API_KEY")
-openai.organization = "org-HIBnPLDmf8QMQXtSk9cI6gPT"  # Set once, globally
+openai.organization = os.getenv("OPENAI_ORG_ID")
+openai.project = os.getenv("OPENAI_PROJECT_ID")
 
 if not openai.api_key:
     raise RuntimeError("OPENAI_API_KEY is not set. Please add it to Render environment variables.")
