@@ -83,10 +83,11 @@ Answer:
     try:
         print("=== Calling OpenAI ===")
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.4,
-        )
+    model="gpt-3.5-turbo",
+    messages=[{"role": "user", "content": prompt}],
+    temperature=0.4,
+    organization=os.getenv("OPENAI_ORG_ID")
+)
         print("=== Response received ===")
         print(response)
         return response.choices[0].message.content.strip()
