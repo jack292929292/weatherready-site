@@ -215,47 +215,56 @@
   </nav>
 
   <main>
-    <div class="welcome">
-      <h2>🌤️Welcome to Weather Ready</h2>
-      <p>Long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
-      <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
-      <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
-      <p>Once confirmed, you will receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
-      <p>Forecasts are currently available only for the Perth metropolitan area.</p>
-      <p>You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong></p>
-      <h2>Scroll down to get your Weather Ready forecast</h2>
+  <div class="welcome">
+    <h2>🌤️Welcome to Weather Ready</h2>
+    <p>Long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
+    <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
+    <p>Forecasts are currently available only for the Perth metropolitan area.</p>
+    <p>You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong></p>
+    <h2>Scroll down to get your Weather Ready forecast</h2>
+  </div>
+
+  <div class="form-box">
+    <h2>Get Forecast</h2>
+
+    <div class="order-steps">
+      <p><strong>How it works:</strong></p>
+      <ol>
+        <li>Select a date (any day beyond 14 days)</li>
+        <li>Enter your email (for forecast delivery)</li>
+        <li>Pay $0.99 AUD via Stripe (Credit/Debit, Apple Pay, Google Pay)</li>
+        <li>View & receive your forecast instantly on screen and via email</li>
+      </ol>
     </div>
 
-    <div class="form-box">
-      <h2>Get Forecast</h2>
-      <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label>
-        <input type="date" id="forecast_date" name="forecast_date" required>
+    <form action="/" method="post">
+      <label for="forecast_date">Select a date:</label>
+      <input type="date" id="forecast_date" name="forecast_date" required>
 
-        <label for="email">Your email address:</label>
-        <input type="email" id="email" name="email" required>
+      <label for="email">Your email address:</label>
+      <input type="email" id="email" name="email" required>
 
-        <label class="checkbox-label">
-          <input type="checkbox" id="agree_disclaimer" required>
-          I have read and agree to the
-          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-        </label>
+      <label class="checkbox-label">
+        <input type="checkbox" id="agree_disclaimer" required>
+        I have read and agree to the
+        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+      </label>
 
-        <button type="submit">Proceed to Payment</button>
+      <button type="submit">Proceed to Payment</button>
 
-        <p class="note">
-          🔒 Payments are securely processed by
-          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-          Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p class="note">
-          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-            Learn more about Stripe security
-          </a>
-        </p>
-      </form>
-    </div>
-  </main>
+      <p class="note">
+        🔒 Payments are securely processed by
+        <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+        Your payment details are encrypted and never stored by Weather Ready.
+      </p>
+      <p class="note">
+        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+          Learn more about Stripe security
+        </a>
+      </p>
+    </form>
+  </div>
+</main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
