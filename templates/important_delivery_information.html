@@ -2,18 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Method | Weather Ready</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Important Delivery Information</title>
   <style>
-    :root {
-      --blue: #0047C6;
-      --gray: #f8f9fa;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -22,59 +13,103 @@
     }
 
     header {
-      background: var(--blue);
+      background: #0047C6;
       color: white;
-      padding: 40px 20px 20px;
+      padding: 40px 20px;
       text-align: center;
     }
 
-    .brand h1 {
-      font-size: clamp(2.5em, 6vw, 5em);
+    h1 {
       margin: 0;
-      font-weight: bold;
-      color: white;
+      font-size: clamp(2.5em, 6vw, 5em);
     }
 
-    .brand span {
-      font-size: clamp(1em, 3vw, 1.5em);
-      opacity: 0.95;
-      display: block;
-      margin-top: 10px;
-    }
-
-    .condensed-subnav {
+    nav {
       text-align: center;
       padding: 10px;
       background: #003ca5;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
       font-size: 1.05em;
     }
 
-    .condensed-subnav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 5px;
-    }
-
-    .condensed-subnav a:hover {
+    nav a:hover {
       text-decoration: underline;
     }
 
     main {
-      max-width: 1000px;
+      max-width: 600px;
       margin: 40px auto;
-      padding: 0 20px;
-      font-size: 1.05em;
-      line-height: 1.65;
+      padding: 20px;
     }
 
-    h1 {
-      color: var(--blue);
-      font-size: clamp(1.8em, 4vw, 2.2em);
+    .form-box {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-box h2 {
+      color: #0047C6;
+      font-size: 1.6em;
       margin-bottom: 20px;
     }
 
-    a {
-      color: var(--blue);
+    label {
+      font-weight: bold;
+      font-size: 1em;
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 6px;
+    }
+
+    input[type="date"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.2);
+    }
+
+    .checkbox-label {
+      font-weight: normal;
+      font-size: 0.95em;
+      margin-top: 16px;
+      display: block;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 14px;
+      width: 100%;
+      background: #0047C6;
+      color: white;
+      font-size: 1em;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00339a;
+    }
+
+    .note {
+      font-size: 0.9em;
+      color: #555;
+      margin-top: 14px;
     }
 
     footer {
@@ -85,25 +120,23 @@
       color: #666;
       margin-top: 60px;
     }
-
-    @media (min-width: 800px) {
-      main {
-        padding: 0 60px;
-      }
-    }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const dateInput = document.getElementById("forecast_date");
+      const today = new Date();
+      today.setDate(today.getDate() + 28);
+      dateInput.min = today.toISOString().split('T')[0];
+    });
+  </script>
 </head>
 
 <body>
-
   <header>
-    <div class="brand">
-      <h1>WEATHER READY</h1>
-      <span>LONG RANGE WEATHER FORECASTING</span>
-    </div>
+    <h1>WEATHER READY</h1>
   </header>
 
-  <nav class="condensed-subnav">
+  <nav>
     <a href="/">Forecast</a> |
     <a href="/forecast_accuracy">About</a> |
     <a href="/important_delivery_information">Method</a> |
@@ -111,18 +144,39 @@
   </nav>
 
   <main>
-    <h1>Forecast Method</h1>
-    <p>
-      After completing your purchase, your forecast will be automatically emailed to the address you provide.
-      If you do not see the forecast email within a few minutes, please check your junk or spam folder.
-      You may also wish to add <strong>weatherreadyinfo@gmail.com</strong> to your contacts to help with delivery.
-    </p>
-    <p><a href="/">Back to Home</a></p>
+    <div class="form-box">
+      <h2>Get Forecast</h2>
+      <form action="/" method="post">
+        <label for="forecast_date">Select a date:</label>
+        <input type="date" id="forecast_date" name="forecast_date" required>
+
+        <label for="email">Your email address:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label class="checkbox-label">
+          <input type="checkbox" id="agree_disclaimer" required>
+          I have read and agree to the
+          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+        </label>
+
+        <button type="submit">Proceed to Payment</button>
+
+        <p class="note">
+          🔒 Payments are securely processed by
+          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+          Your payment details are encrypted and never stored by Weather Ready.
+        </p>
+        <p class="note">
+          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+            Learn more about Stripe security
+          </a>
+        </p>
+      </form>
+    </div>
   </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
-
 </body>
 </html>
