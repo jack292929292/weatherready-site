@@ -74,17 +74,17 @@
 
     main {
       max-width: 1400px;
-      margin: 20px auto;
+      margin: 40px auto;
       padding: 0 20px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 40px;
     }
 
     .form-box {
       background: var(--gray);
-      padding: 10px 30px 30px 30px;
+      padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
       flex: 1 1 500px;
@@ -94,7 +94,7 @@
     .form-box h2 {
       color: var(--blue);
       font-size: 1.6em;
-      margin-bottom: 0 0 20px 0;
+      margin-bottom: 20px;
     }
 
     .welcome {
@@ -215,54 +215,48 @@
   </nav>
 
   <main>
-  <div class="welcome">
-    <h2>🌤️Welcome to Weather Ready</h2>
-    <p>Long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
-    <p>Each forecast includes the max temp (°C) and rainfall chance (%) for your selected date.</p>
-    <p>For more information about your forecast, Just ask! <a href="/forecast_accuracy" style="color: var(--blue); font-weight: bold;">Weather Ready Assistant</a> — powered by OpenAI’s Chat API.</p>
-  </div>
-
-  <div class="form-box">
-    <h2>Get Forecast</h2>
-
-    <div class="order-steps">
-      <p><strong>How it works:</strong></p>
-      <ol>
-        <li>Select a date (any day beyond 14 days)</li>
-        <li>Enter your email (for forecast delivery)</li>
-        <li>Pay $0.99 via Stripe (Card, Apple Pay, Google Pay)</li>
-        <li>Receive your forecast instantly on screen & via email</li>
-      </ol>
+    <div class="welcome">
+      <h2>🌤️Welcome to Weather Ready</h2>
+      <p>Long range, date-specific weather forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
+      <p>Each forecast includes the maximum temperature, chance of rainfall, and expected rainfall total for your selected date.</p>
+      <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
+      <p>Once confirmed, you will receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
+      <p>Forecasts are currently available only for the Perth metropolitan area.</p>
+      <p>You can contact Weather Ready at <strong>weatherreadyinfo@gmail.com</strong></p>
+      <p>Any Questions? just ask!<a href="/forecast_accuracy" style="color: var(--blue); font-weight: bold;">WeatherReadyLiveAssist</a> — powered by OpenAI’s Chat API.</p>
+      <h2>Scroll down to get your Weather Ready forecast</h2>
     </div>
 
-    <form action="/" method="post">
-      <label for="forecast_date">Select a date:</label>
-      <input type="date" id="forecast_date" name="forecast_date" required>
+    <div class="form-box">
+      <h2>Get Forecast</h2>
+      <form action="/" method="post">
+        <label for="forecast_date">Select a date:</label>
+        <input type="date" id="forecast_date" name="forecast_date" required>
 
-      <label for="email">Your email address:</label>
-      <input type="email" id="email" name="email" required>
+        <label for="email">Your email address:</label>
+        <input type="email" id="email" name="email" required>
 
-      <label class="checkbox-label">
-        <input type="checkbox" id="agree_disclaimer" required>
-        I have read and agree to the
-        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-      </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="agree_disclaimer" required>
+          I have read and agree to the
+          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+        </label>
 
-      <button type="submit">Proceed to Payment</button>
+        <button type="submit">Proceed to Payment</button>
 
-      <p class="note">
-        🔒 Payments are securely processed by
-        <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-        Your payment details are encrypted and never stored by Weather Ready.
-      </p>
-      <p class="note">
-        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-          Learn more about Stripe security
-        </a>
-      </p>
-    </form>
-  </div>
-</main>
+        <p class="note">
+          🔒 Payments are securely processed by
+          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
+          Your payment details are encrypted and never stored by Weather Ready.
+        </p>
+        <p class="note">
+          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+            Learn more about Stripe security
+          </a>
+        </p>
+      </form>
+    </div>
+  </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
