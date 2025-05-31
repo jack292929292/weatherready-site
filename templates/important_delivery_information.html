@@ -19,9 +19,17 @@
       text-align: center;
     }
 
-    h1 {
-      margin: 0;
+    .brand h1 {
       font-size: clamp(2.5em, 6vw, 5em);
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .brand span {
+      font-size: clamp(1em, 3vw, 1.5em);
+      display: block;
+      margin-top: 10px;
+      opacity: 0.95;
     }
 
     nav {
@@ -133,7 +141,10 @@
 
 <body>
   <header>
-    <h1>WEATHER READY</h1>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG-RANGE WEATHER FORECASTING</span>
+    </div>
   </header>
 
   <nav>
@@ -180,3 +191,4 @@
   </footer>
 </body>
 </html>
+
