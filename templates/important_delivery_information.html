@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Important Delivery Information</title>
   <style>
+    :root {
+      --blue: #0047C6;
+      --gray: #f8f9fa;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -13,9 +18,9 @@
     }
 
     header {
-      background: #0047C6;
+      background: var(--blue);
       color: white;
-      padding: 40px 20px;
+      padding: 40px 20px 20px;
       text-align: center;
     }
 
@@ -23,29 +28,30 @@
       font-size: clamp(2.5em, 6vw, 5em);
       margin: 0;
       font-weight: bold;
+      color: white;
     }
 
     .brand span {
       font-size: clamp(1em, 3vw, 1.5em);
+      opacity: 0.95;
       display: block;
       margin-top: 10px;
-      opacity: 0.95;
     }
 
-    nav {
+    .condensed-subnav {
       text-align: center;
       padding: 10px;
       background: #003ca5;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 10px;
       font-size: 1.05em;
     }
 
-    nav a:hover {
+    .condensed-subnav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .condensed-subnav a:hover {
       text-decoration: underline;
     }
 
@@ -143,11 +149,11 @@
   <header>
     <div class="brand">
       <h1>WEATHER READY</h1>
-      <span>LONG-RANGE WEATHER FORECASTING</span>
+      <span>LONG RANGE WEATHER FORECASTING</span>
     </div>
   </header>
 
-  <nav>
+  <nav class="condensed-subnav">
     <a href="/">Forecast</a> |
     <a href="/forecast_accuracy">About</a> |
     <a href="/important_delivery_information">Method</a> |
