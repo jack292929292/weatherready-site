@@ -76,16 +76,10 @@
       line-height: 1.6;
     }
 
-    .welcome h1 {
-      color: var(--blue);
-      font-size: clamp(1.8em, 4vw, 2.2em);
-      margin-bottom: 20px;
-    }
-
     .welcome h2 {
-      margin-top: 40px;
       color: var(--blue);
-      font-size: clamp(1.2em, 3vw, 1.6em);
+      font-size: clamp(1.2em, 4vw, 1.6em);
+      margin-bottom: 20px;
     }
 
     .welcome ul {
@@ -94,6 +88,15 @@
 
     .welcome a {
       color: var(--blue);
+    }
+
+    .form-box {
+      background: var(--gray);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      flex: 1 1 500px;
+      max-width: 500px;
     }
 
     footer {
@@ -114,6 +117,10 @@
 
       .welcome {
         flex: 1 1 58%;
+      }
+
+      .form-box {
+        flex: 1 1 38%;
       }
     }
   </style>
@@ -140,18 +147,15 @@
       <h2>Disclaimer</h2>
 
       <p>Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.</p>
-
       <p>Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.</p>
-
-      <p>You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site (and any information or material available from it).</p>
-
-      <p>Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site (and any information or material available from it).</p>
+      <p>You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site.</p>
+      <p>Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site.</p>
 
       <h2>Liability and Warranties</h2>
       <p>To the maximum extent permitted by law:</p>
       <ul>
-        <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site (and any information or material available from it); and</li>
-        <li>Weather Ready does not give any representation or warranty of any kind (whether express, implied, statutory or otherwise)...</li>
+        <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site; and</li>
+        <li>Weather Ready does not give any representation or warranty of any kind (express, implied, statutory or otherwise)...</li>
       </ul>
 
       <p>To the extent that Weather Ready's liability for a breach of any statutory condition or warranty cannot be excluded... Weather Ready’s choice contained in section 64A of the Australian Consumer Law.</p>
@@ -159,18 +163,18 @@
       <h2>Always Check the Information</h2>
       <p>Information at this site:</p>
       <ul>
-        <li>is subject to the uncertainties of scientific and technical research</li>
+        <li>is subject to scientific and technical uncertainty</li>
         <li>may not be accurate, current or complete</li>
         <li>is subject to change without notice</li>
-        <li>is not a substitute for independent professional advice...</li>
+        <li>is not a substitute for independent professional advice</li>
       </ul>
 
       <h2>Links to External Web Sites</h2>
-      <p>Weather Ready has no direct control over the content of any linked sites...</p>
-      <p>Links to external web sites do not constitute an endorsement or a recommendation...</p>
+      <p>Weather Ready has no control over the content of linked sites and does not endorse them.</p>
       <p><a href="/">Back to Home</a></p>
     </div>
-  </main>
+
+      </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
