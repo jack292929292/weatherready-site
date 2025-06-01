@@ -10,6 +10,10 @@
       --gray: #f8f9fa;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -56,20 +60,39 @@
     }
 
     main {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 20px;
+      max-width: 1400px;
+      margin: 10px auto;
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .welcome {
+      flex: 1 1 600px;
+      max-width: 700px;
+      font-size: 1.05em;
+      line-height: 1.6;
+    }
+
+    .welcome h2 {
+      color: var(--blue);
+      font-size: clamp(1.2em, 4vw, 1.6em);
+      margin-bottom: 20px;
     }
 
     .form-box {
-      background: #f8f9fa;
+      background: var(--gray);
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      flex: 1 1 500px;
+      max-width: 500px;
     }
 
     .form-box h2 {
-      color: #0047C6;
+      color: var(--blue);
       font-size: 1.6em;
       margin-bottom: 20px;
     }
@@ -107,7 +130,7 @@
       margin-top: 24px;
       padding: 14px;
       width: 100%;
-      background: #0047C6;
+      background: var(--blue);
       color: white;
       font-size: 1em;
       font-weight: bold;
@@ -133,6 +156,22 @@
       font-size: 1em;
       color: #666;
       margin-top: 60px;
+    }
+
+    @media (min-width: 800px) {
+      main {
+        flex-wrap: nowrap;
+        padding: 0 60px;
+        gap: 60px;
+      }
+
+      .welcome {
+        flex: 1 1 58%;
+      }
+
+      .form-box {
+        flex: 1 1 38%;
+      }
     }
   </style>
   <script>
@@ -161,6 +200,13 @@
   </nav>
 
   <main>
+    <div class="welcome">
+      <h2>Important Delivery Information</h2>
+      <p>To ensure you receive your forecast, please check your spam or junk folder if it doesn't arrive in your inbox within 5 minutes of purchase.</p>
+      <p>Forecasts are emailed instantly using the email address you provide. Please ensure it is correct before proceeding.</p>
+      <p>If you encounter any issues, contact us at <strong>weatherreadyinfo@gmail.com</strong>.</p>
+    </div>
+
     <div class="form-box">
       <h2>Get Forecast</h2>
       <form action="/" method="post">
