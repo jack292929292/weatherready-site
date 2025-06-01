@@ -60,30 +60,39 @@
     }
 
     main {
-      max-width: 1000px;
-      margin: 40px auto;
+      max-width: 1400px;
+      margin: 10px auto;
       padding: 0 20px;
-      font-size: 1.05em;
-      line-height: 1.65;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
     }
 
-    h1 {
+    .welcome {
+      flex: 1 1 600px;
+      max-width: 700px;
+      font-size: 1.05em;
+      line-height: 1.6;
+    }
+
+    .welcome h1 {
       color: var(--blue);
       font-size: clamp(1.8em, 4vw, 2.2em);
       margin-bottom: 20px;
     }
 
-    h2 {
+    .welcome h2 {
       margin-top: 40px;
       color: var(--blue);
       font-size: clamp(1.2em, 3vw, 1.6em);
     }
 
-    ul {
+    .welcome ul {
       margin-left: 20px;
     }
 
-    a {
+    .welcome a {
       color: var(--blue);
     }
 
@@ -98,7 +107,13 @@
 
     @media (min-width: 800px) {
       main {
+        flex-wrap: nowrap;
         padding: 0 60px;
+        gap: 60px;
+      }
+
+      .welcome {
+        flex: 1 1 58%;
       }
     }
   </style>
@@ -121,56 +136,40 @@
   </nav>
 
   <main>
-    <h1>Disclaimer</h1>
+    <div class="welcome">
+      <h1>Disclaimer</h1>
 
-    <p>
-      Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.
-    </p>
+      <p>Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.</p>
 
-    <p>
-      Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.
-    </p>
+      <p>Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.</p>
 
-    <p>
-      You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site (and any information or material available from it).
-    </p>
+      <p>You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site (and any information or material available from it).</p>
 
-    <p>
-      Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site (and any information or material available from it).
-    </p>
+      <p>Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site (and any information or material available from it).</p>
 
-    <h2>Liability and Warranties</h2>
-    <p>To the maximum extent permitted by law:</p>
-    <ul>
-      <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site (and any information or material available from it); and</li>
-      <li>Weather Ready does not give any representation or warranty of any kind (whether express, implied, statutory or otherwise) including in relation to the availability, accuracy, currency, completeness, quality, reliability or suitability for any purpose of this site (and any information or material available from it), or that the information or material will not infringe any third party intellectual property rights, or that the site will be free from defects, viruses, third party interception or other security threats or vulnerabilities including those which could cause loss or damage to you.</li>
-    </ul>
+      <h2>Liability and Warranties</h2>
+      <p>To the maximum extent permitted by law:</p>
+      <ul>
+        <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site (and any information or material available from it); and</li>
+        <li>Weather Ready does not give any representation or warranty of any kind (whether express, implied, statutory or otherwise)...</li>
+      </ul>
 
-    <p>
-      To the extent that Weather Ready's liability for a breach of any statutory condition or warranty cannot be excluded, then to the extent permitted by law, liability is limited to, at Weather Ready’s discretion, the replacement of the information or material available from this site or a remedy of the Weather Ready's choice contained in section 64A of the Australian Consumer Law.
-    </p>
+      <p>To the extent that Weather Ready's liability for a breach of any statutory condition or warranty cannot be excluded... Weather Ready’s choice contained in section 64A of the Australian Consumer Law.</p>
 
-    <h2>Always Check the Information</h2>
-    <p>Information at this site:</p>
-    <ul>
-      <li>is subject to the uncertainties of scientific and technical research</li>
-      <li>may not be accurate, current or complete</li>
-      <li>is subject to change without notice</li>
-      <li>is not a substitute for independent professional advice and you should obtain specific professional advice relevant to your particular circumstances</li>
-    </ul>
+      <h2>Always Check the Information</h2>
+      <p>Information at this site:</p>
+      <ul>
+        <li>is subject to the uncertainties of scientific and technical research</li>
+        <li>may not be accurate, current or complete</li>
+        <li>is subject to change without notice</li>
+        <li>is not a substitute for independent professional advice...</li>
+      </ul>
 
-    <h2>Links to External Web Sites</h2>
-    <p>
-      Weather Ready has no direct control over the content of any linked sites, or the changes that may occur to the content on those sites.
-      It is your responsibility to make your own decisions about visiting linked external sites, and about the accuracy, currency, completeness, quality, reliability and suitability for any purpose of information contained in such sites.
-    </p>
-
-    <p>
-      Links to external web sites do not constitute an endorsement or a recommendation of those sites, including any information, material or third-party products or services available from or through those sites.
-      You are responsible for being aware of which organisation is hosting any site you visit.
-    </p>
-
-    <p><a href="/">Back to Home</a></p>
+      <h2>Links to External Web Sites</h2>
+      <p>Weather Ready has no direct control over the content of any linked sites...</p>
+      <p>Links to external web sites do not constitute an endorsement or a recommendation...</p>
+      <p><a href="/">Back to Home</a></p>
+    </div>
   </main>
 
   <footer>
