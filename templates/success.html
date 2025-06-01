@@ -2,31 +2,144 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forecast Success | Weather Ready</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --blue: #0047C6;
+      --gray: #f8f9fa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #222;
+    }
+
+    header {
+      background: var(--blue);
+      color: white;
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+
+    .brand h1 {
+      font-size: clamp(2.5em, 6vw, 5em);
+      margin: 0;
+      font-weight: bold;
+      color: white;
+    }
+
+    .brand span {
+      font-size: clamp(1em, 3vw, 1.5em);
+      opacity: 0.95;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .condensed-subnav {
+      text-align: center;
+      padding: 10px;
+      background: #003ca5;
+      font-size: 1.05em;
+    }
+
+    .condensed-subnav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+
+    .condensed-subnav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 10px auto;
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .welcome {
+      flex: 1 1 600px;
+      max-width: 700px;
+      font-size: 1.05em;
+      line-height: 1.6;
+    }
+
+    .welcome h2 {
+      color: green;
+      font-size: clamp(1.2em, 4vw, 1.6em);
+      margin-bottom: 20px;
+    }
+
+    #forecast-result p {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      background: #eee;
+      font-size: 1em;
+      color: #666;
+      margin-top: 60px;
+    }
+
+    @media (min-width: 800px) {
+      main {
+        flex-wrap: nowrap;
+        padding: 0 60px;
+        gap: 60px;
+      }
+
+      .welcome {
+        flex: 1 1 58%;
+      }
+    }
+  </style>
 </head>
-<body class="bg-white text-black font-sans">
-  <header class="text-center py-8 border-b border-gray-200">
-    <h1 class="text-3xl font-bold text-[#0047C6]">WEATHER READY – Long Range Weather Forecasting</h1>
-    <p class="text-md italic mt-2 text-gray-700">
-      Accurate weather forecast information for every day no matter how far it is away
-    </p>
+<body>
+  <header>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG RANGE WEATHER FORECASTING</span>
+    </div>
   </header>
-  <main class="flex flex-col items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md bg-white border border-gray-300 shadow-md rounded-2xl p-6 text-center">
-      <h2 class="text-2xl font-bold text-green-600 mb-4">✅ Your Forecast is Ready</h2>
-      <p class="text-md mb-6 text-gray-600">Here is the forecast for your selected date.</p>
-      <div id="forecast-result" class="space-y-2">
-        <p id="max-temp" class="text-lg font-medium"></p>
-        <p id="rainfall-probability" class="text-lg font-medium"></p>
-        <p id="rainfall-amount" class="text-lg font-medium"></p>
+
+  <nav class="condensed-subnav">
+    <a href="/">Forecast</a> |
+    <a href="/forecast_accuracy">About</a> |
+    <a href="/important_delivery_information">Method</a> |
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
+
+  <main>
+    <div class="welcome">
+      <h2>✅ Your Forecast is Ready</h2>
+      <p>Here is the forecast for your selected date:</p>
+      <div id="forecast-result">
+        <p id="max-temp"></p>
+        <p id="rainfall-probability"></p>
+        <p id="rainfall-amount"></p>
       </div>
     </div>
   </main>
-  <footer class="text-center text-sm text-gray-500 py-6 border-t border-gray-200">
-    © 2025 Weather Ready – All forecasts generated from proprietary statistical models
+
+  <footer>
+    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const date = params.get('date');
@@ -42,10 +155,10 @@
           document.getElementById('rainfall-amount').textContent = `Expected Rainfall: ${data.rainfall_amount} mm`;
         })
         .catch(err => {
-          document.getElementById('forecast-result').innerHTML = '<p class="text-red-600">Error retrieving forecast.</p>';
+          document.getElementById('forecast-result').innerHTML = '<p style="color: red;">Error retrieving forecast.</p>';
         });
     } else {
-      document.getElementById('forecast-result').innerHTML = '<p class="text-red-600">No date provided.</p>';
+      document.getElementById('forecast-result').innerHTML = '<p style="color: red;">No date provided.</p>';
     }
   </script>
 </body>
