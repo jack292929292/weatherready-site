@@ -60,25 +60,41 @@
     }
 
     main {
-      max-width: 1000px;
-      margin: 40px auto;
+      max-width: 1400px;
+      margin: 10px auto;
       padding: 0 20px;
-      font-size: 1.05em;
-      line-height: 1.65;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
     }
 
-    h1 {
+    .welcome {
+      flex: 1 1 600px;
+      max-width: 700px;
+      font-size: 1.05em;
+      line-height: 1.6;
+    }
+
+    .welcome h2 {
       color: var(--blue);
-      font-size: clamp(1.8em, 4vw, 2.2em);
+      font-size: clamp(1.2em, 4vw, 1.6em);
       margin-bottom: 20px;
+    }
+
+    .form-box {
+      background: var(--gray);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      flex: 1 1 500px;
+      max-width: 500px;
     }
 
     .chat-container {
       border: 1px solid #ccc;
       border-radius: 10px;
       padding: 20px;
-      max-width: 800px;
-      margin: 0 auto;
       background: #f9f9f9;
     }
 
@@ -137,11 +153,26 @@
       color: #666;
       margin-top: 60px;
     }
+
+    @media (min-width: 800px) {
+      main {
+        flex-wrap: nowrap;
+        padding: 0 60px;
+        gap: 60px;
+      }
+
+      .welcome {
+        flex: 1 1 58%;
+      }
+
+      .form-box {
+        flex: 1 1 38%;
+      }
+    }
   </style>
 </head>
 
 <body>
-
   <header>
     <div class="brand">
       <h1>WEATHER READY</h1>
@@ -157,16 +188,16 @@
   </nav>
 
   <main>
-    <h1>Weather Ready Live Assistant</h1>
-    <p>Instant answers for any Weather Ready–related questions you have.</p>
+    <div class="welcome">
+      <h2>Weather Ready Live Assistant</h2>
+      <p>Instant answers for any Weather Ready–related questions you have.</p>
 
-    <div class="chat-container">
-      <div class="chat-box" id="chat-box">
-        <!-- Chat messages will appear here -->
-      </div>
-      <div style="display: flex;">
-        <input type="text" id="user-input" placeholder="Type your question here..." />
-        <button onclick="sendMessage()">Send</button>
+      <div class="chat-container">
+        <div class="chat-box" id="chat-box"></div>
+        <div style="display: flex;">
+          <input type="text" id="user-input" placeholder="Type your question here..." />
+          <button onclick="sendMessage()">Send</button>
+        </div>
       </div>
     </div>
   </main>
@@ -196,6 +227,5 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
   </script>
-
 </body>
 </html>
