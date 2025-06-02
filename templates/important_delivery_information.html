@@ -200,46 +200,47 @@
   </nav>
 
   <main>
-    <div class="welcome">
-      <h2>Important Delivery Information</h2>
-      <p>To get your Weather Ready forecast, simply select a date, enter your email, and click 'Proceed to Payment'.</p>
-      <p>Once confirmed, you will receive an email confirmation of your purchase, including the full forecast details for your selected date.</p>
-      <p>Forecasts are currently available only for the Perth metropolitan area.</p>
-      <p>To ensure you receive your forecast, please check your spam or junk folder if it doesn't arrive in your inbox within 5 minutes of purchase.</p>
-      <p>Forecasts are emailed instantly using the email address you provide. Please ensure it is correct before proceeding.</p>
-      <p>If you encounter any issues, contact us at <strong>weatherreadyinfo@gmail.com</strong>.</p>
-    </div>
+  <div class="form-box">
+    <h2>Get Forecast</h2>
+    <form action="/" method="post">
+      <label for="forecast_date">Select a date:</label>
+      <input type="date" id="forecast_date" name="forecast_date" required>
 
-    <div class="form-box">
-      <h2>Get Forecast</h2>
-      <form action="/" method="post">
-        <label for="forecast_date">Select a date:</label>
-        <input type="date" id="forecast_date" name="forecast_date" required>
+      <label for="email">Your email address:</label>
+      <input type="email" id="email" name="email" required>
 
-        <label for="email">Your email address:</label>
-        <input type="email" id="email" name="email" required>
+      <label class="checkbox-label">
+        <input type="checkbox" id="agree_disclaimer" required>
+        I have read and agree to the
+        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+      </label>
 
-        <label class="checkbox-label">
-          <input type="checkbox" id="agree_disclaimer" required>
-          I have read and agree to the
-          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-        </label>
+      <button type="submit">Proceed to Payment</button>
 
-        <button type="submit">Proceed to Payment</button>
+      <p class="note">
+        <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
+          Learn more about Stripe security
+        </a>
+      </p>
+      <p class="note">
+        Once confirmed, you will receive an email confirmation of your purchase, including the full forecast details for your selected date.
+      </p>
+      <p class="note">
+        Forecasts are currently available only for the Perth metropolitan area.
+      </p>
+      <p class="note">
+        To ensure you receive your forecast, please check your spam or junk folder if it doesn't arrive in your inbox within 5 minutes of purchase.
+      </p>
+      <p class="note">
+        Forecasts are emailed instantly using the email address you provide. Please ensure it is correct before proceeding.
+      </p>
+      <p class="note">
+        If you encounter any issues, contact us at <strong>weatherreadyinfo@gmail.com</strong>.
+      </p>
+    </form>
+  </div>
+</main>
 
-        <p class="note">
-          🔒 Payments are securely processed by
-          <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
-          Your payment details are encrypted and never stored by Weather Ready.
-        </p>
-        <p class="note">
-          <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
-            Learn more about Stripe security
-          </a>
-        </p>
-      </form>
-    </div>
-  </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
