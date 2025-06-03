@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Forecast Success | Weather Ready</title>
+  <title>Weather Ready - Success</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     :root {
@@ -19,6 +19,7 @@
       font-family: Arial, sans-serif;
       background: #ffffff;
       color: #222;
+      font-size: clamp(0.95em, 1.8vw, 1.05em);
     }
 
     header {
@@ -53,10 +54,12 @@
       color: white;
       text-decoration: none;
       margin: 0 5px;
+      transition: color 0.2s ease;
     }
 
     .condensed-subnav a:hover {
       text-decoration: underline;
+      color: #ffeb3b;
     }
 
     main {
@@ -74,17 +77,47 @@
       max-width: 700px;
       font-size: 1.05em;
       line-height: 1.6;
+      animation: fadeIn 0.6s ease-out forwards;
+      opacity: 0;
     }
 
     .welcome h2 {
-      color: green;
+      color: var(--blue);
       font-size: clamp(1.2em, 4vw, 1.6em);
       margin-bottom: 20px;
     }
 
-    #forecast-result p {
+    #forecast-result {
+      background: #f0f8ff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #cce;
+      margin-top: 10px;
       font-size: 1.1em;
-      margin-bottom: 10px;
+    }
+
+    .alert-error {
+      color: #b30000;
+      background: #ffe5e5;
+      padding: 12px;
+      border: 1px solid #ffb3b3;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+
+    .return-home {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .return-home a {
+      color: var(--blue);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .return-home a:hover {
+      text-decoration: underline;
     }
 
     footer {
@@ -93,7 +126,12 @@
       background: #eee;
       font-size: 1em;
       color: #666;
-      margin-top: 60px;
+      margin-top: 40px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (min-width: 800px) {
@@ -118,9 +156,9 @@
   </header>
 
   <nav class="condensed-subnav">
-    <a href="/">Forecast</a> |
+    <a href="/">Home</a> |
     <a href="/forecast_accuracy">About</a> |
-    <a href="/important_delivery_information">Method</a> |
+    <a href="/important_delivery_information">Forecast</a> |
     <a href="/legal_disclaimers">Disclaimer</a>
   </nav>
 
@@ -133,6 +171,9 @@
         <p id="rainfall-probability"></p>
         <p id="rainfall-amount"></p>
       </div>
+      <div class="return-home">
+        <p><a href="/">← Return to Home</a></p>
+      </div>
     </div>
   </main>
 
@@ -143,6 +184,8 @@
   <script>
     const params = new URLSearchParams(window.location.search);
     const date = params.get('date');
+    const resultBox = document.getElementById('forecast-result');
+
     if (date) {
       fetch(`/api/forecast?date=${date}`)
         .then(response => {
@@ -154,11 +197,11 @@
           document.getElementById('rainfall-probability').textContent = `Rainfall Probability: ${data.rainfall_probability}%`;
           document.getElementById('rainfall-amount').textContent = `Expected Rainfall: ${data.rainfall_amount} mm`;
         })
-        .catch(err => {
-          document.getElementById('forecast-result').innerHTML = '<p style="color: red;">Error retrieving forecast.</p>';
+        .catch(() => {
+          resultBox.innerHTML = '<p class="alert-error">Error retrieving forecast.</p>';
         });
     } else {
-      document.getElementById('forecast-result').innerHTML = '<p style="color: red;">No date provided.</p>';
+      resultBox.innerHTML = '<p class="alert-error">No date provided.</p>';
     }
   </script>
 </body>
