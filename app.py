@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify  # <-- jsonify added
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import pandas as pd
 import stripe
 import os
@@ -10,18 +10,14 @@ from email.mime.image import MIMEImage
 from datetime import datetime, timedelta
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
-import auto_reply_bot  # ✅ ADDED
-from reply_utils import generate_reply  # ✅ NEW LINE
+import auto_reply_bot
+from reply_utils import generate_reply
 
 app = Flask(__name__)
 
-# Stripe secret key from environment
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
-
-# Google Sheets ID
 SPREADSHEET_ID = "15cUN4SWEzUYqOOJjN2G2PeGB2WA5LHH7kVNamXS9oIM"
 
-# Log order to Google Sheets
 def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SERVICE_ACCOUNT_FILE = 'credentials.json'
@@ -46,7 +42,6 @@ def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
         body=body
     ).execute()
 
-# Send forecast email
 def send_email(to_email, subject, forecast_text, transaction_id):
     msg = MIMEMultipart("related")
     msg["Subject"] = subject
@@ -96,28 +91,11 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
         server.send_message(msg)
 
-# Homepage route
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        selected_dates = request.form.getlist("forecast_dates")
+        selected_date = request.form["forecast_date"]
         email = request.form["email"]
-        num_dates = len(selected_dates)
-
-        if not selected_dates or num_dates == 0:
-            return redirect(url_for("index"))
-
-        # Define tiered pricing in cents
-        pricing_tiers = {
-            1: 99,
-            2: 187,
-            3: 265,
-            4: 335,
-            5: 396,
-            6: 451,
-            7: 500,
-        }
-        price_cents = pricing_tiers.get(num_dates, 99)
 
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
@@ -125,14 +103,14 @@ def index():
                 "price_data": {
                     "currency": "aud",
                     "product_data": {
-                        "name": f"Forecast for {num_dates} date(s)",
+                        "name": f"Forecast for {selected_date}",
                     },
-                    "unit_amount": price_cents,
+                    "unit_amount": 99,
                 },
                 "quantity": 1,
             }],
             mode="payment",
-            success_url=url_for("success", _external=True) + f"?dates={'|'.join(selected_dates)}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
+            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
             cancel_url=url_for("index", _external=True),
         )
         return redirect(session.url, code=303)
@@ -140,7 +118,35 @@ def index():
     min_date = (datetime.today() + timedelta(days=28)).strftime("%Y-%m-%d")
     return render_template("index.html", min_date=min_date)
 
-# Forecast success route
+@app.route("/create-checkout-session", methods=["POST"])
+def create_checkout_session():
+    selected_dates = request.form.get("forecast_dates", "")
+    dates = [d.strip() for d in selected_dates.split(",") if d.strip()]
+    email = request.form.get("email", "")
+
+    if not dates:
+        return "No forecast dates selected.", 400
+
+    unit_amount = 99 * len(dates)
+
+    session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
+        line_items=[{
+            "price_data": {
+                "currency": "aud",
+                "product_data": {
+                    "name": f"Forecast for {', '.join(dates)}",
+                },
+                "unit_amount": unit_amount,
+            },
+            "quantity": 1,
+        }],
+        mode="payment",
+        success_url=url_for("success", _external=True) + f"?date={','.join(dates)}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
+        cancel_url=url_for("index", _external=True),
+    )
+    return redirect(session.url, code=303)
+
 @app.route("/success")
 def success():
     selected_date = request.args.get("date")
@@ -150,7 +156,7 @@ def success():
 
     try:
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-        forecast_row = df[df["Date"] == selected_date].iloc[0]
+        forecast_row = df[df["Date"] == selected_date.split(",")[0]].iloc[0]
         max_temp = forecast_row["MaxPredict2"]
         rain_prob = forecast_row["RainfallProbability"] * 100
         rain_amt = forecast_row["RainfallProbable(mm)"]
@@ -175,7 +181,6 @@ def success():
 
     return render_template("result.html", forecast=forecast_text, date=selected_date)
 
-# Other routes
 @app.route("/important_delivery_information")
 def important_delivery_information():
     return render_template("important_delivery_information.html")
@@ -188,7 +193,6 @@ def legal_disclaimers():
 def forecast_accuracy():
     return render_template("forecast_accuracy.html")
 
-# ✅ Added route to trigger auto-reply bot
 @app.route("/run-bot")
 def run_bot():
     try:
@@ -197,7 +201,6 @@ def run_bot():
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
 
-# ✅ UPDATED: Real-time chatbot endpoint with full logging
 @app.route("/api/chat", methods=["POST"])
 def chat():
     data = request.get_json()
@@ -217,6 +220,5 @@ def chat():
 
     return jsonify({"reply": reply})
 
-# Launch
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
