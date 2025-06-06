@@ -174,7 +174,6 @@
       }
     }
 
-    /* Style selected dates list for multi-date selection */
     #selected-dates-list div {
       display: flex;
       justify-content: space-between;
@@ -183,23 +182,23 @@
       margin-top: 6px;
     }
 
-#selected-dates-list button {
-  width: 50%;                /* Makes button half the width of its flex container */
-  max-width: 120px;          /* Prevents it from stretching too wide */
-  padding: 6px 0;            /* Tight vertical padding, zero horizontal */
-  font-size: 0.85em;
-  background-color: var(--blue);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  white-space: nowrap;
-  text-align: center;
-}
+    #selected-dates-list button {
+      width: 50%;
+      max-width: 120px;
+      padding: 6px 0;
+      font-size: 0.85em;
+      background-color: var(--blue);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      text-align: center;
+    }
 
-#selected-dates-list button:hover {
-  background-color: #00339a;
-}
+    #selected-dates-list button:hover {
+      background-color: #00339a;
+    }
   </style>
 </head>
 
@@ -221,12 +220,11 @@
   <main>
     <div class="form-box">
       <h2>Get Forecast</h2>
-      <form action="/" method="post">
+      <form action="/create-checkout-session" method="post">
         <label for="forecast_date_picker">Select one or more dates:</label>
         <input type="date" id="forecast_date_picker" />
         <div id="selected-dates-list"></div>
-        <input type="hidden" id="forecast_dates" name="forecast_dates" multiple />
-
+        <div id="forecast_dates_container"></div>
 
         <label for="email">Your email address:</label>
         <input type="email" id="email" name="email" required>
@@ -274,7 +272,7 @@
 
   <script>
     const dateInput = document.getElementById("forecast_date_picker");
-    const selectedDatesField = document.getElementById("forecast_dates");
+    const selectedDatesField = document.getElementById("forecast_dates_container");
     const list = document.getElementById("selected-dates-list");
     let selectedDates = [];
 
@@ -283,23 +281,24 @@
     dateInput.min = minDate.toISOString().split('T')[0];
 
     dateInput.addEventListener("change", () => {
-  const date = dateInput.value;
-  if (date && !selectedDates.includes(date)) {
-    if (selectedDates.length >= 7) {
-      alert("You can only select up to 7 dates.");
-      return;
-    }
-    selectedDates.push(date);
-    updateList();
-  }
-});
-
+      const date = dateInput.value;
+      if (date && !selectedDates.includes(date)) {
+        if (selectedDates.length >= 7) {
+          alert("You can only select up to 7 dates.");
+          return;
+        }
+        selectedDates.push(date);
+        updateList();
+      }
+    });
 
     function updateList() {
-      selectedDatesField.value = selectedDates.join(",");
-      list.innerHTML = selectedDates
-        .map(date => `<div><span>${date}</span><button type="button" onclick="removeDate('${date}')">Remove</button></div>`)
-        .join("");
+      selectedDatesField.innerHTML = "";
+      list.innerHTML = "";
+      selectedDates.forEach(date => {
+        list.innerHTML += `<div><span>${date}</span><button type="button" onclick="removeDate('${date}')">Remove</button></div>`;
+        selectedDatesField.innerHTML += `<input type="hidden" name="forecast_dates" value="${date}">`;
+      });
     }
 
     function removeDate(date) {
@@ -309,5 +308,3 @@
   </script>
 </body>
 </html>
-
-
