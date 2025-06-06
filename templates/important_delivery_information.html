@@ -173,15 +173,34 @@
         flex: 1 1 38%;
       }
     }
+
+    /* Style selected dates list for multi-date selection */
+    #selected-dates-list div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+#selected-dates-list button {
+  width: 50%;                /* Makes button half the width of its flex container */
+  max-width: 120px;          /* Prevents it from stretching too wide */
+  padding: 6px 0;            /* Tight vertical padding, zero horizontal */
+  font-size: 0.85em;
+  background-color: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+}
+
+#selected-dates-list button:hover {
+  background-color: #00339a;
+}
   </style>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dateInput = document.getElementById("forecast_date");
-      const today = new Date();
-      today.setDate(today.getDate() + 28);
-      dateInput.min = today.toISOString().split('T')[0];
-    });
-  </script>
 </head>
 
 <body>
@@ -200,24 +219,27 @@
   </nav>
 
   <main>
-  <div class="form-box">
-    <h2>Get Forecast</h2>
-    <form action="/" method="post">
-      <label for="forecast_date">Select a date:</label>
-      <input type="date" id="forecast_date" name="forecast_date" required>
+    <div class="form-box">
+      <h2>Get Forecast</h2>
+      <form action="/" method="post">
+        <label for="forecast_date_picker">Select one or more dates:</label>
+        <input type="date" id="forecast_date_picker" />
+        <div id="selected-dates-list"></div>
+        <input type="hidden" id="forecast_dates" name="forecast_dates" multiple />
 
-      <label for="email">Your email address:</label>
-      <input type="email" id="email" name="email" required>
 
-      <label class="checkbox-label">
-        <input type="checkbox" id="agree_disclaimer" required>
-        I have read and agree to the
-        <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
-      </label>
+        <label for="email">Your email address:</label>
+        <input type="email" id="email" name="email" required>
 
-      <button type="submit">Proceed to Payment</button>
+        <label class="checkbox-label">
+          <input type="checkbox" id="agree_disclaimer" required>
+          I have read and agree to the
+          <a href="/legal_disclaimers" target="_blank" rel="noopener noreferrer">Disclaimer</a>.
+        </label>
 
-      <p class="note">
+        <button type="submit">Proceed to Payment</button>
+
+        <p class="note">
           🔒 Payments are securely processed by
           <strong>Stripe</strong>, a trusted global platform used by Amazon, Shopify, and Google.
           Your payment details are encrypted and never stored by Weather Ready.
@@ -225,31 +247,67 @@
         <p class="note">
           <a href="https://stripe.com/docs/security" target="_blank" rel="noopener noreferrer">
             Learn more about Stripe security
-        </a>
-      </p>
-      <p class="note">
-        Once confirmed, you will receive an email confirmation of your purchase, including the full forecast details for your selected date.
-      </p>
-      <p class="note">
-        Forecasts are currently available only for the Perth metropolitan area.
-      </p>
-      <p class="note">
-        To ensure you receive your forecast, please check your spam or junk folder if it doesn't arrive in your inbox within 5 minutes of purchase.
-      </p>
-      <p class="note">
-        Forecasts are emailed instantly using the email address you provide. Please ensure it is correct before proceeding.
-      </p>
-      <p class="note">
-        If you encounter any issues, contact us at <strong>weatherreadyinfo@gmail.com</strong>.
-      </p>
-    </form>
-  </div>
-</main>
-
+          </a>
+        </p>
+        <p class="note">
+          Once confirmed, you will receive an email confirmation of your purchase, including the full forecast details for your selected date(s).
+        </p>
+        <p class="note">
+          Forecasts are currently available only for the Perth metropolitan area.
+        </p>
+        <p class="note">
+          To ensure you receive your forecast, please check your spam or junk folder if it doesn't arrive in your inbox within 5 minutes of purchase.
+        </p>
+        <p class="note">
+          Forecasts are emailed instantly using the email address you provide. Please ensure it is correct before proceeding.
+        </p>
+        <p class="note">
+          If you encounter any issues, contact us at <strong>weatherreadyinfo@gmail.com</strong>.
+        </p>
+      </form>
+    </div>
+  </main>
 
   <footer>
     &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
   </footer>
+
+  <script>
+    const dateInput = document.getElementById("forecast_date_picker");
+    const selectedDatesField = document.getElementById("forecast_dates");
+    const list = document.getElementById("selected-dates-list");
+    let selectedDates = [];
+
+    const minDate = new Date();
+    minDate.setDate(minDate.getDate() + 28);
+    dateInput.min = minDate.toISOString().split('T')[0];
+
+    dateInput.addEventListener("change", () => {
+  const date = dateInput.value;
+  if (date && !selectedDates.includes(date)) {
+    if (selectedDates.length >= 7) {
+      alert("You can only select up to 7 dates.");
+      return;
+    }
+    selectedDates.push(date);
+    updateList();
+  }
+});
+
+
+    function updateList() {
+      selectedDatesField.value = selectedDates.join(",");
+      list.innerHTML = selectedDates
+        .map(date => `<div><span>${date}</span><button type="button" onclick="removeDate('${date}')">Remove</button></div>`)
+        .join("");
+    }
+
+    function removeDate(date) {
+      selectedDates = selectedDates.filter(d => d !== date);
+      updateList();
+    }
+  </script>
 </body>
 </html>
+
 
