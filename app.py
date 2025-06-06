@@ -21,11 +21,9 @@ SPREADSHEET_ID = "15cUN4SWEzUYqOOJjN2G2PeGB2WA5LHH7kVNamXS9oIM"
 def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
     SERVICE_ACCOUNT_FILE = 'credentials.json'
-
     creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('sheets', 'v4', credentials=creds)
     sheet = service.spreadsheets()
-
     values = [[
         datetime.now().isoformat(),
         order_id,
@@ -62,7 +60,7 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         <strong>Rainfall:</strong> {rain_info}</p>
         <h3 style="margin-top: 25px;">Order Details</h3>
         <p><strong>Order ID:</strong> {transaction_id}<br>
-        <strong>Amount Paid:</strong> AUD $0.99<br>
+        <strong>Amount Paid:</strong> AUD ${0.99:.2f}<br>
         <strong>Payment Method:</strong> Stripe</p>
         <p>This email confirms the successful delivery of your long-range weather forecast and serves as your proof of purchase.</p>
         <p>Contact us: <a href="mailto:weatherreadyinfo@gmail.com">weatherreadyinfo@gmail.com</a></p>
@@ -91,43 +89,22 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
         server.send_message(msg)
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def index():
-    if request.method == "POST":
-        selected_date = request.form["forecast_date"]
-        email = request.form["email"]
-
-        session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=[{
-                "price_data": {
-                    "currency": "aud",
-                    "product_data": {
-                        "name": f"Forecast for {selected_date}",
-                    },
-                    "unit_amount": 99,
-                },
-                "quantity": 1,
-            }],
-            mode="payment",
-            success_url=url_for("success", _external=True) + f"?date={selected_date}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=url_for("index", _external=True),
-        )
-        return redirect(session.url, code=303)
-
     min_date = (datetime.today() + timedelta(days=28)).strftime("%Y-%m-%d")
     return render_template("index.html", min_date=min_date)
 
 @app.route("/create-checkout-session", methods=["POST"])
 def create_checkout_session():
-    selected_dates = request.form.get("forecast_dates", "")
-    dates = [d.strip() for d in selected_dates.split(",") if d.strip()]
-    email = request.form.get("email", "")
-
-    if not dates:
-        return "No forecast dates selected.", 400
-
-    unit_amount = 99 * len(dates)
+    forecast_dates = request.form.get("forecast_dates", "")
+    email = request.form.get("email")
+    dates_list = [d for d in forecast_dates.split(",") if d.strip()]
+    num_dates = len(dates_list)
+    if num_dates == 0:
+        return "No dates selected", 400
+    unit_amount = 99
+    total_amount = unit_amount * num_dates
+    description = f"Forecast for {', '.join(dates_list)}"
 
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
@@ -135,34 +112,39 @@ def create_checkout_session():
             "price_data": {
                 "currency": "aud",
                 "product_data": {
-                    "name": f"Forecast for {', '.join(dates)}",
+                    "name": "Weather Forecast",
+                    "description": description,
                 },
-                "unit_amount": unit_amount,
+                "unit_amount": total_amount,
             },
             "quantity": 1,
         }],
         mode="payment",
-        success_url=url_for("success", _external=True) + f"?date={','.join(dates)}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=url_for("success", _external=True) + f"?dates={forecast_dates}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=url_for("index", _external=True),
     )
     return redirect(session.url, code=303)
 
 @app.route("/success")
 def success():
-    selected_date = request.args.get("date")
+    selected_dates = request.args.get("dates", "")
     email = request.args.get("email")
     session_id = request.args.get("session_id")
     order_id = f"WR-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
+    forecasts = []
 
     try:
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
-        forecast_row = df[df["Date"] == selected_date.split(",")[0]].iloc[0]
-        max_temp = forecast_row["MaxPredict2"]
-        rain_prob = forecast_row["RainfallProbability"] * 100
-        rain_amt = forecast_row["RainfallProbable(mm)"]
-        forecast_text = f"Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm"
+        for date in selected_dates.split(","):
+            row = df[df["Date"] == date].iloc[0]
+            max_temp = row["MaxPredict2"]
+            rain_prob = row["RainfallProbability"] * 100
+            rain_amt = row["RainfallProbable(mm)"]
+            forecasts.append(f"{date}: Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm\n")
     except Exception as e:
-        forecast_text = f"Forecast not available for the selected date.\n\nDATA ERROR: {e}"
+        forecasts.append(f"Forecast not available.\n\nDATA ERROR: {e}")
+
+    forecast_text = "\n".join(forecasts)
 
     try:
         stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
@@ -171,15 +153,15 @@ def success():
 
         send_email(
             to_email=email,
-            subject=f"Your Long-Range Weather Forecast – {selected_date}",
+            subject=f"Your Long-Range Weather Forecast – {selected_dates}",
             forecast_text=forecast_text,
             transaction_id=full_order_id
         )
-        log_order_to_sheets(order_id, stripe_id, email, selected_date, forecast_text)
+        log_order_to_sheets(order_id, stripe_id, email, selected_dates, forecast_text)
     except Exception as e:
         forecast_text += f"\n\nEMAIL ERROR: {e}"
 
-    return render_template("result.html", forecast=forecast_text, date=selected_date)
+    return render_template("result.html", forecast=forecast_text, date=selected_dates)
 
 @app.route("/important_delivery_information")
 def important_delivery_information():
@@ -206,18 +188,13 @@ def chat():
     data = request.get_json()
     print("=== /api/chat received ===")
     print(data)
-
     subject = data.get("subject", "")
     message = data.get("message", "")
-
     print(f"Subject: {subject}")
     print(f"Message: {message}")
-
     reply = generate_reply(subject, message)
-
     print("=== Final reply to send ===")
     print(reply)
-
     return jsonify({"reply": reply})
 
 if __name__ == "__main__":
