@@ -122,7 +122,7 @@ def create_checkout_session():
     total_amount = pricing_table[num_dates]
     description = "Forecast for: " + ", ".join(forecast_dates)
 
-    session_obj = stripe.checkout.Session.create(
+    session_data = stripe.checkout.Session.create(
         payment_method_types=["card"],
         line_items=[{
             "price_data": {
@@ -140,7 +140,7 @@ def create_checkout_session():
         f"?dates={','.join(forecast_dates)}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=url_for("index", _external=True),
     )
-    return redirect(session_obj.url, code=303)
+    return redirect(session_data.url, code=303)
 
 @app.route("/success")
 def success():
@@ -148,32 +148,28 @@ def success():
     email = request.args.get("email")
     session_id = request.args.get("session_id")
 
-    if session.get(session_id):
-        return render_template("result.html", forecast="Your forecast was already sent.", date=selected_dates)
-
-    session[session_id] = True
-
-    order_id = f"WR-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
-    forecasts = []
-
     try:
+        stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
+        stripe_id = stripe_session.payment_intent.id
+        order_id = f"WR-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
+        full_order_id = f"{order_id}-{stripe_id[-6:].upper()}"
+
+        # ✅ Prevent duplicate sends using a session flag tied to the order
+        if session.get(f"email_sent_{full_order_id}"):
+            return render_template("result.html", forecast="Your forecast was already sent.", date=selected_dates)
+        session[f"email_sent_{full_order_id}"] = True
+
         df = pd.read_excel("WeatherReady2025_POWERQUERY_READY.xlsx", sheet_name="Sheet2")
+        forecasts = []
         for date in selected_dates.split(","):
             row = df[df["Date"] == date].iloc[0]
             max_temp = row["MaxPredict2"]
             rain_prob = row["RainfallProbability"] * 100
             rain_amt = row["RainfallProbable(mm)"]
             forecasts.append(f"{date}: Max Temp: {max_temp:.1f}°C\nRainfall: {rain_prob:.0f}% chance of {rain_amt:.1f} mm\n")
-    except Exception as e:
-        forecasts.append(f"Forecast not available.\n\nDATA ERROR: {e}")
 
-    forecast_text = "\n".join(forecasts)
-
-    try:
-        stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
+        forecast_text = "\n".join(forecasts)
         amount_paid = stripe_session.amount_total / 100
-        stripe_id = stripe_session.payment_intent.id
-        full_order_id = f"{order_id}-{stripe_id[-6:].upper()}"
 
         send_email(
             to_email=email,
@@ -184,8 +180,9 @@ def success():
         )
 
         log_order_to_sheets(order_id, stripe_id, email, selected_dates, forecast_text)
+
     except Exception as e:
-        forecast_text += f"\n\nEMAIL ERROR: {e}"
+        forecast_text = f"Forecast not available.\n\nERROR: {e}"
 
     return render_template("result.html", forecast=forecast_text, date=selected_dates)
 
