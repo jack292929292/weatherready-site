@@ -180,8 +180,8 @@ def success():
 
     log_order_to_sheets(order_id, stripe_id, email, selected_dates, forecast_text)
 
-    except Exception as e:
-        forecast_text += f"\n\nEMAIL ERROR: {e}"
+except Exception as e:
+    forecast_text += f"\n\nEMAIL ERROR: {e}"
 
     return render_template("result.html", forecast=forecast_text, date=selected_dates)
 
