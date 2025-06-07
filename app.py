@@ -170,7 +170,7 @@ def success():
 
         send_email(
             to_email=email,
-            subject=f"Your Long-Range Weather Forecast – {selected_dates}",
+            subject=f"Your Long-Range Weather Forecast (Order {full_order_id})",
             forecast_text=forecast_text,
             transaction_id=full_order_id,
             amount_paid=amount_paid
