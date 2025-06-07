@@ -46,21 +46,24 @@ def send_email(to_email, subject, forecast_text, transaction_id):
     msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
     msg["To"] = to_email
 
-    lines = forecast_text.strip().split("\n")
-    max_temp = lines[0].split(":")[1].strip()
-    rain_info = lines[1].split(":")[1].strip()
-    forecast_date = subject.replace("Your Long-Range Weather Forecast – ", "")
+    # Create forecast block in HTML
+    html_forecasts = ""
+    for block in forecast_text.strip().split("\n\n"):
+        lines = block.strip().split("\n")
+        date_line = lines[0] if lines else ""
+        temp_line = lines[1] if len(lines) > 1 else ""
+        rain_line = lines[2] if len(lines) > 2 else ""
+        html_forecasts += f"<p><strong>{date_line}</strong><br>{temp_line}<br>{rain_line}</p>"
 
     html_content = f"""
     <html>
       <body style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
         <p>Thank you for your purchase from <strong>Weather Ready</strong>.</p>
-        <p><strong>Forecast Date:</strong> {forecast_date}<br>
-        <strong>Maximum Temperature:</strong> {max_temp}<br>
-        <strong>Rainfall:</strong> {rain_info}</p>
+        <h3 style="margin-top: 25px;">Forecast Details</h3>
+        {html_forecasts}
         <h3 style="margin-top: 25px;">Order Details</h3>
         <p><strong>Order ID:</strong> {transaction_id}<br>
-        <strong>Amount Paid:</strong> AUD ${0.99:.2f}<br>
+        <strong>Amount Paid:</strong> AUD ${0.99:.2f} per forecast<br>
         <strong>Payment Method:</strong> Stripe</p>
         <p>This email confirms the successful delivery of your long-range weather forecast and serves as your proof of purchase.</p>
         <p>Contact us: <a href="mailto:weatherreadyinfo@gmail.com">weatherreadyinfo@gmail.com</a></p>
