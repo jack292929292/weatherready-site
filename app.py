@@ -14,6 +14,7 @@ import auto_reply_bot
 from reply_utils import generate_reply
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback-secret-key")  # <-- Add this line
 
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 SPREADSHEET_ID = "15cUN4SWEzUYqOOJjN2G2PeGB2WA5LHH7kVNamXS9oIM"
