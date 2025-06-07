@@ -46,7 +46,6 @@ def send_email(to_email, subject, forecast_text, transaction_id, amount_paid):
     msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
     msg["To"] = to_email
 
-    # Create forecast block in HTML
     html_forecasts = ""
     for block in forecast_text.strip().split("\n\n"):
         lines = block.strip().split("\n")
@@ -105,7 +104,6 @@ def create_checkout_session():
     if not forecast_dates:
         return "No dates selected", 400
 
-    # Map number of dates to your custom prices (in cents)
     pricing_table = {
         1: 99,
         2: 187,
@@ -165,23 +163,22 @@ def success():
     forecast_text = "\n".join(forecasts)
 
     try:
-    stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
-    amount_paid = stripe_session.amount_total / 100  # cents to dollars
-    stripe_id = stripe_session.payment_intent.id
-    full_order_id = f"{order_id}-{stripe_id[-6:].upper()}"
+        stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
+        amount_paid = stripe_session.amount_total / 100
+        stripe_id = stripe_session.payment_intent.id
+        full_order_id = f"{order_id}-{stripe_id[-6:].upper()}"
 
-    send_email(
-        to_email=email,
-        subject=f"Your Long-Range Weather Forecast – {selected_dates}",
-        forecast_text=forecast_text,
-        transaction_id=full_order_id,
-        amount_paid=amount_paid
-    )
+        send_email(
+            to_email=email,
+            subject=f"Your Long-Range Weather Forecast – {selected_dates}",
+            forecast_text=forecast_text,
+            transaction_id=full_order_id,
+            amount_paid=amount_paid
+        )
 
-    log_order_to_sheets(order_id, stripe_id, email, selected_dates, forecast_text)
-
-except Exception as e:
-    forecast_text += f"\n\nEMAIL ERROR: {e}"
+        log_order_to_sheets(order_id, stripe_id, email, selected_dates, forecast_text)
+    except Exception as e:
+        forecast_text += f"\n\nEMAIL ERROR: {e}"
 
     return render_template("result.html", forecast=forecast_text, date=selected_dates)
 
@@ -208,15 +205,9 @@ def run_bot():
 @app.route("/api/chat", methods=["POST"])
 def chat():
     data = request.get_json()
-    print("=== /api/chat received ===")
-    print(data)
     subject = data.get("subject", "")
     message = data.get("message", "")
-    print(f"Subject: {subject}")
-    print(f"Message: {message}")
     reply = generate_reply(subject, message)
-    print("=== Final reply to send ===")
-    print(reply)
     return jsonify({"reply": reply})
 
 if __name__ == "__main__":
