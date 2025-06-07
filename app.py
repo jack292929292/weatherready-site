@@ -40,7 +40,7 @@ def log_order_to_sheets(order_id, stripe_id, email, date, forecast_text):
         body=body
     ).execute()
 
-def send_email(to_email, subject, forecast_text, transaction_id):
+def send_email(to_email, subject, forecast_text, transaction_id, amount_paid):
     msg = MIMEMultipart("related")
     msg["Subject"] = subject
     msg["From"] = f"Weather Ready <{os.environ['EMAIL_USER']}>"
@@ -63,7 +63,7 @@ def send_email(to_email, subject, forecast_text, transaction_id):
         {html_forecasts}
         <h3 style="margin-top: 25px;">Order Details</h3>
         <p><strong>Order ID:</strong> {transaction_id}<br>
-        <strong>Amount Paid:</strong> AUD ${0.99:.2f} per forecast<br>
+        <strong>Amount Paid:</strong> AUD ${amount_paid:.2f}<br>
         <strong>Payment Method:</strong> Stripe</p>
         <p>This email confirms the successful delivery of your long-range weather forecast and serves as your proof of purchase.</p>
         <p>Contact us: <a href="mailto:weatherreadyinfo@gmail.com">weatherreadyinfo@gmail.com</a></p>
@@ -166,15 +166,19 @@ def success():
 
     try:
         stripe_session = stripe.checkout.Session.retrieve(session_id, expand=["payment_intent"])
+        amount_paid = stripe_session.amount_total / 100  # cents to dollars
         stripe_id = stripe_session.payment_intent.id
         full_order_id = f"{order_id}-{stripe_id[-6:].upper()}"
 
-        send_email(
-            to_email=email,
-            subject=f"Your Long-Range Weather Forecast – {selected_dates}",
-            forecast_text=forecast_text,
-            transaction_id=full_order_id
-        )
+        amount_paid = stripe_session.amount_total / 100  # convert cents to dollars
+
+send_email(
+    to_email=email,
+    subject=f"Your Long-Range Weather Forecast – {selected_dates}",
+    forecast_text=forecast_text,
+    transaction_id=full_order_id,
+    amount_paid=amount_paid
+)
         log_order_to_sheets(order_id, stripe_id, email, selected_dates, forecast_text)
     except Exception as e:
         forecast_text += f"\n\nEMAIL ERROR: {e}"
