@@ -96,15 +96,29 @@ def index():
 
 @app.route("/create-checkout-session", methods=["POST"])
 def create_checkout_session():
-    forecast_dates = request.form.get("forecast_dates", "")
+    forecast_dates = request.form.getlist("forecast_dates")
     email = request.form.get("email")
-    dates_list = [d for d in forecast_dates.split(",") if d.strip()]
-    num_dates = len(dates_list)
-    if num_dates == 0:
+
+    if not forecast_dates:
         return "No dates selected", 400
-    unit_amount = 99
-    total_amount = unit_amount * num_dates
-    description = f"Forecast for {', '.join(dates_list)}"
+
+    # Map number of dates to your custom prices (in cents)
+    pricing_table = {
+        1: 99,
+        2: 187,
+        3: 265,
+        4: 335,
+        5: 396,
+        6: 451,
+        7: 500
+    }
+
+    num_dates = len(forecast_dates)
+    if num_dates > 7:
+        return "Too many dates selected", 400
+
+    total_amount = pricing_table[num_dates]
+    description = "Forecast for: " + ", ".join(forecast_dates)
 
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
@@ -113,14 +127,15 @@ def create_checkout_session():
                 "currency": "aud",
                 "product_data": {
                     "name": "Weather Forecast",
-                    "description": description,
+                    "description": description
                 },
                 "unit_amount": total_amount,
             },
             "quantity": 1,
         }],
         mode="payment",
-        success_url=url_for("success", _external=True) + f"?dates={forecast_dates}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
+        success_url=url_for("success", _external=True) +
+        f"?dates={','.join(forecast_dates)}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=url_for("index", _external=True),
     )
     return redirect(session.url, code=303)
