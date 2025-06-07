@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 import pandas as pd
 import stripe
 import os
@@ -14,7 +14,7 @@ import auto_reply_bot
 from reply_utils import generate_reply
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallback-secret-key")  # <-- Add this line
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "fallbackkey123")
 
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY")
 SPREADSHEET_ID = "15cUN4SWEzUYqOOJjN2G2PeGB2WA5LHH7kVNamXS9oIM"
@@ -122,7 +122,7 @@ def create_checkout_session():
     total_amount = pricing_table[num_dates]
     description = "Forecast for: " + ", ".join(forecast_dates)
 
-    session = stripe.checkout.Session.create(
+    session_obj = stripe.checkout.Session.create(
         payment_method_types=["card"],
         line_items=[{
             "price_data": {
@@ -140,13 +140,19 @@ def create_checkout_session():
         f"?dates={','.join(forecast_dates)}&email={email}&session_id={{CHECKOUT_SESSION_ID}}",
         cancel_url=url_for("index", _external=True),
     )
-    return redirect(session.url, code=303)
+    return redirect(session_obj.url, code=303)
 
 @app.route("/success")
 def success():
     selected_dates = request.args.get("dates", "")
     email = request.args.get("email")
     session_id = request.args.get("session_id")
+
+    if session.get(session_id):
+        return render_template("result.html", forecast="Your forecast was already sent.", date=selected_dates)
+
+    session[session_id] = True
+
     order_id = f"WR-{datetime.now().strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
     forecasts = []
 
