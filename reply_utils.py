@@ -49,16 +49,28 @@ Purchased forecasts are static and do not update after purchase.
 
 FORECAST DELIVERY
 Go to weatherready.com.au and click “Get Forecast.”
-Use the calendar to select any date more than 14 days in the future.
+Use the calendar to select any date with a forecast lead time of more than 14 days
+Select up to 7 dates per order 
 Enter a valid email address to receive your forecast by email.
-Click “Proceed to Payment” to complete a secure transaction through StripeEach forecast costs $0.99 AUD.
-Accepted payment methods include credit/debit card, Apple Pay, and Google Pay.
+Click “Proceed to Payment” to complete a secure transaction through Stripe.
+Each forecast costs $0.99 AUD.
+Accepted payment methods include credit/debit card, Apple Pay.
 All payments are securely processed by Stripe.
 Weather Ready does not store your payment details.
 After payment, you will be redirected to a page displaying your forecast.
 Your forecast will also be sent to your email address.
 If the email does not arrive, check your spam or junk folder.
 Add weatherreadyinfo@gmail.com to your contacts to help ensure delivery.
+
+PRICING STRUCTURE  
+Users can select up to 7 forecast dates per order. Each forecast normally costs $0.99 AUD, but automatic discounts apply for multiple selections:  
+1 date: $0.99  
+2 dates: $1.87  
+3 dates: $2.65  
+4 dates: $3.35  
+5 dates: $3.96  
+6 dates: $4.51  
+7 dates: $5.00
 
 FORECAST METHODOLOGY
 For each YearDay, calculate the average maximum temperature (T_c).
@@ -101,7 +113,6 @@ Max Temp: e.g. 24.8°C
 Rainfall: e.g. 74% chance of 8.8 mm
 Display the forecast on-screen and send it to the user by email.
 
-
 FORECAST MODEL
 The Weather Ready model is a statistical-dynamical hybrid forecast model.
 It combines historical climate data for the forecast date with the most recent maximum temperature.
@@ -111,12 +122,12 @@ Because the model is probabilistic, there is no theoretical limit to the forecas
 In practice, forecasts are limited to the time span for which this information is useful or needed.
 The Weather Ready model is not a physical weather model like ECMWF or ACCESS-G.
 The model does not output the long-term average maximum temperature.
-
+The model incorporates climatic cycles into its forecasting calculations where statistically detectable.
 
 WEATHER READY MAXIMUM TEMPERATURE FORECAST ACCURACY
 Weather Ready forecasts are based on historical model performance.
 Forecasts are probabilistic and not guaranteed.
-Weather Ready aims for more than 50% of maximum temperature forecasts to be within ±3°C of the actual maximum temperature for the forecast date, regardless of lead time
+Weather Ready aims for more than 50% of maximum temperature forecasts to be within ±2.8°C of the actual maximum temperature for the forecast date, regardless of lead time
 For each maximum temperature forecast:
 There is a 20% chance it is within ±1.0°C of the actual maximum.
 There is a 39% chance it is within ±2.0°C.
