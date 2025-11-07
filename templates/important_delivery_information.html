@@ -1,6 +1,6 @@
-{% extends "base.html" %}
-
-{% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather Ready - Forecast</title>
@@ -15,6 +15,7 @@
       --blue: #0047C6;
       --gray: #f8f9fa;
     }
+
 
     * {
       box-sizing: border-box;
@@ -206,9 +207,23 @@
       background-color: #00339a;
     }
   </style>
-{% endblock %}
+</head>
 
-{% block content %}
+<body>
+  <header>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG RANGE WEATHER FORECASTING</span>
+    </div>
+  </header>
+
+  <nav class="condensed-subnav">
+    <a href="/">Home</a> |
+    <a href="/forecast_accuracy">About</a> |
+    <a href="/important_delivery_information">Forecast</a> |
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
+
   <main>
     <div class="form-box">
       <h2>Get Forecast</h2>
@@ -258,6 +273,10 @@
     </div>
   </main>
 
+  <footer>
+    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
+
   <script>
     const dateInput = document.getElementById("forecast_date_picker");
     const selectedDatesField = document.getElementById("forecast_dates_container");
@@ -294,4 +313,5 @@
       updateList();
     }
   </script>
-{% endblock %}
+</body>
+</html>
