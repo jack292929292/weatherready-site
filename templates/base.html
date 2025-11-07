@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ⚠️ keep all your existing head elements when you start using this -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}Weather Ready{% endblock %}</title>
@@ -20,15 +21,12 @@
     </div>
   </header>
 
-  <!-- Shared navigation -->
   {% include 'partials/navbar.html' %}
 
-  <!-- Page content (each page fills this area) -->
   <main>
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Shared footer -->
   {% include 'partials/footer.html' %}
 </body>
 </html>
