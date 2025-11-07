@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Weather Ready{% endblock %}</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <meta name="theme-color" content="#0047C6">
+</head>
+
+<body>
+  <header style="background:#0047C6;color:white;padding:40px 20px 20px;text-align:center;">
+    <div class="brand">
+      <h1 style="font-size:clamp(2.5em,6vw,5em);margin:0;font-weight:bold;">WEATHER READY</h1>
+      <span style="font-size:clamp(1em,3vw,1.5em);opacity:0.95;display:block;margin-top:2px;">
+        LONG RANGE WEATHER FORECASTING
+      </span>
+    </div>
+  </header>
+
+  <!-- Shared navigation -->
+  {% include 'partials/navbar.html' %}
+
+  <!-- Page content (each page fills this area) -->
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Shared footer -->
+  {% include 'partials/footer.html' %}
+</body>
+</html>
