@@ -1,6 +1,6 @@
-{% extends "base.html" %}
-
-{% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <title>Weather Ready - Disclaimer</title>
 
@@ -10,12 +10,12 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
     :root {
       --blue: #0047C6;
       --gray: #f8f9fa;
     }
+
 
     * {
       box-sizing: border-box;
@@ -131,89 +131,110 @@
       }
     }
   </style>
-{% endblock %}
+</head>
 
-{% block content %}
-  <main>
-    <div class="welcome">
-      <h2>1. Disclaimer</h2>
-      <p>1.1 Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.</p>
-      <p>1.2 Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.</p>
-      <p>1.3 You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site.</p>
-      <p>1.4 Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site.</p>
+<body>
 
-      <h2>2. Liability and Warranties</h2>
-      <p>2.1 To the maximum extent permitted by law:</p>
-      <ul>
-        <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site; and</li>
-        <li>Weather Ready does not give any representation or warranty of any kind (express, implied, statutory or otherwise)...</li>
-      </ul>
-      <p>2.2 To the extent that Weather Ready's liability for a breach of any statutory condition or warranty cannot be excluded... Weather Ready’s choice contained in section 64A of the Australian Consumer Law.</p>
-
-      <h2>3. Always Check the Information</h2>
-      <p>3.1 Information at this site:</p>
-      <ul>
-        <li>is subject to scientific and technical uncertainty</li>
-        <li>may not be accurate, current or complete</li>
-        <li>is subject to change without notice</li>
-        <li>is not a substitute for independent professional advice</li>
-      </ul>
-
-      <h2>4. Links to External Web Sites</h2>
-      <p>4.1 Weather Ready has no control over the content of linked sites and does not endorse them.</p>
-
-      <h2>5. Privacy Collection Notice</h2>
-      <p>5.1 This notice applies when you use the Weather Ready website, www.weatherready.com.au. For details about how we use, store, and disclose information collected in other ways, contact Weather Ready directly. We may update this notice and our privacy policy at any time. This notice was updated on 1st May 2025. We collect, use, store, and disclose information in accordance with the Privacy Act 1988 (Commonwealth) (the Privacy Act).</p>
-
-      <h2>6. Why We Collect Information</h2>
-      <p>6.1 We may collect personal information about you when you use this site:</p>
-      <ul>
-        <li>to perform and administer our services</li>
-        <li>to help improve our website, products, and services</li>
-        <li>for statistical and analytical purposes</li>
-      </ul>
-
-      <h2>7. How We Collect Information</h2>
-      <p>7.1 We use cookies, web analytics tracking software – including Google Analytics – and maintain a web server log.</p>
-
-      <h2>8. What Information We Collect</h2>
-      <p>8.1 When you visit our website, we may collect:</p>
-      <ul>
-        <li>information about the date and time of your visit</li>
-        <li>the pages you access and any documents you download</li>
-        <li>search terms you enter in the search function</li>
-        <li>the address of any referring site</li>
-        <li>the operating system of your device</li>
-        <li>the type of browser you are using</li>
-        <li>service provider information</li>
-        <li>demographics and interests associated with your web and app use, in the form of aggregated data</li>
-        <li>the general location of your IP address (e.g. at a city level such as Perth or Melbourne). We do not collect your full IP address.</li>
-      </ul>
-      <p>8.2 We do not collect your name or username.</p>
-      <p>8.3 When you visit our website, Google Analytics collects the IP address you are using to connect to the internet, but does not provide that information to us.</p>
-
-      <h2>9. How We Use This Information</h2>
-      <p>9.1 We will only use information for the particular purpose for which it was collected. For users of this website, this means that we use this information to:</p>
-      <ul>
-        <li>maintain site information and your setting preferences as you navigate different pages or return later</li>
-        <li>provide personalised information to you</li>
-        <li>optimise the site for specific device models and operating systems</li>
-        <li>improve the design and delivery of content</li>
-        <li>identify what users are searching for on our website – search terms are not associated with any other information</li>
-        <li>report statistics, analyse trends, and diagnose problems</li>
-        <li>improve the quality of our products and services</li>
-        <li>optimise the effectiveness of any online advertising</li>
-      </ul>
-      <p>9.2 We allow our service providers, such as analytics or advertising providers, to do these things on our behalf. We may share the information we collect with selected partners where necessary for these purposes.</p>
-
-      <h2>10. Third-Party Products and Links to Other Websites</h2>
-      <p>10.1 Our website may contain products or features provided by third parties, including weather maps, embedded content, or media players. These products may contain cookies or web analytics tracking software that collect and report information to the third parties. Where our website includes links to external sites such as YouTube, Twitter, Instagram, or Facebook, please refer to the privacy policies of those parties.</p>
-
-      <h2>11. Opting Out of Cookies and Analytics</h2>
-      <p>11.1 You can delete or reject cookies through your browser settings or the settings section of your device. This may affect how this website functions for you. To opt out of Google Analytics, you can download the Google Analytics Opt-out Browser Add-on.</p>
-
-      <h2>12. Privacy Impact Assessment Register</h2>
-      <p>12.1 As a private operator, Weather Ready is not bound by the same obligations as Australian Government agencies in relation to privacy impact assessments. However, we are committed to responsible data practices and transparency. Where appropriate, we will conduct privacy impact assessments for high-risk projects and may publish summaries of these assessments.</p>
+  <header>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG RANGE WEATHER FORECASTING</span>
     </div>
-  </main>
-{% endblock %}
+  </header>
+
+  <nav class="condensed-subnav">
+    <a href="/">Home</a> |
+    <a href="/forecast_accuracy">About</a> |
+    <a href="/important_delivery_information">Forecast</a> |
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
+
+  <main>
+  <div class="welcome">
+    <h2>1. Disclaimer</h2>
+    <p>1.1 Weather is unpredictable. Weather forecasting is not an exact science, and weather observations can contain errors, omissions or loss of data.</p>
+    <p>1.2 Forecasts are intended as general guidance only and should be used alongside other sources of information when making important decisions.</p>
+    <p>1.3 You are solely responsible for your use of this site (and any information or material available from it) and you accept all risks and consequences that might arise from your use of this site.</p>
+    <p>1.4 Weather Ready is not in any way liable for losses, damages, costs, expenses and liability of any kind that you or any other person may suffer or incur directly or indirectly from you using this site.</p>
+
+    <h2>2. Liability and Warranties</h2>
+    <p>2.1 To the maximum extent permitted by law:</p>
+    <ul>
+      <li>Weather Ready excludes all liability to any person arising directly or indirectly from using this site; and</li>
+      <li>Weather Ready does not give any representation or warranty of any kind (express, implied, statutory or otherwise)...</li>
+    </ul>
+    <p>2.2 To the extent that Weather Ready's liability for a breach of any statutory condition or warranty cannot be excluded... Weather Ready’s choice contained in section 64A of the Australian Consumer Law.</p>
+
+    <h2>3. Always Check the Information</h2>
+    <p>3.1 Information at this site:</p>
+    <ul>
+      <li>is subject to scientific and technical uncertainty</li>
+      <li>may not be accurate, current or complete</li>
+      <li>is subject to change without notice</li>
+      <li>is not a substitute for independent professional advice</li>
+    </ul>
+
+    <h2>4. Links to External Web Sites</h2>
+    <p>4.1 Weather Ready has no control over the content of linked sites and does not endorse them.</p>
+
+    <h2>5. Privacy Collection Notice</h2>
+    <p>5.1 This notice applies when you use the Weather Ready website, www.weatherready.com.au. For details about how we use, store, and disclose information collected in other ways, contact Weather Ready directly. We may update this notice and our privacy policy at any time. This notice was updated on 1st May 2025. We collect, use, store, and disclose information in accordance with the Privacy Act 1988 (Commonwealth) (the Privacy Act).</p>
+
+    <h2>6. Why We Collect Information</h2>
+    <p>6.1 We may collect personal information about you when you use this site:</p>
+    <ul>
+      <li>to perform and administer our services</li>
+      <li>to help improve our website, products, and services</li>
+      <li>for statistical and analytical purposes</li>
+    </ul>
+
+    <h2>7. How We Collect Information</h2>
+    <p>7.1 We use cookies, web analytics tracking software – including Google Analytics – and maintain a web server log.</p>
+
+    <h2>8. What Information We Collect</h2>
+    <p>8.1 When you visit our website, we may collect:</p>
+    <ul>
+      <li>information about the date and time of your visit</li>
+      <li>the pages you access and any documents you download</li>
+      <li>search terms you enter in the search function</li>
+      <li>the address of any referring site</li>
+      <li>the operating system of your device</li>
+      <li>the type of browser you are using</li>
+      <li>service provider information</li>
+      <li>demographics and interests associated with your web and app use, in the form of aggregated data</li>
+      <li>the general location of your IP address (e.g. at a city level such as Perth or Melbourne). We do not collect your full IP address.</li>
+    </ul>
+    <p>8.2 We do not collect your name or username.</p>
+    <p>8.3 When you visit our website, Google Analytics collects the IP address you are using to connect to the internet, but does not provide that information to us.</p>
+
+    <h2>9. How We Use This Information</h2>
+    <p>9.1 We will only use information for the particular purpose for which it was collected. For users of this website, this means that we use this information to:</p>
+    <ul>
+      <li>maintain site information and your setting preferences as you navigate different pages or return later</li>
+      <li>provide personalised information to you</li>
+      <li>optimise the site for specific device models and operating systems</li>
+      <li>improve the design and delivery of content</li>
+      <li>identify what users are searching for on our website – search terms are not associated with any other information</li>
+      <li>report statistics, analyse trends, and diagnose problems</li>
+      <li>improve the quality of our products and services</li>
+      <li>optimise the effectiveness of any online advertising</li>
+    </ul>
+    <p>9.2 We allow our service providers, such as analytics or advertising providers, to do these things on our behalf. We may share the information we collect with selected partners where necessary for these purposes.</p>
+
+    <h2>10. Third-Party Products and Links to Other Websites</h2>
+    <p>10.1 Our website may contain products or features provided by third parties, including weather maps, embedded content, or media players. These products may contain cookies or web analytics tracking software that collect and report information to the third parties. Where our website includes links to external sites such as YouTube, Twitter, Instagram, or Facebook, please refer to the privacy policies of those parties.</p>
+
+    <h2>11. Opting Out of Cookies and Analytics</h2>
+    <p>11.1 You can delete or reject cookies through your browser settings or the settings section of your device. This may affect how this website functions for you. To opt out of Google Analytics, you can download the Google Analytics Opt-out Browser Add-on.</p>
+
+    <h2>12. Privacy Impact Assessment Register</h2>
+    <p>12.1 As a private operator, Weather Ready is not bound by the same obligations as Australian Government agencies in relation to privacy impact assessments. However, we are committed to responsible data practices and transparency. Where appropriate, we will conduct privacy impact assessments for high-risk projects and may publish summaries of these assessments.</p>
+  </div>
+</main>
+
+  <footer>
+    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
+
+</body>
+</html>
