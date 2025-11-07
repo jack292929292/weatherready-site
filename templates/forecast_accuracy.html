@@ -1,6 +1,6 @@
-{% extends "base.html" %}
-
-{% block head %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <title>Weather Ready - About</title>
 
@@ -10,12 +10,12 @@
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <style>
     :root {
       --blue: #0047C6;
       --gray: #f8f9fa;
     }
+
 
     * {
       box-sizing: border-box;
@@ -177,56 +177,71 @@
       }
     }
   </style>
-{% endblock %}
+</head>
 
-{% block content %}
+<body>
+  <header>
+    <div class="brand">
+      <h1>WEATHER READY</h1>
+      <span>LONG RANGE WEATHER FORECASTING</span>
+    </div>
+  </header>
+
+  <nav class="condensed-subnav">
+    <a href="/">Home</a> |
+    <a href="/forecast_accuracy">About</a> |
+    <a href="/important_delivery_information">Forecast</a> |
+    <a href="/legal_disclaimers">Disclaimer</a>
+  </nav>
+
   <main>
     <div class="welcome">
-      <h2>Weather Ready Live Assistant</h2>
-      <p>Ask anything about Weather Ready to get an instant response. Just type your question below.</p>
-
+      <h2>Weather Ready Live Assistant </h2>
+      <p>Ask anything about Weather Ready to get an instant response. Just type your question below.
+</p>
+     
       <div class="chat-container">
         <div class="chat-box" id="chat-box"></div>
-        <div style="display:flex;">
+        <div style="display: flex;">
           <input type="text" id="user-input" placeholder="Type Here ..." />
           <button onclick="sendMessage()">Send</button>
         </div>
       </div>
 
       <h2>About Weather Ready</h2>
-      <p>
-        Weather Ready provides long-range, date-specific weather forecasts for any date with a forecast lead time of more than 14 days.
-        Available only for the Perth metropolitan area. Each forecast includes the expected maximum temperature, the chance of rainfall (as a percentage),
-        and the estimated rainfall amount in millimetres. Over 50% of forecasts fall within ±3°C of the actual maximum temperature, regardless of lead time.
-        Rainfall predictions are based on historical probabilities.
-      </p>
+<p>
+Weather Ready provides long-range, date-specific weather forecasts for any date with a forecast lead time of more than 14 days. Available only for the Perth metropolitan area. Each forecast includes the expected maximum temperature, the chance of rainfall (as a percentage), and the estimated rainfall amount in millimetres. Over 50% of forecasts fall within ±3°C of the actual maximum temperature, regardless of lead time. Rainfall predictions are based on historical probabilities.
+</p>
 
-      <p>
-        To get a forecast: select one or more dates (up to 7), enter your email, and proceed to payment. Each forecast normally costs $0.99 AUD,
-        with automatic discounts applied when multiple dates are selected.
-      </p>
+<p>
+To get a forecast: select one or more dates (up to 7), enter your email, and proceed to payment. Each forecast normally costs $0.99 AUD, with automatic discounts applied when multiple dates are selected.
+</p>
 
-      <p>
-        <strong>Pricing:</strong><br>
-        1 date: $0.99<br>
-        2 dates: $1.87<br>
-        3 dates: $2.65<br>
-        4 dates: $3.35<br>
-        5 dates: $3.96<br>
-        6 dates: $4.51<br>
-        7 dates: $5.00
-      </p>
+<p>
+<strong>Pricing:</strong><br>
+1 date: $0.99<br>
+2 dates: $1.87<br>
+3 dates: $2.65<br>
+4 dates: $3.35<br>
+5 dates: $3.96<br>
+6 dates: $4.51<br>
+7 dates: $5.00
+</p>
 
-      <p>
-        Payments are securely processed through Stripe and support credit/debit cards, Apple Pay, and Google Pay. After payment, your forecast will be displayed
-        on-screen and emailed to you within minutes. If you don’t see it, please check your spam or junk folder.
-      </p>
+<p>
+Payments are securely processed through Stripe and support credit/debit cards, Apple Pay, and Google Pay. After payment, your forecast will be displayed on-screen and emailed to you within minutes. If you don’t see it, please check your spam or junk folder.
+</p>
 
-      <p>
-        For information, ask the Weather Ready Live Assistant or email <strong>weatherreadyinfo@gmail.com</strong>.
-      </p>
+<p>
+For information, ask the Weather Ready Live Assistant or email <strong>weatherreadyinfo@gmail.com</strong>.
+</p>
+<p>
     </div>
   </main>
+
+  <footer>
+    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
+  </footer>
 
   <script>
     async function sendMessage() {
@@ -249,5 +264,5 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     }
   </script>
-{% endblock %}
-
+</body>
+</html>
