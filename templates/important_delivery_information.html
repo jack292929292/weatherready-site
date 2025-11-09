@@ -16,7 +16,6 @@
       --gray: #f8f9fa;
     }
 
-
     * {
       box-sizing: border-box;
     }
@@ -165,6 +164,15 @@
       margin-top: 60px;
     }
 
+    footer a {
+      color: #0047C6;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
     @media (min-width: 800px) {
       main {
         flex-wrap: nowrap;
@@ -220,8 +228,7 @@
   <nav class="condensed-subnav">
     <a href="/">Home</a> |
     <a href="/forecast_accuracy">About</a> |
-    <a href="/important_delivery_information">Forecast</a> |
-    <a href="/legal_disclaimers">Disclaimer</a>
+    <a href="/important_delivery_information">Forecast</a>
   </nav>
 
   <main>
@@ -274,7 +281,10 @@
   </main>
 
   <footer>
-    &copy; 2025 Weather Ready – All forecasts generated from proprietary statistical models
+    &copy; 2025 Weather Ready – Long Range Weather Forecasting  
+    <br>
+    <a href="/legal_disclaimers">Disclaimer</a> |
+    Contact: <span style="color:#0047C6;">weatherreadyinfo@gmail.com</span>
   </footer>
 
   <script>
