@@ -1,251 +1,1130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) for Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRLC4KEZEZ"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QRLC4KEZ">
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-QRLC4KEZEZ');
+    gtag('config', 'G-QRLC4KEZ');
   </script>
 
   <meta charset="UTF-8" />
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>Weather Ready - Home</title>
+  <title>Weather Ready - Long Range Weather Forecasting</title>
 
-  <!-- ✅ Favicon setup -->
   <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon.png') }}">
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --blue: #0047C6;
-      --gray: #f8f9fa;
+      /* New Professional Colors */
+      --blue: #007bff; /* Vibrant Accent Blue */
+      --blue-dark: #02367a; /* Deep Indigo/Navy Primary */
+      --blue-light: #e6f0ff; /* Soft Accent Background */
+      --gray-bg: #f9f9fb; /* Clean, Soft Background */
+      --text-dark: #1e2025; /* Near-black for readability */
+      --text-muted: #626a76; /* Soft gray for body copy */
+      --border-soft: #e3e8ef;
+      --radius-lg: 16px;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #222;
+      font-family: 'Inter', Arial, sans-serif;
+      color: var(--text-dark);
+      background: var(--gray-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      scroll-behavior: smooth;
     }
 
-    header {
+    a { color: var(--blue-dark); text-decoration: none; }
+    a:hover { color: var(--blue); }
+
+    /* ---------- TOP NAV ---------- */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .top-nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px; /* Slightly taller */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900; /* Extra bold */
+      letter-spacing: 0.05em;
+      font-size: 1.1rem;
+      color: var(--blue-dark);
+    }
+
+    .brand-mark span.sub {
+      display: none; /* Hide for cleaner look in nav */
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      color: var(--text-dark);
+      font-weight: 500;
+      padding: 4px 0;
+      position: relative;
+    }
+    
+    .nav-links a:hover {
+        color: var(--blue);
+    }
+    
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: var(--blue);
+        transition: width 0.3s ease-in-out;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.primary-link::after {
+        width: 100%;
+    }
+
+    .nav-links a.primary-link {
       background: var(--blue);
-      color: white;
-      padding: 40px 20px 20px;
-      text-align: center;
+      color: #ffffff;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 999px;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+      transition: all 0.2s ease;
     }
 
-    .brand h1 {
-      font-size: clamp(2.5em, 6vw, 5em);
-      margin: 0;
-      font-weight: bold;
-      color: white;
-    }
-
-    .brand span {
-      font-size: clamp(1em, 3vw, 1.5em);
-      opacity: 0.95;
-      display: block;
-      margin-top: 2px;
-    }
-
-    .condensed-subnav {
-      text-align: center;
-      padding: 10px;
-      background: #003ca5;
-      font-size: 1.05em;
-    }
-
-    .condensed-subnav a {
-      color: white;
+    .nav-links a.primary-link:hover {
+      background: var(--blue-dark);
       text-decoration: none;
-      margin: 0 5px;
+    }
+    
+    .nav-links a.primary-link::after { content: none; } /* Remove underline effect for button */
+
+
+    /* === HERO MINI LIST (REPURPOSED) === */
+    .hero-mini-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 16px 20px;
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--blue);
+      max-width: 480px;
+      margin: 20px 0 25px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .condensed-subnav a:hover {
-      text-decoration: underline;
+    .hero-mini-box p {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 500;
+        opacity: 0.9;
     }
 
-    main {
-      max-width: 1400px;
-      margin: 10px auto;
-      padding: 0 20px;
+    /* ---------- HERO ---------- */
+    .hero {
+      /* Deep space gradient for high-tech look */
+      background: linear-gradient(135deg, #02204c 0%, #034f9a 60%, #02204c 100%); 
+      color: #ffffff;
+      padding: 60px 24px 80px; /* More padding for spacious feel */
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 60px;
+      align-items: start;
+    }
+
+    @media (max-width: 950px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-kicker {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 700;
+      color: var(--blue-light); /* Light blue for contrast */
+      margin-bottom: 12px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 5vw, 3.8rem); /* Larger and more impactful */
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 0 0 16px;
+      text-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      max-width: 550px;
+      margin: 0 0 25px;
+      opacity: 0.95;
+    }
+
+    .hero-ctas {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 40px;
+      gap: 15px;
+      margin-top: 20px;
     }
 
+    .hero-cta-primary,
+    .hero-cta-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 28px; /* Bigger buttons */
+      border-radius: 999px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .hero-cta-primary {
+      background: var(--blue);
+      color: #ffffff;
+      border-color: var(--blue);
+      box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+    }
+
+    .hero-cta-primary:hover {
+      background: #0069d9;
+      box-shadow: 0 10px 25px rgba(0, 123, 255, 0.5);
+    }
+
+    .hero-cta-secondary {
+      background: transparent;
+      color: #ffffff;
+      border-color: rgba(255,255,255,0.4);
+    }
+
+    .hero-cta-secondary:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #ffffff;
+    }
+
+    /* ===== FORM BOX (HERO PANEL) - GLASSMORPHISM EFFECT ===== */
     .form-box {
-      background: var(--gray);
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-      flex: 1 1 500px;
-      max-width: 500px;
+      background: rgba(255, 255, 255, 0.15); /* Light transparent white */
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-radius: 28px; /* More rounded */
+      padding: 40px 30px; /* More internal padding */
+      border: 1px solid rgba(255, 255, 255, 0.35); /* Clear border */
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4); /* Stronger shadow for depth */
+      color: #ffffff;
     }
 
     .form-box h2 {
-      color: var(--blue);
-      font-size: 1.6em;
-      margin-bottom: 20px;
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin: 0 0 10px;
+      color: #ffffff;
+      letter-spacing: -0.5px;
     }
 
-    .welcome {
-      flex: 1 1 600px;
-      max-width: 700px;
-      font-size: 1.05em;
-      line-height: 1.6;
+    .form-box p.form-blurb {
+      font-size: 1rem;
+      margin: 0 0 25px;
+      opacity: 0.9;
     }
 
-    .welcome h2 {
-      color: var(--blue);
-      font-size: clamp(1.2em, 4vw, 1.6em);
-      margin-bottom: 20px;
-    }
-
-    label {
-      font-weight: bold;
-      font-size: 1em;
-      display: block;
-      margin-top: 20px;
-      margin-bottom: 6px;
-    }
-
-    input[type="date"],
-    input[type="email"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-    }
-
-    .checkbox-label {
-      font-weight: normal;
-      font-size: 0.95em;
-      margin-top: 16px;
+    .form-box label {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-top: 18px;
+      color: #ffffff;
       display: block;
     }
 
-    button {
-      margin-top: 24px;
-      padding: 14px;
+    .form-box input[type="date"],
+    .form-box input[type="email"] {
       width: 100%;
-      background: var(--blue);
-      color: white;
-      font-size: 1em;
-      font-weight: bold;
+      padding: 14px 16px; /* Bigger input fields */
+      background: rgba(255, 255, 255, 0.98); /* Almost white */
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 1rem;
+      margin-top: 8px;
+      color: var(--text-dark);
+      transition: all 0.2s;
+    }
+
+    .form-box input[type="date"]:focus,
+    .form-box input[type="email"]:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    }
+
+    /* Selected Dates List Styling */
+    #selected-dates-list div {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      background: rgba(255,255,255,0.2);
+      padding: 10px 14px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    #selected-dates-list button {
+      background: #ffffff;
+      color: var(--blue-dark);
       border: none;
-      border-radius: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.8rem;
       cursor: pointer;
+      transition: background 0.2s;
     }
 
-    button:hover {
-      background: #00339a;
+    #selected-dates-list button:hover {
+      background: var(--blue-light);
     }
 
-    .note {
-      font-size: 0.9em;
-      color: #555;
-      margin-top: 14px;
+    .form-box .disclaimer-row {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .form-box input[type="checkbox"] {
+        transform: scale(1.1);
+        accent-color: var(--blue);
+        margin-top: 4px;
     }
 
+    .form-box .disclaimer-row a {
+      color: #ffffff;
+      text-decoration: underline;
+      font-weight: 700;
+      opacity: 1;
+    }
+
+    .form-box button[type="submit"] {
+      margin-top: 30px;
+      width: 100%;
+      padding: 16px 18px;
+      background: var(--blue);
+      color: #ffffff;
+      border-radius: 999px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+      letter-spacing: 0;
+      transition: all 0.2s;
+    }
+
+    .form-box button[type="submit"]:hover {
+      background: #0069d9;
+      box-shadow: 0 10px 30px rgba(0, 123, 255, 0.5);
+    }
+
+    .form-box .note {
+      margin-top: 15px;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.75);
+      text-align: center;
+    }
+
+    /* ---------- CHAT WIDGET - Modernized Colors ---------- */
+    #wr-chat-button {
+      /* ... (positioning remains) ... */
+      background: var(--blue);
+      box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+    }
+
+    #wr-chat-window {
+      /* ... (positioning remains) ... */
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    #wr-chat-header {
+      background: var(--blue-dark);
+    }
+
+    .wr-msg-bot {
+      color: var(--blue-dark);
+    }
+
+    #wr-chat-send {
+      background: var(--blue);
+    }
+
+    #wr-chat-send:hover {
+      background: #0069d9;
+    }
+    /* --------------------------------------------------- */
+
+    /* ============================================================
+       UNIFIED POST-HERO DESIGN (ACCURACY + FAQ)
+       ============================================================ */
+
+    main {
+      background: var(--gray-bg);
+    }
+
+    .wr-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 100px; /* More vertical space */
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 60px;
+    }
+
+    /* Two-column layout for FAQ and Accuracy */
+    .wr-section-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+    
+    @media (max-width: 800px) {
+        .wr-section-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .wr-section {
+      margin: 0; /* Remove top margin from original section */
+    }
+
+    .wr-header {
+      margin-bottom: 40px;
+    }
+
+    .wr-kicker {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .wr-title {
+      font-size: 2.5rem; /* Larger titles */
+      color: var(--blue-dark);
+      margin: 8px 0 15px;
+      font-weight: 900;
+    }
+
+    .wr-sub {
+      color: var(--text-muted);
+      max-width: 750px;
+      font-size: 1.05rem;
+    }
+
+    .wr-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-lg); /* More prominent shadow */
+    }
+
+    .wr-card h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: var(--blue-dark);
+      font-weight: 800;
+      border-bottom: 2px solid var(--blue-light);
+      padding-bottom: 15px;
+      margin-bottom: 20px;
+    }
+
+    .wr-card p {
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .wr-chart-card {
+      margin-top: 0; /* Align with main content */
+    }
+
+    .wr-chart {
+      width: 100%;
+      height: 480px; /* Taller chart */
+      border: 0;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    /* FAQ Specific Styling (Accordion) */
+    .wr-faq-container {
+        grid-column: 1 / -1; /* Make the initial text span full width */
+        margin-bottom: 30px;
+    }
+
+    .wr-faq details {
+      background: #ffffff;
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 18px 24px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .wr-faq details:hover {
+        border-color: var(--blue);
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
+    }
+
+    .wr-faq details[open] {
+      background: var(--blue-light);
+      border-color: var(--blue-dark);
+    }
+
+    .wr-faq summary {
+      font-weight: 700;
+      color: var(--blue-dark);
+      font-size: 1.05rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .wr-faq summary::after {
+        content: '+';
+        margin-left: auto;
+        font-size: 1.2rem;
+        transition: transform 0.2s ease;
+    }
+    
+    .wr-faq details[open] summary::after {
+        content: '−';
+        transform: rotate(180deg);
+    }
+
+    .wr-faq p {
+      margin-top: 15px;
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      padding-left: 0;
+    }
+    
+    .wr-faq p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Footer */
     footer {
       text-align: center;
-      padding: 40px 20px;
-      background: #eee;
-      font-size: 1em;
-      color: #666;
-      margin-top: 60px;
+      padding: 30px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: #ffffff;
+      border-top: 1px solid var(--border-soft);
     }
 
     footer a {
-      color: #0047C6;
-      text-decoration: none;
+      color: var(--blue-dark);
+      font-weight: 600;
     }
-
+    
     footer a:hover {
-      text-decoration: underline;
+        color: var(--blue);
     }
+/* ===== Weather Ready Live Assistant (Floating Chat) ===== */
 
-    @media (min-width: 800px) {
-      main {
-        flex-wrap: nowrap;
-        padding: 0 60px;
-        gap: 60px;
-      }
+#wr-chat-button {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
 
-      .welcome {
-        flex: 1 1 58%;
-      }
+#wr-chat-window {
+  position: fixed;
+  bottom: 90px;
+  right: 22px;
+  width: 340px;
+  max-height: 460px;
+  background: #ffffff;
+  border-radius: 16px;
+  display: none;
+  flex-direction: column;
+  z-index: 10000;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
 
-      .form-box {
-        flex: 1 1 38%;
-      }
-    }
+#wr-chat-header {
+  background: var(--blue-dark);
+  color: #ffffff;
+  padding: 14px 16px;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px 16px 0 0;
+}
+
+#wr-chat-close {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#wr-chat-messages {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.wr-msg-user {
+  text-align: right;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.wr-msg-bot {
+  text-align: left;
+  margin-bottom: 10px;
+  color: var(--blue-dark);
+}
+
+#wr-chat-input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+}
+
+#wr-chat-input {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+#wr-chat-send {
+  margin-left: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: var(--blue);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
   </style>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const dateInput = document.getElementById("forecast_date");
-      const today = new Date();
-      today.setDate(today.getDate() + 28);
-      dateInput.min = today.toISOString().split('T')[0];
-    });
-  </script>
 </head>
 
 <body>
 
-  <header>
-    <div class="brand">
-      <h1>WEATHER READY</h1>
-      <span>LONG RANGE WEATHER FORECASTING</span>
+<div class="top-nav">
+  <div class="top-nav-inner">
+    <div>
+      <div class="brand-mark">
+        WEATHER READY
+      </div>
+      <span class="brand-mark sub">LONG RANGE WEATHER FORECASTING</span>
     </div>
-  </header>
-
-  <nav class="condensed-subnav">
-    <a href="/">Home</a> |
-    <a href="/forecast_accuracy">About</a> |
-    <a href="/important_delivery_information">Forecast</a>
-  </nav>
-
-  <main>
-  <div class="welcome">
-    <a href="/important_delivery_information" style="display: inline-block; width: 100%; background: var(--blue); color: white; font-size: 1.2em; font-weight: bold; padding: 14px; line-height: 1; border: none; border-radius: 6px; text-align: center; text-decoration: none; cursor: pointer;">Click To Get Forecast</a>
-    <p>Weather Ready provides date-specific temperature and rainfall forecasts for any date beyond the 14-day range of conventional short-term forecasts.</p>
-    <p>For more information, Weather Ready Live Assistant is your one-stop shop for everything you need to know.</p>
-    <a href="/forecast_accuracy" style="display: inline-block; width: 100%; background: var(--blue); color: white; font-size: 1.2em; font-weight: bold; padding: 14px; line-height: 1; border: none; border-radius: 6px; text-align: center; text-decoration: none; cursor: pointer;">Weather Ready Live Assistant</a>
-
-    <p>Contact: <strong>weatherreadyinfo@gmail.com</strong></p>
+    <nav class="nav-links">
+      <a href="#accuracy">How it works</a>
+      <a href="#forecast-form" class="primary-link">Get forecast</a>
+      <a href="#accuracy">Accuracy</a>
+      <a href="#faq">FAQ</a>
+      <a href="/legal_disclaimers">Disclaimer</a>
+    </nav>
   </div>
+</div>
+
+<section class="hero" id="forecast-form">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker">Welcome to Weather Ready Long-Range Forecasts</div>
+      <h1 class="hero-title">Long Range, Date Specific Weather Estimations For Perth, Western Australia.</h1>
+      
+      <p class="hero-sub">
+        Weather Ready helps you plan ahead by providing estimated maximum temperature, rainfall probability, 
+        and amount for any future date beyond 28 days.
+      </p>
+
+      <div class="hero-mini-box">
+        <p>60 seconds. No apps. No logins. Just results — delivered instantly to your inbox.</p>
+      </div>
+
+
+      <div class="hero-ctas">
+        <a href="#forecast-form" class="hero-cta-primary">Get your forecast</a>
+        <a href="#accuracy" class="hero-cta-secondary">View accuracy data</a>
+      </div>
+    </div>
+
+   <div>
+  <div class="form-box">
+    <h2>Get Your Forecast</h2>
+    <p class="form-blurb">Select your future date(s) and provide an email for instant delivery.</p>
+
+    <form method="POST" action="/">
+      <label for="forecast_date_picker">Select Your Date/s:</label>
+      <input type="date" id="forecast_date_picker">
+
+      <input type="hidden" name="forecast_date" id="forecast_date">
+
+      <div id="selected-dates-list"></div>
+      <div id="forecast_dates_container"></div>
+
+      <label for="email">Your email address:</label>
+      <input type="email" id="email" name="email" required>
+
+      <div class="disclaimer-row">
+        <input type="checkbox" id="agree_disclaimer" required>
+        <label for="agree_disclaimer" style="margin-top:0;">
+          I have read and agree to the <a href="/legal_disclaimers" target="_blank">Disclaimer</a>.
+        </label>
+      </div>
+
+      <button type="submit">Proceed to Secure Payment ($0.99 AUD)</button>
+
+      <p class="note">
+        🔒 Payments are securely processed by <strong>Stripe</strong>. Weather Ready does not store your card details.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+  const picker = document.getElementById("forecast_date_picker");
+  const hiddenDate = document.getElementById("forecast_date");
+
+  picker.addEventListener("change", () => {
+    hiddenDate.value = picker.value;
+  });
+</script>
+
+<main>
+  <div class="wr-wrapper">
+    
+    <div class="wr-section-grid">
+        
+        <!-- ================= PLACEHOLDER SECTION 1 ================= -->
+<div class="wr-section" id="placeholder-1">
+  <div class="wr-header">
+    <div class="wr-kicker">How It Works</div>
+    <h2 class="wr-title">Insert</h2>
+    <p class="wr-sub">
+      A detailed breakdown of the statistical and climatological foundations behind Weather Ready.
+    </p>
+  </div>
+
+  <div class="wr-card">
+    <h3>Section Placeholder</h3>
+    <p>
+      This section will explain the data sources, statistical fusion methods,
+      validation process, and scientific rationale used in Weather Ready forecasts.
+    </p>
+  </div>
+</div>
+        <div class="wr-section" id="accuracy">
+  <div class="wr-header">
+    <div class="wr-kicker">Accuracy</div>
+    <h2 class="wr-title">How Weather Ready Performs Over Time</h2>
+    <p class="wr-sub">
+      This chart shows how absolute forecast error (°C) changes with lead time, using real Perth outcomes. Full transparency is provided as forecasts are verified.
+    </p>
+  </div>
+
+  <div class="wr-card wr-chart-card">
+    <h3>Forecast Error vs Lead Time</h3>
+    <p>Updated automatically as forecasts are verified against observed maximum temperature.</p>
+    <iframe
+      src="YOUR_GOOGLE_SHEETS_EMBED_URL"
+      class="wr-chart"
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+        <div class="wr-section" id="faq">
+          <div class="wr-header">
+              <div class="wr-kicker">FAQ</div>
+            <h2 class="wr-title">Frequently Asked Questions</h2>
+          </div>
+        
+          <div class="wr-faq-container">
+            <p>
+              People plan ahead to reduce uncertainty and avoid problems. Many plans are made weeks or months in advance, 
+              so people naturally want to know what the weather might be like on a specific future date.<br><br>
+              The problem, as we all know, is that weather forecasts become unreliable beyond 14 days. This leaves only two 
+              options: the long-term average or taking a guess. Both have major limitations. The average hides real variability, 
+              and a guess has no structure or reliability.<br><br>
+              A valuable alternative would need to consistently outperform both of these options. That is the gap Weather Ready aims to fill.
+            </p>
+          </div>
+
+          <div class="wr-faq">
+        
+            <details>
+              <summary>What is Weather Ready’s aim?</summary>
+              <p>Our aim is to provide long-range, date-specific weather estimates beyond 28 days with accuracy that outperforms the current alternatives of using the long-term average or guessing.</p>
+            </details>
+        
+            <details>
+              <summary>What does Weather Ready provide?</summary>
+              <p>Estimation of the daily maximum temperature, chance of rainfall (%), and expected rainfall amount (mm) for any future date beyond 28 days.</p>
+            </details>
+        
+            <details>
+              <summary>What’s included in each estimate?</summary>
+              <p>
+                • Expected maximum temperature<br>
+                • Chance of rainfall (in %)<br>
+                • Estimated rainfall amount (in mm)
+              </p>
+            </details>
+        
+            <details>
+              <summary>How far ahead can I request an estimate?</summary>
+              <p>You can request estimates for any future date beyond the next 28 days — including dates months or years ahead.</p>
+            </details>
+        
+            <details>
+              <summary>Can I select multiple dates at once?</summary>
+              <p>You can select up to seven dates in a single order, allowing easy comparison between different future dates. Discounts automatically apply for each additional date selected beyond the first.</p>
+            </details>
+        
+            <details>
+              <summary>Which regions are supported?</summary>
+              <p>All estimates are currently calibrated specifically for the Perth metropolitan area. Estimates are not yet available for other locations.</p>
+            </details>
+        
+            <details>
+              <summary>How much does it cost?</summary>
+              <p>Each forecast costs $0.99 AUD, payable via credit/debit card, Apple Pay, or Google Pay through secure Stripe payment processing.</p>
+            </details>
+        
+            <details>
+              <summary>How do I place an order?</summary>
+              <p>
+                Go to weatherready.com.au and click “Get Estimation.”<br>
+                Select a future date (beyond 28 days).<br>
+                Enter your email address.<br>
+                Complete the secure $0.99 payment.<br>
+                View your estimation instantly on-screen and receive it via email.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How is my estimation delivered?</summary>
+              <p>
+                Your estimate appears immediately after payment and is also sent to your email.<br>
+                If the email does not arrive, check your spam or junk folder and add 
+                <strong>weatherreadyinfo@gmail.com</strong> to your contacts.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How does the estimation method work?</summary>
+              <p>
+                Weather Ready combines recent observed temperatures with long-term historical climate statistics.<br><br>
+                It uses a precision-weighted fusion of:<br>
+                • The most recent observed maximum temperature (Tₚ)<br>
+                • The average maximum temperature for that calendar day (T_c)<br>
+                • Their respective variability (σₚ and σ_c)<br><br>
+                A fused mean (μₓ) and fused standard deviation (σₓ) are generated and used to produce the final estimate through a normal-distribution sampling process.<br>
+                Rainfall probability and expected rainfall amounts are calculated using historical frequencies filtered by temperature bands.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How accurate are the estimates?</summary>
+              <p>
+                Weather is inherently unpredictable, and no scientific model — including ours — can provide precise, certainty-level forecasts for specific dates beyond 28 days.<br>
+                The information contained in our estimates does not claim precision accuracy.<br>
+                These estimates are intended as guidance, with the simple aim of outperforming the alternatives of using the long-term average or guessing.<br>
+                When they achieve this, our estimates provide a genuinely valuable level of accuracy.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How transparent are Weather Ready estimates?</summary>
+              <p>
+                Every estimate is displayed on the Estimation Accuracy plot once the target date has passed. 
+                The plot shows the lead time of the estimate and the absolute error between the actual maximum temperature 
+                and the Weather Ready estimate. This display updates daily as new forecasts mature and real observations 
+                become available, ensuring full transparency over time.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How does Weather Ready differ from using the long-term average?</summary>
+              <p>
+                The long-term average cannot predict real variability for a specific future date. It hides hot, cold, wet, dry, 
+                and extreme outcomes. Weather Ready incorporates recent conditions and historical patterns to estimate where within 
+                that natural variability a specific date is more likely to fall, offering guidance the average cannot provide.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How does Weather Ready differ from simply guessing the weather?</summary>
+              <p>
+                A guess has no structure or connection to real atmospheric behaviour. Weather Ready builds a link between today’s 
+                conditions and the selected future date by simulating how temperatures typically evolve across the days in between. 
+                This structured, data-driven process is designed to consistently outperform random guessing.
+              </p>
+            </details>
+        
+            <details>
+              <summary>To what extent can Weather Ready estimates be relied upon?</summary>
+              <p>
+                Weather Ready estimates should be used as helpful guidance, not as precise predictions. They provide a clearer 
+                expectation than using the long-term average or guessing, but all long-range forecasts carry uncertainty. 
+                The information can support early planning and risk assessment, but it should not be the sole basis for any 
+                important decision.
+              </p>
+            </details>
+        
+            <details>
+              <summary>Are my payment details safe?</summary>
+              <p>
+                Yes. All payments are processed securely through <strong>Stripe Payments</strong>, a PCI-certified global payment platform 
+                that meets the highest security standards in the financial industry. Weather Ready never sees, handles, or stores 
+                your card details. Your information is encrypted and processed directly by Stripe Payments.
+              </p>
+            </details>
+        
+            <details>
+              <summary>How can I get support?</summary>
+              <p>
+                You can contact Weather Ready support by emailing <strong>weatherreadyinfo@gmail.com</strong> or by using the 
+                Weather Ready Live Assistant chat widget on the website. Both options provide direct help with any questions 
+                about estimates, payments, or service use.
+              </p>
+            </details>
+        
+          </div>
+        </div>
+
+<!-- ================= PLACEHOLDER SECTION 1 ================= -->
+<div class="wr-section" id="placeholder-1">
+  <div class="wr-header">
+    <div class="wr-kicker">Coming Soon</div>
+    <h2 class="wr-title">Methodology & Science</h2>
+    <p class="wr-sub">
+      A detailed breakdown of the statistical and climatological foundations behind Weather Ready.
+    </p>
+  </div>
+
+  <div class="wr-card">
+    <h3>Section Placeholder</h3>
+    <p>
+      This section will explain the data sources, statistical fusion methods,
+      validation process, and scientific rationale used in Weather Ready forecasts.
+    </p>
+  </div>
+</div>
+
+<!-- ================= PLACEHOLDER SECTION 2 ================= -->
+<div class="wr-section" id="placeholder-2">
+  <div class="wr-header">
+    <div class="wr-kicker">Coming Soon</div>
+    <h2 class="wr-title">Use Cases & Planning Scenarios</h2>
+    <p class="wr-sub">
+      Practical examples of how Weather Ready supports real-world decision making.
+    </p>
+  </div>
+
+  <div class="wr-card">
+    <h3>Section Placeholder</h3>
+    <p>
+      This section will showcase planning scenarios such as events, travel,
+      sport scheduling, logistics, and long-term risk assessment.
+    </p>
+  </div>
+</div>
+
+</div>
+</div>
 </main>
 
-    <footer>
-    &copy; 2025 Weather Ready – Long Range Weather Forecasting  
-    <br>
-    <a href="/legal_disclaimers">Disclaimer</a> |
-    Contact: <span style="color:#0047C6;">weatherreadyinfo@gmail.com</span>
-  </footer>
 
+<footer>
+  &copy; 2025 Weather Ready – Long Range Weather Forecasting<br>
+  <a href="/legal_disclaimers">Disclaimer</a> · Contact:
+  <span style="color:var(--blue-dark);">weatherreadyinfo@gmail.com</span>
+</footer>
+
+<div id="wr-chat-button">💬</div>
+
+<div id="wr-chat-window">
+  <div id="wr-chat-header">
+    Weather Ready Live Assistant
+    <span id="wr-chat-close">✕</span>
+  </div>
+  <div id="wr-chat-messages"></div>
+
+  <div id="wr-chat-input-area">
+    <input type="text" id="wr-chat-input" placeholder="Type your question…" />
+    <button id="wr-chat-send">Send</button>
+  </div>
+</div>
+
+<script>
+  const wrChatButton = document.getElementById("wr-chat-button");
+  const wrChatWindow = document.getElementById("wr-chat-window");
+  const wrChatClose = document.getElementById("wr-chat-close");
+  const wrChatSend = document.getElementById("wr-chat-send");
+  const wrChatInput = document.getElementById("wr-chat-input");
+  const wrChatMessages = document.getElementById("wr-chat-messages");
+
+  wrChatButton.onclick = () => {
+    wrChatWindow.style.display = "flex";
+  };
+
+  wrChatClose.onclick = () => {
+    wrChatWindow.style.display = "none";
+  };
+
+  wrChatSend.onclick = sendWrChatMessage;
+
+  wrChatInput.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") sendWrChatMessage();
+  });
+
+  async function sendWrChatMessage() {
+    const msg = wrChatInput.value.trim();
+    if (!msg) return;
+
+    wrChatMessages.innerHTML += `<div class="wr-msg-user">${msg}</div>`;
+    wrChatInput.value = "";
+    wrChatMessages.scrollTop = wrChatMessages.scrollHeight;
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ subject: "Web Chat", message: msg })
+    });
+
+    const data = await response.json();
+
+    wrChatMessages.innerHTML += `<div class="wr-msg-bot">${data.reply}</div>`;
+    wrChatMessages.scrollTop = wrChatMessages.scrollHeight;
+  }
+</script>
+<script>
+  const dateInput = document.getElementById("forecast_date_picker");
+  const selectedDatesField = document.getElementById("forecast_dates_container");
+  const list = document.getElementById("selected-dates-list");
+
+  let selectedDates = [];
+
+  const minDate = new Date();
+  minDate.setDate(minDate.getDate() + 28);
+  dateInput.min = minDate.toISOString().split('T')[0];
+
+  dateInput.addEventListener("change", () => {
+    const date = dateInput.value;
+
+    if (!date) return;
+    if (selectedDates.includes(date)) return;
+
+    if (selectedDates.length >= 7) {
+      alert("You can select a maximum of 7 dates.");
+      dateInput.value = "";
+      return;
+    }
+
+    selectedDates.push(date);
+    dateInput.value = "";
+    updateList();
+  });
+
+  function updateList() {
+    list.innerHTML = "";
+    selectedDatesField.innerHTML = "";
+
+    selectedDates.forEach(date => {
+      list.innerHTML += `
+        <div>
+          <span>${date}</span>
+          <button type="button" onclick="removeDate('${date}')">Remove</button>
+        </div>
+      `;
+
+      selectedDatesField.innerHTML += `
+        <input type="hidden" name="forecast_dates" value="${date}">
+      `;
+    });
+  }
+
+  function removeDate(date) {
+    selectedDates = selectedDates.filter(d => d !== date);
+    updateList();
+  }
+</script>
+<!-- Weather Ready Live Assistant -->
 
 </body>
 </html>
