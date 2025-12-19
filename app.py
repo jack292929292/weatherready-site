@@ -92,8 +92,12 @@ def send_email(to_email, subject, forecast_text, transaction_id, amount_paid):
         server.login(os.environ["EMAIL_USER"], os.environ["EMAIL_PASS"])
         server.send_message(msg)
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def index():
+    if request.method == "POST":
+        # Allow the homepage form to submit here while retaining full multi-date functionality
+        return create_checkout_session()
+
     min_date = (datetime.today() + timedelta(days=28)).strftime("%Y-%m-%d")
     return render_template("index.html", min_date=min_date)
 
@@ -101,6 +105,12 @@ def index():
 def create_checkout_session():
     forecast_dates = request.form.getlist("forecast_dates")
     email = request.form.get("email")
+
+    # Backwards/alternate frontend compatibility: allow single-date submissions too
+    if not forecast_dates:
+        single_date = request.form.get("forecast_date")
+        if single_date:
+            forecast_dates = [single_date]
 
     if not forecast_dates:
         return "No dates selected", 400
