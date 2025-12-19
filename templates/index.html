@@ -723,47 +723,38 @@
       </div>
     </div>
 
-   <div>
-  <div class="form-box">
-    <h2>Get Your Forecast</h2>
-    <p class="form-blurb">Select your future date(s) and provide an email for instant delivery.</p>
+    <div>
+      <div class="form-box">
+        <h2>Get Your Forecast</h2>
+        <p class="form-blurb">Select your future date(s) and provide an email for instant delivery.</p>
 
-    <form method="POST" action="/">
-      <label for="forecast_date_picker">Select Your Date/s:</label>
-      <input type="date" id="forecast_date_picker">
+        <form action="/create-checkout-session" method="post">
+          <label for="forecast_date_picker">Select Your Date/s:</label>
+          <input type="date" id="forecast_date_picker">
 
-      <input type="hidden" name="forecast_date" id="forecast_date">
+          <div id="selected-dates-list"></div>
+          <div id="forecast_dates_container"></div>
 
-      <div id="selected-dates-list"></div>
-      <div id="forecast_dates_container"></div>
+          <label for="email">Your email address:</label>
+          <input type="email" id="email" name="email" required>
 
-      <label for="email">Your email address:</label>
-      <input type="email" id="email" name="email" required>
+          <div class="disclaimer-row">
+            <input type="checkbox" id="agree_disclaimer" required>
+            <label for="agree_disclaimer" style="margin-top:0;">
+              I have read and agree to the <a href="/legal_disclaimers" target="_blank">Disclaimer</a>.
+            </label>
+          </div>
 
-      <div class="disclaimer-row">
-        <input type="checkbox" id="agree_disclaimer" required>
-        <label for="agree_disclaimer" style="margin-top:0;">
-          I have read and agree to the <a href="/legal_disclaimers" target="_blank">Disclaimer</a>.
-        </label>
+          <button type="submit">Proceed to Secure Payment ($0.99 AUD)</button>
+
+          <p class="note">
+            🔒 Payments are securely processed by <strong>Stripe</strong>. Weather Ready does not store your card details.
+          </p>
+        </form>
       </div>
-
-      <button type="submit">Proceed to Secure Payment ($0.99 AUD)</button>
-
-      <p class="note">
-        🔒 Payments are securely processed by <strong>Stripe</strong>. Weather Ready does not store your card details.
-      </p>
-    </form>
+    </div>
   </div>
-</div>
-
-<script>
-  const picker = document.getElementById("forecast_date_picker");
-  const hiddenDate = document.getElementById("forecast_date");
-
-  picker.addEventListener("change", () => {
-    hiddenDate.value = picker.value;
-  });
-</script>
+</section>
 
 <main>
   <div class="wr-wrapper">
