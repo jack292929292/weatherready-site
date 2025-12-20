@@ -50,6 +50,11 @@
       -webkit-font-smoothing: antialiased;
       scroll-behavior: smooth;
     }
+    
+    /* Prevent iOS text auto-scaling */
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
     a { color: var(--blue-dark); text-decoration: none; }
     a:hover { color: var(--blue); }
@@ -766,6 +771,62 @@ html, body {
   #wr-chat-button {
     right: 16px;
     bottom: 16px;
+  }
+}
+@media (max-width: 600px) {
+  #wr-chat-window {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 80px;
+    max-height: 70vh;
+  }
+
+  #wr-chat-button {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* ---------- HERO LAYOUT (MOBILE OVERRIDE) ---------- */
+@media (max-width: 768px) {
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+}
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 2rem;
+    line-height: 1.15;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem;
+  }
+}
+@media (max-width: 600px) {
+  .form-box {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.18);
+  }
+}
+@media (max-width: 600px) {
+  .hero-ctas {
+    flex-direction: column;
+  }
+
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+  }
+}
+@media (max-width: 600px) {
+  .nav-links {
+    row-gap: 10px;
   }
 }
   </style>
