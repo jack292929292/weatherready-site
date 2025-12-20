@@ -678,6 +678,96 @@
   font-weight: 600;
   cursor: pointer;
 }
+/* =========================================================
+   MOBILE RESPONSIVE OVERRIDES
+   ========================================================= */
+
+/* Prevent horizontal scroll */
+html, body {
+  overflow-x: hidden;
+}
+
+/* ---------- TOP NAV (MOBILE) ---------- */
+@media (max-width: 768px) {
+  .top-nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .nav-links {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+
+  .nav-links a.primary-link {
+    padding: 10px 16px;
+  }
+}
+
+/* ---------- HERO (MOBILE) ---------- */
+@media (max-width: 600px) {
+  .hero {
+    padding: 40px 16px 60px;
+  }
+
+  .hero-title {
+    font-size: 2.1rem;
+  }
+
+  .hero-sub {
+    font-size: 1rem;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-cta-primary,
+  .hero-cta-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ---------- FORM BOX (MOBILE) ---------- */
+@media (max-width: 600px) {
+  .form-box {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .form-box h2 {
+    font-size: 1.8rem;
+  }
+}
+
+/* ---------- CHART (MOBILE) ---------- */
+.wr-chart {
+  height: min(480px, 60vh);
+}
+
+/* ---------- CHAT WIDGET (MOBILE) ---------- */
+@media (max-width: 600px) {
+  #wr-chat-window {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 80px;
+    max-height: 70vh;
+  }
+
+  #wr-chat-button {
+    right: 16px;
+    bottom: 16px;
+  }
+}
   </style>
 </head>
 
@@ -704,8 +794,8 @@
 <section class="hero" id="forecast-form">
   <div class="hero-inner">
     <div>
-      <div class="hero-kicker">Welcome to Weather Ready</div>
-      <h1 class="hero-title">Long Range, Date Specific Weather Estimations Beyond 28 Days</h1>
+      <div class="hero-kicker">Welcome to Weather Ready Long-Range Forecasts</div>
+      <h1 class="hero-title">Long Range, Date Specific Weather Estimations For Perth, Western Australia.</h1>
       
       <p class="hero-sub">
         Weather Ready helps you plan ahead by providing estimated maximum temperature, rainfall probability, 
@@ -765,17 +855,35 @@
 <div class="wr-section" id="placeholder-1">
   <div class="wr-header">
     <div class="wr-kicker">How It Works</div>
-    <h2 class="wr-title">Insert</h2>
+    <h2 class="wr-title">Date-specific weather, beyond 28 days</h2>
     <p class="wr-sub">
-      A detailed breakdown of the statistical and climatological foundations behind Weather Ready.
+      A simple, practical way to reduce uncertainty when planning far in advance.
     </p>
   </div>
 
   <div class="wr-card">
-    <h3>Section Placeholder</h3>
     <p>
-      This section will explain the data sources, statistical fusion methods,
-      validation process, and scientific rationale used in Weather Ready forecasts.
+      Traditional weather forecasts lose reliability beyond about 28 days. At that point,
+      planning usually falls back on long-term averages or guesswork. Weather Ready provides
+      a more useful alternative by generating weather estimations for the exact date you select.
+    </p>
+
+    <p>
+      Each estimation blends over 120 years of Perth climate records with recent temperature
+      behaviour to determine what conditions are most likely on that specific day. Instead of
+      offering a broad seasonal outlook, the model produces a single best-estimate maximum
+      temperature that reflects realistic day-to-day variability.
+    </p>
+
+    <p>
+      Rainfall is estimated separately using historical patterns for that calendar date,
+      returning both the probability of rain and the expected rainfall amount if rain occurs.
+    </p>
+
+    <p>
+      The result is clear, easy-to-understand information — maximum temperature, rainfall
+      probability, and rainfall amount — designed to be more informative than the long-term
+      average and more reliable than a guess, even months or years ahead.
     </p>
   </div>
 </div>
