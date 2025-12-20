@@ -684,7 +684,7 @@ html {
   cursor: pointer;
 }
 /* =========================================================
-   MOBILE RESPONSIVE OVERRIDES
+   MOBILE RESPONSIVE (FINAL – DO NOT ADD TO THIS)
    ========================================================= */
 
 /* Prevent horizontal scroll */
@@ -692,27 +692,39 @@ html, body {
   overflow-x: hidden;
 }
 
-/* ---------- TOP NAV (MOBILE) ---------- */
+/* ---------- NAV (MOBILE) ---------- */
+.nav-toggle {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .top-nav-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 14px 16px;
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle {
+    display: block;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--blue-dark);
   }
 
   .nav-links {
+    display: none;
     width: 100%;
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 12px;
+  }
+
+  .nav-links.open {
+    display: flex;
   }
 
   .nav-links a {
-    font-size: 0.9rem;
-  }
-
-  .nav-links a.primary-link {
-    padding: 10px 16px;
+    padding: 10px 0;
   }
 }
 
@@ -722,80 +734,12 @@ html, body {
     padding: 40px 16px 60px;
   }
 
-  .hero-title {
-    font-size: 2.1rem;
-  }
-
-  .hero-sub {
-    font-size: 1rem;
-  }
-
-  .hero-ctas {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .hero-cta-primary,
-  .hero-cta-secondary {
-    width: 100%;
-    text-align: center;
-  }
-}
-
-/* ---------- FORM BOX (MOBILE) ---------- */
-@media (max-width: 600px) {
-  .form-box {
-    padding: 28px 20px;
-    border-radius: 20px;
-  }
-
-  .form-box h2 {
-    font-size: 1.8rem;
-  }
-}
-
-/* ---------- CHART (MOBILE) ---------- */
-.wr-chart {
-  height: min(480px, 60vh);
-}
-
-/* ---------- CHAT WIDGET (MOBILE) ---------- */
-@media (max-width: 600px) {
-  #wr-chat-window {
-    width: calc(100vw - 32px);
-    right: 16px;
-    bottom: 80px;
-    max-height: 70vh;
-  }
-
-  #wr-chat-button {
-    right: 16px;
-    bottom: 16px;
-  }
-}
-@media (max-width: 600px) {
-  #wr-chat-window {
-    width: calc(100vw - 32px);
-    right: 16px;
-    bottom: 80px;
-    max-height: 70vh;
-  }
-
-  #wr-chat-button {
-    right: 16px;
-    bottom: 16px;
-  }
-}
-
-/* ---------- HERO LAYOUT (MOBILE OVERRIDE) ---------- */
-@media (max-width: 768px) {
   .hero-inner {
     display: flex;
     flex-direction: column;
     gap: 36px;
   }
-}
-@media (max-width: 600px) {
+
   .hero-title {
     font-size: 2rem;
     line-height: 1.15;
@@ -804,15 +748,7 @@ html, body {
   .hero-sub {
     font-size: 0.95rem;
   }
-}
-@media (max-width: 600px) {
-  .form-box {
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.18);
-  }
-}
-@media (max-width: 600px) {
+
   .hero-ctas {
     flex-direction: column;
   }
@@ -824,11 +760,30 @@ html, body {
     font-size: 1rem;
   }
 }
+
+/* ---------- FORM (MOBILE) ---------- */
 @media (max-width: 600px) {
-  .nav-links {
-    row-gap: 10px;
+  .form-box {
+    padding: 28px 20px;
+    border-radius: 20px;
   }
 }
+
+/* ---------- CHAT (MOBILE) ---------- */
+@media (max-width: 600px) {
+  #wr-chat-window {
+    width: calc(100vw - 32px);
+    right: 16px;
+    bottom: 80px;
+    max-height: 70vh;
+  }
+
+  #wr-chat-button {
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
   </style>
 </head>
 
@@ -842,6 +797,7 @@ html, body {
       </div>
       <span class="brand-mark sub">LONG RANGE WEATHER FORECASTING</span>
     </div>
+
     <nav class="nav-links">
       <a href="#accuracy">How it works</a>
       <a href="#forecast-form" class="primary-link">Get forecast</a>
@@ -849,6 +805,9 @@ html, body {
       <a href="#faq">FAQ</a>
       <a href="/legal_disclaimers">Disclaimer</a>
     </nav>
+
+    <!-- Mobile menu toggle -->
+    <button class="nav-toggle" aria-label="Menu">☰</button>
   </div>
 </div>
 
@@ -1285,6 +1244,19 @@ html, body {
   }
 </script>
 <!-- Weather Ready Live Assistant -->
+<script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
 
+  navToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+    });
+  });
+</script>
 </body>
 </html>
