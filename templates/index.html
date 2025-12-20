@@ -73,7 +73,7 @@ html {
     .top-nav-inner {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 16px 24px; /* Slightly taller */
+      padding: 8px 24px; /* Slightly taller */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -89,6 +89,12 @@ html {
       font-size: 1.1rem;
       color: var(--blue-dark);
     }
+    .brand-mark img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
 
     .brand-mark span.sub {
       display: none; /* Hide for cleaner look in nav */
@@ -791,12 +797,9 @@ html, body {
 
 <div class="top-nav">
   <div class="top-nav-inner">
+
     <div class="brand-mark">
-  <img src="{{ url_for('static', filename='Weather Ready Long Rang Estimates Header1.png') }}" alt="Weather Ready">
-</div>
-        
-      </div>
-      <span class="brand-mark sub"></span>
+      <img src="{{ url_for('static', filename='Weather Ready Long Rang Estimates Header1.png') }}" alt="Weather Ready">
     </div>
 
     <nav class="nav-links">
@@ -807,8 +810,8 @@ html, body {
       <a href="/legal_disclaimers">Disclaimer</a>
     </nav>
 
-    <!-- Mobile menu toggle -->
     <button class="nav-toggle" aria-label="Menu">☰</button>
+
   </div>
 </div>
 
