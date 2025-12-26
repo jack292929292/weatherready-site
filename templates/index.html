@@ -930,164 +930,106 @@ html, body {
   </div>
 </div>
         <div class="wr-section" id="faq">
-          <div class="wr-header">
-              <div class="wr-kicker">FAQ</div>
-            <h2 class="wr-title">Frequently Asked Questions</h2>
-          </div>
-        
-          <div class="wr-faq-container">
-            <p>
-              People plan ahead to reduce uncertainty and avoid problems. Many plans are made weeks or months in advance, 
-              so people naturally want to know what the weather might be like on a specific future date.<br><br>
-              The problem, as we all know, is that weather forecasts become unreliable beyond 14 days. This leaves only two 
-              options: the long-term average or taking a guess. Both have major limitations. The average hides real variability, 
-              and a guess has no structure or reliability.<br><br>
-              A valuable alternative would need to consistently outperform both of these options. That is the gap Weather Ready aims to fill.
-            </p>
-          </div>
+  <div class="wr-header">
+    <div class="wr-kicker">About</div>
+    <h2 class="wr-title">What is Weather Ready?</h2>
+  </div>
 
-          <div class="wr-faq">
-        
-            <details>
-              <summary>What is Weather Ready’s aim?</summary>
-              <p>Our aim is to provide long-range, date-specific weather estimates beyond 28 days with accuracy that outperforms the current alternatives of using the long-term average or guessing.</p>
-            </details>
-        
-            <details>
-              <summary>What does Weather Ready provide?</summary>
-              <p>Estimation of the daily maximum temperature, chance of rainfall (%), and expected rainfall amount (mm) for any future date beyond 28 days.</p>
-            </details>
-        
-            <details>
-              <summary>What’s included in each estimate?</summary>
-              <p>
-                • Expected maximum temperature<br>
-                • Chance of rainfall (in %)<br>
-                • Estimated rainfall amount (in mm)
-              </p>
-            </details>
-        
-            <details>
-              <summary>How far ahead can I request an estimate?</summary>
-              <p>You can request estimates for any future date beyond the next 28 days — including dates months or years ahead.</p>
-            </details>
-        
-            <details>
-              <summary>Can I select multiple dates at once?</summary>
-              <p>You can select up to seven dates in a single order, allowing easy comparison between different future dates. Discounts automatically apply for each additional date selected beyond the first.</p>
-            </details>
-        
-            <details>
-              <summary>Which regions are supported?</summary>
-              <p>All estimates are currently calibrated specifically for the Perth metropolitan area. Estimates are not yet available for other locations.</p>
-            </details>
-        
-            <details>
-              <summary>How much does it cost?</summary>
-              <p>Each estimation costs $0.99 AUD, payable via credit/debit card, Apple Pay, or Google Pay through secure Stripe payment processing.</p>
-            </details>
-        
-            <details>
-              <summary>How do I place an order?</summary>
-              <p>
-                Go to weatherready.com.au and click “Get Estimation.”<br>
-                Select a future date (beyond 28 days).<br>
-                Enter your email address.<br>
-                Complete the secure $0.99 payment.<br>
-                View your estimation instantly on-screen and receive it via email.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How is my estimation delivered?</summary>
-              <p>
-                Your estimate appears immediately after payment and is also sent to your email.<br>
-                If the email does not arrive, check your spam or junk folder and add 
-                <strong>weatherreadyinfo@gmail.com</strong> to your contacts.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How does the estimation method work?</summary>
-              <p>
-                Weather Ready combines recent observed temperatures with long-term historical climate statistics.<br><br>
-                It uses a precision-weighted fusion of:<br>
-                • The most recent observed maximum temperature (Tₚ)<br>
-                • The average maximum temperature for that calendar day (T_c)<br>
-                • Their respective variability (σₚ and σ_c)<br><br>
-                A fused mean (μₓ) and fused standard deviation (σₓ) are generated and used to produce the final estimate through a normal-distribution sampling process.<br>
-                Rainfall probability and expected rainfall amounts are calculated using historical frequencies filtered by temperature bands.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How accurate are the estimates?</summary>
-              <p>
-                Weather is inherently unpredictable, and no scientific model — including ours — can provide precise, certainty-level estimations for specific dates beyond 28 days.<br>
-                The information contained in our estimates does not claim precision accuracy.<br>
-                These estimates are intended as guidance, with the simple aim of outperforming the alternatives of using the long-term average or guessing.<br>
-                When they achieve this, our estimates provide a genuinely valuable level of accuracy.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How transparent are Weather Ready estimates?</summary>
-              <p>
-                Every estimate is displayed on the Estimation Accuracy plot once the target date has passed. 
-                The plot shows the lead time of the estimate and the absolute error between the actual maximum temperature 
-                and the Weather Ready estimate. This display updates daily as new estimations mature and real observations 
-                become available, ensuring full transparency over time.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How does Weather Ready differ from using the long-term average?</summary>
-              <p>
-                The long-term average cannot predict real variability for a specific future date. It hides hot, cold, wet, dry, 
-                and extreme outcomes. Weather Ready incorporates recent conditions and historical patterns to estimate where within 
-                that natural variability a specific date is more likely to fall, offering guidance the average cannot provide.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How does Weather Ready differ from simply guessing the weather?</summary>
-              <p>
-                A guess has no structure or connection to real atmospheric behaviour. Weather Ready builds a link between today’s 
-                conditions and the selected future date by simulating how temperatures typically evolve across the days in between. 
-                This structured, data-driven process is designed to consistently outperform random guessing.
-              </p>
-            </details>
-        
-            <details>
-              <summary>To what extent can Weather Ready estimates be relied upon?</summary>
-              <p>
-                Weather Ready estimates should be used as helpful guidance, not as precise predictions. They provide a clearer 
-                expectation than using the long-term average or guessing, but all long-range forecasts carry uncertainty. 
-                The information can support early planning and risk assessment, but it should not be the sole basis for any 
-                important decision.
-              </p>
-            </details>
-        
-            <details>
-              <summary>Are my payment details safe?</summary>
-              <p>
-                Yes. All payments are processed securely through <strong>Stripe Payments</strong>, a PCI-certified global payment platform 
-                that meets the highest security standards in the financial industry. Weather Ready never sees, handles, or stores 
-                your card details. Your information is encrypted and processed directly by Stripe Payments.
-              </p>
-            </details>
-        
-            <details>
-              <summary>How can I get support?</summary>
-              <p>
-                You can contact Weather Ready support by emailing <strong>weatherreadyinfo@gmail.com</strong> or by using the 
-                Weather Ready Live Assistant chat widget on the website. Both options provide direct help with any questions 
-                about estimates, payments, or service use.
-              </p>
-            </details>
-        
-          </div>
-        </div>
+  <div class="wr-card">
+
+    <p>
+      Weather Ready is a Perth-based, long-range, date-specific weather estimation service designed for planning beyond the ~28-day limit of conventional forecasts.
+      It currently covers the Perth metropolitan area only.
+    </p>
+
+    <p>
+      Each purchased estimation is static and reflects the best available data at the time of purchase.
+    </p>
+
+    <h3>What You Receive</h3>
+    <p>Every Weather Ready estimation includes:</p>
+    <ul>
+      <li>Expected maximum temperature</li>
+      <li>Chance of rainfall (%)</li>
+      <li>Estimated rainfall amount (mm)</li>
+    </ul>
+    <p>Clear, practical information for real-world planning.</p>
+
+    <h3>How It Works</h3>
+    <ul>
+      <li>Select your exact future date</li>
+      <li>Enter your email address</li>
+      <li>Pay securely and receive your result instantly</li>
+    </ul>
+
+    <p>
+      Your estimation is displayed on screen immediately and also sent to your email.
+    </p>
+
+    <p>
+      No accounts. No subscriptions. No downloads.<br>
+      The entire process takes about 60 seconds.
+    </p>
+
+    <h3>Pricing & Payment</h3>
+    <ul>
+      <li>$0.99 AUD per date</li>
+      <li>Secure payments via Stripe</li>
+      <li>Pay with credit/debit card, Apple Pay, or Google Pay</li>
+      <li>No payment details stored</li>
+      <li>Automatic discounts when selecting multiple dates (1–7), with a capped maximum price</li>
+    </ul>
+
+    <h3>How the Estimate Is Generated (High-Level)</h3>
+    <p>Weather Ready uses a statistical, probabilistic model that blends:</p>
+    <ul>
+      <li>Long-term Perth climate patterns</li>
+      <li>Recent real-world conditions</li>
+    </ul>
+    <p>
+      This approach is designed specifically for long-range, date-specific estimation, rather than short-term forecasting or seasonal averages.
+    </p>
+
+    <h3>Accuracy & Transparency</h3>
+    <p>
+      Weather is inherently unpredictable, and Weather Ready does not claim precise accuracy for specific dates beyond 28 days.
+    </p>
+    <p>The goal is to:</p>
+    <ul>
+      <li>Outperform guessing</li>
+      <li>Improve on long-term averages</li>
+      <li>Provide structured, realistic guidance for planning</li>
+    </ul>
+    <p>
+      Estimates may vary depending on when they are generated, as new information becomes available.
+    </p>
+
+    <h3>Why Use Weather Ready?</h3>
+    <ul>
+      <li>Date-specific, not seasonal</li>
+      <li>More informative than long-term averages</li>
+      <li>Faster and clearer than alternatives</li>
+      <li>No technical knowledge required</li>
+      <li>Transparent about limitations</li>
+    </ul>
+
+    <p>
+      Weather Ready fills the gap where standard forecasts stop.
+    </p>
+
+    <h3>Support</h3>
+    <ul>
+      <li>Live chat support, available on the site</li>
+      <li>Email support: <strong>weatherreadyinfo@gmail.com</strong></li>
+    </ul>
+
+    <h3>Plan With Confidence</h3>
+    <p>
+      From events and travel to outdoor projects and key decisions, Weather Ready helps you plan months or years ahead with better information than guessing or averages.
+    </p>
+
+  </div>
+</div>
 
 <!-- ================= PLACEHOLDER SECTION 1 ================= -->
 <div class="wr-section" id="placeholder-1">
